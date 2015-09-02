@@ -8,4 +8,4 @@ Workflow for NetComomns3
 
 | dependencies  | status |
 | ------------- | ------ |
-| composer.json | [![Dependency Status](https://www.versioneye.com/user/projects/(versioneye_project_ID)/badge.png)](https://www.versioneye.com/user/projects/(versioneye_project_ID)) |
+| composer.json | [![Dependency Status](https://www.versioneye.com/user/projects/55e64f4fe7e33d000c0007e9/badge.png)](https://www.versioneye.com/user/projects/55e64f4fe7e33d000c0007e9) |
