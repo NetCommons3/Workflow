@@ -24,7 +24,12 @@ class WorkflowHelper extends AppHelper {
  *
  * @var array
  */
-	public $helpers = array('Html', 'Form', 'NetCommonsForm');
+	public $helpers = array(
+		'Form',
+		'Html',
+		'NetCommons.NetCommonsForm',
+		'NetCommons.BackHtml',
+	);
 
 /**
  * Output status label url
@@ -56,15 +61,6 @@ class WorkflowHelper extends AppHelper {
 	}
 
 /**
- * Output cancel url
- *
- * @return string Cancel url
- */
-	public function cancelUrl() {
-		return $this->Html->url('/' . Current::read('Page.permalink'));
-	}
-
-/**
  * Output workflow buttons
  *
  * @param string $statusFieldName This should be "Modelname.fieldname"
@@ -82,7 +78,7 @@ class WorkflowHelper extends AppHelper {
 		}
 
 		if (! isset($cancelUrl)) {
-			$cancelUrl = $this->cancelUrl();
+			$cancelUrl = Current::backToIndexUrl();
 		}
 
 		$output .= $this->Html->link(
