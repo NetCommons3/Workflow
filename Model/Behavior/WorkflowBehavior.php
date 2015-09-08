@@ -58,7 +58,7 @@ class WorkflowBehavior extends ModelBehavior {
 			return true;
 		}
 
-		$needFields = ['status', 'is_active', 'is_latest'];
+		$needFields = array('status', 'is_active', 'is_latest');
 		if ($this->__hasSaveField($model, $needFields, false)) {
 			if ($this->__hasSaveField($model, ['origin_id', 'language_id'], true)) {
 				$originalField = 'origin_id';
@@ -166,6 +166,142 @@ class WorkflowBehavior extends ModelBehavior {
 			}
 		}
 		return true;
+	}
+
+/**
+ * Get workflow conditions
+ *
+ * @param Model $model Model using this behavior
+ * @param array $conditions Model::find conditions default value
+ * @return array Conditions data
+ */
+	public function getWorkflowConditions(Model $model, $conditions = array()) {
+		if (Current::permission('content_editable')) {
+			$activeConditions = array();
+			$latestConditons = array(
+				$model->alias . '.is_latest' => true,
+			);
+		} elseif (Current::permission('content_creatable')) {
+			$activeConditions = array(
+				$model->alias . '.is_active' => true,
+				$model->alias . '.created_user !=' => Current::read('User.id'),
+			);
+			$latestConditons = array(
+				$model->alias . '.is_latest' => true,
+				$model->alias . '.created_user' => Current::read('User.id'),
+			);
+		} else {
+			$activeConditions = array(
+				$model->alias . '.is_active' => true,
+			);
+			$latestConditons = array();
+		}
+
+		if ($model->hasField('language_id')) {
+			$langConditions = array(
+				$model->alias . '.language_id' => Current::read('Language.id'),
+			);
+		} else {
+			$langConditions = array();
+		}
+		$conditions = Hash::merge($langConditions, array(
+			'OR' => array($activeConditions, $latestConditons)
+		), $conditions);
+
+		return $conditions;
+	}
+
+/**
+ * Get workflow contents
+ *
+ * @param Model $model Model using this behavior
+ * @param string $type Type of find operation (all / first / count / neighbors / list / threaded)
+ * @param array $query Option fields (conditions / fields / joins / limit / offset / order / page / group / callbacks)
+ * @return array Conditions data
+ */
+	public function getWorkflowContents(Model $model, $type, $query = array()) {
+		$query = Hash::merge(array(
+			'recursive' => -1,
+			'conditions' => $this->getWorkflowConditions($model)
+		), $query);
+
+		return $model->find($type, $query);
+	}
+
+/**
+ * Check creatable permission
+ *
+ * @param Model $model Model using this behavior
+ * @return array Conditions data
+ */
+	public function canReadWorkflowContent(Model $model) {
+		return Current::permission('content_readable');
+	}
+
+/**
+ * Check creatable permission
+ *
+ * @param Model $model Model using this behavior
+ * @return array Conditions data
+ */
+	public function canCreateWorkflowContent(Model $model) {
+		return Current::permission('content_creatable');
+	}
+
+/**
+ * Check editable permission
+ *
+ * @param Model $model Model using this behavior
+ * @param string $type Type of find operation (all / first / count / neighbors / list / threaded)
+ * @return array Conditions data
+ */
+	public function canEditWorkflowContent(Model $model, $data) {
+		if (Current::permission('content_editable')) {
+			return true;
+		}
+		if (! isset($data[$model->alias])) {
+			$data[$model->alias] = $data;
+		}
+		if (! isset($data[$model->alias]['created_user'])) {
+			return false;
+		}
+		return ($data[$model->alias]['created_user'] === Current::read('User.id'));
+	}
+
+/**
+ * Check deletable permission
+ *
+ * @param Model $model Model using this behavior
+ * @param string $type Type of find operation (all / first / count / neighbors / list / threaded)
+ * @return array Conditions data
+ */
+	public function canDeleteWorkflowContent(Model $model, $data) {
+		if (Current::permission('content_publishable')) {
+			return true;
+		}
+		if (! $this->canEditWorkflowContent($model, $data)) {
+			return false;
+		}
+		if (! isset($data[$model->alias])) {
+			$data[$model->alias] = $data;
+		}
+
+		$conditions = array(
+			'is_active' => true,
+		);
+		if ($model->hasField('origin_id') && isset($data[$model->alias]['origin_id'])) {
+			$conditions['origin_id'] = $data[$model->alias]['origin_id'];
+		} elseif ($model->hasField('key') && isset($data[$model->alias]['key'])) {
+			$conditions['key'] = $data[$model->alias]['key'];
+		} else {
+			return false;
+		}
+
+		$count = $model->find('count', array(
+			'recursive' => -1,
+			'conditions' => $conditions
+		));
+		return ((int)$count === 0);
 	}
 
 }

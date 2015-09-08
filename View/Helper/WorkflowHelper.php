@@ -144,8 +144,6 @@ class WorkflowHelper extends AppHelper {
 /**
  * Output workflow input comment
  *
- * @param string $statusFieldName This should be "Modelname.fieldname"
- * @param bool $panel If true is add to panel footer div, then false is not div.
  * @return string Cancel url
  */
 	public function comments() {
@@ -156,6 +154,34 @@ class WorkflowHelper extends AppHelper {
 		return $this->_View->element('Comments.index', array(
 			'comments' => $this->_View->viewVars['comments']
 		));
+	}
+
+/**
+ * Check editable permission
+ *
+ * @param string $modelName This should be "Pluginname.Modelname"
+ * @param array $data Model data
+ * @return bool True is editable data
+ */
+	public function canEdit($modelName, $data) {
+		list(, $model) = explode('.', $modelName);
+		${$model} = ClassRegistry::init($modelName);
+
+		return ${$model}->canEditWorkflowContent($data);
+	}
+
+/**
+ * Check deletable permission
+ *
+ * @param string $modelName This should be "Pluginname.Modelname"
+ * @param array $data Model data
+ * @return bool True is editable data
+ */
+	public function canDelete($modelName, $data) {
+		list(, $model) = explode('.', $modelName);
+		${$model} = ClassRegistry::init($modelName);
+
+		return ${$model}->canDeleteWorkflowContent($data);
 	}
 
 }
