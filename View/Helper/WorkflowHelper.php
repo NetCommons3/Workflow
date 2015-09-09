@@ -163,9 +163,12 @@ class WorkflowHelper extends AppHelper {
  * @param array $data Model data
  * @return bool True is editable data
  */
-	public function canEdit($modelName, $data) {
-		list(, $model) = explode('.', $modelName);
-		${$model} = ClassRegistry::init($modelName);
+	public function canEdit($name, $data) {
+		list($plugin, $model) = pluginSplit($name);
+		if (! $plugin) {
+			$plugin = Inflector::pluralize(Inflector::classify($this->request->params['plugin']));
+		}
+		${$model} = ClassRegistry::init($plugin . '.' . $model);
 
 		return ${$model}->canEditWorkflowContent($data);
 	}
@@ -173,13 +176,16 @@ class WorkflowHelper extends AppHelper {
 /**
  * Check deletable permission
  *
- * @param string $modelName This should be "Pluginname.Modelname"
+ * @param string $name This should be "Pluginname.Modelname"
  * @param array $data Model data
  * @return bool True is editable data
  */
-	public function canDelete($modelName, $data) {
-		list(, $model) = explode('.', $modelName);
-		${$model} = ClassRegistry::init($modelName);
+	public function canDelete($name, $data) {
+		list($plugin, $model) = pluginSplit($name);
+		if (! $plugin) {
+			$plugin = Inflector::pluralize(Inflector::classify($this->request->params['plugin']));
+		}
+		${$model} = ClassRegistry::init($plugin . '.' . $model);
 
 		return ${$model}->canDeleteWorkflowContent($data);
 	}

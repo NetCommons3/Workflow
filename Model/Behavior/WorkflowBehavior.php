@@ -53,7 +53,7 @@ class WorkflowBehavior extends ModelBehavior {
  */
 	public function beforeSave(Model $model, $options = array()) {
 		//  beforeSave はupdateAllでも呼び出される。
-		if (isset($model->data[$model->name]['id']) && $model->data[$model->name]['id'] > 0) {
+		if (isset($model->data[$model->alias]['id']) && $model->data[$model->alias]['id'] > 0) {
 			// updateのときは何もしない
 			return true;
 		}
@@ -68,36 +68,49 @@ class WorkflowBehavior extends ModelBehavior {
 				return true;
 			}
 
+			//作成者のコピー
+			$created = $model->find('first', array(
+				'recursive' => -1,
+				'fields' => array('created', 'created_user'),
+				'conditions' => array(
+					$originalField => $model->data[$model->alias][$originalField]
+				),
+			));
+			if ($created) {
+				$model->data[$model->alias]['created'] = $created[$model->alias]['created'];
+				$model->data[$model->alias]['created_user'] = $created[$model->alias]['created_user'];
+			}
+
 			//is_activeのセット
-			$model->data[$model->name]['is_active'] = false;
-			if ($model->data[$model->name]['status'] === WorkflowComponent::STATUS_PUBLISHED) {
+			$model->data[$model->alias]['is_active'] = false;
+			if ($model->data[$model->alias]['status'] === WorkflowComponent::STATUS_PUBLISHED) {
 				//statusが公開ならis_activeを付け替える
-				$model->data[$model->name]['is_active'] = true;
+				$model->data[$model->alias]['is_active'] = true;
 
 				//現状のis_activeを外す
-				if ($model->data[$model->name][$originalField]) {
+				if ($model->data[$model->alias][$originalField]) {
 					$model->updateAll(
-						array($model->name . '.is_active' => false),
+						array($model->alias . '.is_active' => false),
 						array(
-							$model->name . '.' . $originalField => $model->data[$model->name][$originalField],
-							$model->name . '.language_id' => (int)$model->data[$model->name]['language_id'],
-							$model->name . '.is_active' => true,
+							$model->alias . '.' . $originalField => $model->data[$model->alias][$originalField],
+							$model->alias . '.language_id' => (int)$model->data[$model->alias]['language_id'],
+							$model->alias . '.is_active' => true,
 						)
 					);
 				}
 			}
 
 			//is_latestのセット
-			$model->data[$model->name]['is_latest'] = true;
+			$model->data[$model->alias]['is_latest'] = true;
 
 			//現状のis_latestを外す
-			if ($model->data[$model->name][$originalField]) {
+			if ($model->data[$model->alias][$originalField]) {
 				$model->updateAll(
-					array($model->name . '.is_latest' => false),
+					array($model->alias . '.is_latest' => false),
 					array(
-						$model->name . '.' . $originalField => $model->data[$model->name][$originalField],
-						$model->name . '.language_id' => (int)$model->data[$model->name]['language_id'],
-						$model->name . '.is_latest' => true,
+						$model->alias . '.' . $originalField => $model->data[$model->alias][$originalField],
+						$model->alias . '.language_id' => (int)$model->data[$model->alias]['language_id'],
+						$model->alias . '.is_latest' => true,
 					)
 				);
 			}
@@ -161,7 +174,7 @@ class WorkflowBehavior extends ModelBehavior {
 			if (! $model->hasField($key)) {
 				return false;
 			}
-			if ($validateData && ! array_key_exists($key, $model->data[$model->name])) {
+			if ($validateData && ! array_key_exists($key, $model->data[$model->alias])) {
 				return false;
 			}
 		}
