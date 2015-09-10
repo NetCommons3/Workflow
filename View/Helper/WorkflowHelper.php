@@ -28,8 +28,21 @@ class WorkflowHelper extends AppHelper {
 		'Form',
 		'Html',
 		'NetCommons.NetCommonsForm',
-		'NetCommons.BackHtml',
+		'NetCommons.NetCommonsHtml',
 	);
+
+/**
+ * Before render callback. beforeRender is called before the view file is rendered.
+ *
+ * Overridden in subclasses.
+ *
+ * @param string $viewFile The view file that is going to be rendered
+ * @return void
+ */
+	public function beforeRender($viewFile) {
+		$this->NetCommonsHtml->css('/workflow/css/style.css');
+		parent::beforeRender($viewFile);
+	}
 
 /**
  * Output status label url
