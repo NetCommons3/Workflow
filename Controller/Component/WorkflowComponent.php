@@ -74,7 +74,7 @@ class WorkflowComponent extends Component {
 						'status' => __d('net_commons', 'Invalid request.')
 					)
 				));
-				$this->controller->renderJson($error, __d('net_commons', 'Bad Request'), 400);
+				$this->controller->NetCommons->renderJson($error, __d('net_commons', 'Bad Request'), 400);
 			} else {
 				throw new BadRequestException(__d('net_commons', 'Bad Request'));
 			}
