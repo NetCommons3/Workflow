@@ -91,7 +91,7 @@ class WorkflowHelper extends AppHelper {
 		}
 
 		if (! isset($cancelUrl)) {
-			$cancelUrl = Current::backToIndexUrl();
+			$cancelUrl = NetCommonsUrl::backToIndexUrl();
 		}
 
 		$output .= $this->Html->link(

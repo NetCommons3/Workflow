@@ -68,16 +68,7 @@ class WorkflowComponent extends Component {
 		if ($matches = preg_grep('/^save_\d/', array_keys($this->controller->data))) {
 			list(, $status) = explode('_', array_shift($matches));
 		} else {
-			if ($this->controller->request->is('ajax')) {
-				$error = array('error' => array(
-					'validationErrors' => array(
-						'status' => __d('net_commons', 'Invalid request.')
-					)
-				));
-				$this->controller->NetCommons->renderJson($error, __d('net_commons', 'Bad Request'), 400);
-			} else {
-				throw new BadRequestException(__d('net_commons', 'Bad Request'));
-			}
+			$this->controller->setAction('throwBadRequest');
 			return false;
 		}
 
