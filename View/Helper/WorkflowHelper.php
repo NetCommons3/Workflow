@@ -50,21 +50,23 @@ class WorkflowHelper extends AppHelper {
  * @param int $status Status label
  * @return string Cancel url
  */
-	public function label($status) {
-		$labels = array(
-			WorkflowComponent::STATUS_IN_DRAFT => array(
-				'class' => 'label-info',
-				'message' => __d('net_commons', 'Temporary'),
-			),
-			WorkflowComponent::STATUS_APPROVED => array(
-				'class' => 'label-warning',
-				'message' => __d('net_commons', 'Approving'),
-			),
-			WorkflowComponent::STATUS_DISAPPROVED => array(
-				'class' => 'label-warning',
-				'message' => __d('net_commons', 'Disapproving'),
-			),
-		);
+	public function label($status, $labels = array()) {
+		if (! isset($labels)) {
+			$labels = array(
+				WorkflowComponent::STATUS_IN_DRAFT => array(
+					'class' => 'label-info',
+					'message' => __d('net_commons', 'Temporary'),
+				),
+				WorkflowComponent::STATUS_APPROVED => array(
+					'class' => 'label-warning',
+					'message' => __d('net_commons', 'Approving'),
+				),
+				WorkflowComponent::STATUS_DISAPPROVED => array(
+					'class' => 'label-warning',
+					'message' => __d('net_commons', 'Disapproving'),
+				),
+			);
+		}
 
 		$output = '';
 		if (isset($labels[$status])) {
@@ -201,6 +203,61 @@ class WorkflowHelper extends AppHelper {
 		${$model} = ClassRegistry::init($plugin . '.' . $model);
 
 		return ${$model}->canDeleteWorkflowContent($data);
+	}
+
+/**
+ * Creates a `<a>` tag for publish link link. The type attribute defaults
+ *
+ * @param string $title The button's caption. Not automatically HTML encoded
+ * @param mixed $url Link url
+ * @param array $options Array of options and HTML attributes.
+ * @return string A HTML button tag.
+ * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/form.html#FormHelper::button
+ */
+	public function publishLinkButton($title = '', $options = array()) {
+		$output = '';
+
+		//iconの有無
+		$iconElement = '';
+		if (! isset($options['icon'])) {
+			$options['icon'] = 'ok';
+		}
+		if ($options['icon'] !== '') {
+			$iconElement = '<span class="glyphicon glyphicon-' . h($options['icon']) . '"></span> ';
+			unset($options['icon']);
+		}
+		//ボタンサイズ
+		$sizeAttr = '';
+		if (isset($options['iconSize']) && $options['iconSize'] !== '') {
+			$sizeAttr = 'btn-' . $options['iconSize'];
+			unset($options['iconSize']);
+		}
+
+		//Linkオプションの設定
+		$inputOptions = Hash::merge(array(
+			'name' => 'save_' . WorkflowComponent::STATUS_PUBLISHED,
+			'escapeTitle' => false,
+			'class' => 'btn btn-warning ' . $sizeAttr
+		), $options);
+		if (! $inputOptions['escapeTitle']) {
+			$title = h($title);
+		}
+
+		//span tooltipタグの出力
+		if (isset($options['tooltip']) && $options['tooltip']) {
+			if (is_string($options['tooltip'])) {
+				$tooltip = $options['tooltip'];
+			} else {
+				$tooltip = __d('net_commons', 'Accept');
+			}
+			$output .= '<span class="nc-tooltip" tooltip="' . $tooltip . '">';
+			unset($inputOptions['tooltip']);
+		}
+		$output .= $this->Form->button($iconElement . $title, $inputOptions);
+		if (isset($options['tooltip']) && $options['tooltip']) {
+			$output .= '</span>';
+		}
+		return $output;
 	}
 
 }
