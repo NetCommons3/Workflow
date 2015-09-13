@@ -93,7 +93,6 @@ class WorkflowComponent extends Component {
  * Function to get the data of BlockRolePermmissions.
  *    e.g.) BlockRolePermmissions controller
  *
- * @param string $blockKey blocks.key
  * @param array $permissions permissions
  * @return array Role and Permissions data
  *   - The `Role` merged of Role and RoomRole
@@ -114,7 +113,6 @@ class WorkflowComponent extends Component {
 		}
 
 		$blockKey = Current::read('Block.key');
-		$roomId = Current::read('Room.id');
 
 		//RoomRolePermissions取得
 		$results = $this->getRoomRolePermissions($permissions, DefaultRolePermission::TYPE_ROOM_ROLE);

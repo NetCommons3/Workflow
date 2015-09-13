@@ -47,7 +47,8 @@ class WorkflowHelper extends AppHelper {
 /**
  * Output status label url
  *
- * @param int $status Status label
+ * @param int $status Status value
+ * @param array $labels Overwrite Status labels
  * @return string Cancel url
  */
 	public function label($status, $labels = array()) {
@@ -145,7 +146,6 @@ class WorkflowHelper extends AppHelper {
  * Output workflow input comment
  *
  * @param string $statusFieldName This should be "Modelname.fieldname"
- * @param bool $panel If true is add to panel footer div, then false is not div.
  * @return string Cancel url
  */
 	public function inputComment($statusFieldName) {
@@ -174,7 +174,7 @@ class WorkflowHelper extends AppHelper {
 /**
  * Check editable permission
  *
- * @param string $modelName This should be "Pluginname.Modelname"
+ * @param string $name This should be "Pluginname.Modelname"
  * @param array $data Model data
  * @return bool True is editable data
  */
@@ -209,7 +209,6 @@ class WorkflowHelper extends AppHelper {
  * Creates a `<a>` tag for publish link link. The type attribute defaults
  *
  * @param string $title The button's caption. Not automatically HTML encoded
- * @param mixed $url Link url
  * @param array $options Array of options and HTML attributes.
  * @return string A HTML button tag.
  * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/form.html#FormHelper::button
@@ -217,24 +216,10 @@ class WorkflowHelper extends AppHelper {
 	public function publishLinkButton($title = '', $options = array()) {
 		$output = '';
 
-		//iconの有無
-		$iconElement = '';
-		if (! isset($options['icon'])) {
-			$options['icon'] = 'ok';
-		}
-		if ($options['icon'] !== '') {
-			$iconElement = '<span class="glyphicon glyphicon-' . h($options['icon']) . '"></span> ';
-			unset($options['icon']);
-		}
-		//ボタンサイズ
-		$sizeAttr = '';
-		if (isset($options['iconSize']) && $options['iconSize'] !== '') {
-			$sizeAttr = 'btn-' . $options['iconSize'];
-			unset($options['iconSize']);
-		}
-
 		//Linkオプションの設定
 		$inputOptions = Hash::merge(array(
+			'icon' => 'ok',
+			'iconSize' => '',
 			'name' => 'save_' . WorkflowComponent::STATUS_PUBLISHED,
 			'escapeTitle' => false,
 			'class' => 'btn btn-warning ' . $sizeAttr
@@ -242,6 +227,13 @@ class WorkflowHelper extends AppHelper {
 		if (! $inputOptions['escapeTitle']) {
 			$title = h($title);
 		}
+
+		//iconの有無
+		$iconElement = '<span class="glyphicon glyphicon-' . h($inputOptions['icon']) . '"></span> ';
+		unset($options['icon']);
+		//ボタンサイズ
+		$sizeAttr = $inputOptions['iconSize'];
+		unset($inputOptions['iconSize']);
 
 		//span tooltipタグの出力
 		if (isset($options['tooltip']) && $options['tooltip']) {

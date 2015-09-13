@@ -58,63 +58,62 @@ class WorkflowBehavior extends ModelBehavior {
 			return true;
 		}
 
-		$needFields = array('status', 'is_active', 'is_latest');
-		if ($this->__hasSaveField($model, $needFields, false)) {
-			if ($this->__hasSaveField($model, ['origin_id', 'language_id'], true)) {
-				$originalField = 'origin_id';
-			} elseif ($this->__hasSaveField($model, ['key', 'language_id'], true)) {
-				$originalField = 'key';
-			} else {
-				return true;
-			}
-
-			//作成者のコピー
-			$created = $model->find('first', array(
-				'recursive' => -1,
-				'fields' => array('created', 'created_user'),
-				'conditions' => array(
-					$originalField => $model->data[$model->alias][$originalField]
-				),
-			));
-			if ($created) {
-				$model->data[$model->alias]['created'] = $created[$model->alias]['created'];
-				$model->data[$model->alias]['created_user'] = $created[$model->alias]['created_user'];
-			}
-
-			//is_activeのセット
-			$model->data[$model->alias]['is_active'] = false;
-			if ($model->data[$model->alias]['status'] === WorkflowComponent::STATUS_PUBLISHED) {
-				//statusが公開ならis_activeを付け替える
-				$model->data[$model->alias]['is_active'] = true;
-
-				//現状のis_activeを外す
-				if ($model->data[$model->alias][$originalField]) {
-					$model->updateAll(
-						array($model->alias . '.is_active' => false),
-						array(
-							$model->alias . '.' . $originalField => $model->data[$model->alias][$originalField],
-							$model->alias . '.language_id' => (int)$model->data[$model->alias]['language_id'],
-							$model->alias . '.is_active' => true,
-						)
-					);
-				}
-			}
-
-			//is_latestのセット
-			$model->data[$model->alias]['is_latest'] = true;
-
-			//現状のis_latestを外す
-			if ($model->data[$model->alias][$originalField]) {
-				$model->updateAll(
-					array($model->alias . '.is_latest' => false),
-					array(
-						$model->alias . '.' . $originalField => $model->data[$model->alias][$originalField],
-						$model->alias . '.language_id' => (int)$model->data[$model->alias]['language_id'],
-						$model->alias . '.is_latest' => true,
-					)
-				);
-			}
+		if (! $this->__hasSaveField($model, array('status', 'is_active', 'is_latest'), false)) {
+			return true;
 		}
+		if ($this->__hasSaveField($model, array('origin_id', 'language_id'), true)) {
+			$originalField = 'origin_id';
+		} elseif ($this->__hasSaveField($model, array('key', 'language_id'), true)) {
+			$originalField = 'key';
+		} else {
+			return true;
+		}
+		if (! $model->data[$model->alias][$originalField]) {
+			return true;
+		}
+
+		//作成者のコピー
+		$created = $model->find('first', array(
+			'recursive' => -1,
+			'fields' => array('created', 'created_user'),
+			'conditions' => array(
+				$originalField => $model->data[$model->alias][$originalField]
+			),
+		));
+		if ($created) {
+			$model->data[$model->alias]['created'] = $created[$model->alias]['created'];
+			$model->data[$model->alias]['created_user'] = $created[$model->alias]['created_user'];
+		}
+
+		//is_activeのセット
+		$model->data[$model->alias]['is_active'] = false;
+		if ($model->data[$model->alias]['status'] === WorkflowComponent::STATUS_PUBLISHED) {
+			//statusが公開ならis_activeを付け替える
+			$model->data[$model->alias]['is_active'] = true;
+
+			//現状のis_activeを外す
+			$model->updateAll(
+				array($model->alias . '.is_active' => false),
+				array(
+					$model->alias . '.' . $originalField => $model->data[$model->alias][$originalField],
+					$model->alias . '.language_id' => (int)$model->data[$model->alias]['language_id'],
+					$model->alias . '.is_active' => true,
+				)
+			);
+		}
+
+		//is_latestのセット
+		$model->data[$model->alias]['is_latest'] = true;
+
+		//現状のis_latestを外す
+		$model->updateAll(
+			array($model->alias . '.is_latest' => false),
+			array(
+				$model->alias . '.' . $originalField => $model->data[$model->alias][$originalField],
+				$model->alias . '.language_id' => (int)$model->data[$model->alias]['language_id'],
+				$model->alias . '.is_latest' => true,
+			)
+		);
 
 		return true;
 	}
@@ -265,7 +264,7 @@ class WorkflowBehavior extends ModelBehavior {
  * Check editable permission
  *
  * @param Model $model Model using this behavior
- * @param string $type Type of find operation (all / first / count / neighbors / list / threaded)
+ * @param array $data Check content data
  * @return array Conditions data
  */
 	public function canEditWorkflowContent(Model $model, $data) {
@@ -285,7 +284,7 @@ class WorkflowBehavior extends ModelBehavior {
  * Check deletable permission
  *
  * @param Model $model Model using this behavior
- * @param string $type Type of find operation (all / first / count / neighbors / list / threaded)
+ * @param array $data Check content data
  * @return array Conditions data
  */
 	public function canDeleteWorkflowContent(Model $model, $data) {
