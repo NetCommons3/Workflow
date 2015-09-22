@@ -52,7 +52,7 @@ class WorkflowHelper extends AppHelper {
  * @return string Cancel url
  */
 	public function label($status, $labels = array()) {
-		if (! isset($labels)) {
+		if (empty($labels)) {
 			$labels = array(
 				WorkflowComponent::STATUS_IN_DRAFT => array(
 					'class' => 'label-info',
