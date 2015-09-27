@@ -1,6 +1,6 @@
 <?php
 /**
- * WorkflowContentEditTest
+ * WorkflowContentEditGetTest
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @link http://www.netcommons.org NetCommons Project
@@ -8,14 +8,15 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
+App::uses('WorkflowComponent', 'Workflow.Controller/Component');
 
 /**
- * WorkflowContentEditTest
+ * WorkflowContentEditGetTest
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\AuthGeneral\TestSuite
  */
-interface WorkflowContentEditTest {
+interface WorkflowContentEditGetTest {
 
 /**
  * edit()のGETパラメータのテスト(ログインなし)
@@ -44,33 +45,5 @@ interface WorkflowContentEditTest {
  * @return void
  */
 	public function testEditGetByPublishable();
-
-/**
- * edit()のPOST or PUTパラメータのテスト(ログインなし)
- *
- * @return void
- */
-	public function testEditPost();
-
-/**
- * edit()のPOST or PUTパラメータのテスト(作成権限あり)
- *
- * @return void
- */
-	public function testEditPostByCreatable();
-
-/**
- * edit()のPOST or PUTパラメータのテスト(編集権限あり)
- *
- * @return void
- */
-	public function testEditPostByEditable();
-
-/**
- * edit()のPOST or PUTパラメータのテスト(公開権限あり)
- *
- * @return void
- */
-	public function testEditPostByPublishable();
 
 }

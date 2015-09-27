@@ -8,6 +8,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
+App::uses('WorkflowComponent', 'Workflow.Controller/Component');
 
 /**
  * WorkflowContentViewTest
