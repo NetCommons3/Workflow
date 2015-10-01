@@ -150,7 +150,7 @@ class WorkflowHelper extends AppHelper {
  */
 	public function inputComment($statusFieldName) {
 		$status = Hash::get($this->_View->data, $statusFieldName);
-		return $this->_View->element('Comments.form', array(
+		return $this->_View->element('Workflow.form', array(
 			'contentPublishable' => Current::permission('content_publishable'),
 			'contentStatus' => $status,
 		));
@@ -166,7 +166,7 @@ class WorkflowHelper extends AppHelper {
 			$this->_View->viewVars['comments'] = array();
 		}
 
-		return $this->_View->element('Comments.index', array(
+		return $this->_View->element('Workflow.index', array(
 			'comments' => $this->_View->viewVars['comments']
 		));
 	}
