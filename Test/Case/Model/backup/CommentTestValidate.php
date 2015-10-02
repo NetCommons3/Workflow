@@ -1,6 +1,6 @@
 <?php
 /**
- * Test Case of Comment->getComments()
+ * Test Case of WorkflowComment->getComments()
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -12,7 +12,7 @@
 App::uses('CommentsModelTestBase', 'Workflow.Test/Case/Model');
 
 /**
- * Test Case of Comment->getComments()
+ * Test Case of WorkflowComment->getComments()
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Workflow\Test\Case\Model
@@ -20,7 +20,7 @@ App::uses('CommentsModelTestBase', 'Workflow.Test/Case/Model');
 class CommentTestValidate extends CommentsModelTestBase {
 
 /**
- * Expect Comment->validateByStatus().
+ * Expect WorkflowComment->validateByStatus().
  *   Test case status=WorkflowComponent::STATUS_PUBLISHED
  *
  * @return  void
@@ -32,7 +32,7 @@ class CommentTestValidate extends CommentsModelTestBase {
 		//		'status' => WorkflowComponent::STATUS_PUBLISHED,
 		//		'key' => 'test_content'
 		//	),
-		//	'Comment' => array(
+		//	'WorkflowComment' => array(
 		//		'comment' => 'Add comment',
 		//	),
 		//);
@@ -42,14 +42,14 @@ class CommentTestValidate extends CommentsModelTestBase {
 		//);
 		//
 		////テスト実行
-		//$result = $this->Comment->validateByStatus($data, $options);
+		//$result = $this->WorkflowComment->validateByStatus($data, $options);
 		//
 		////チェック
 		//$this->assertTrue($result);
 	}
 
 /**
- * Expect Comment->validateByStatus().
+ * Expect WorkflowComment->validateByStatus().
  *   Test case comment empty
  *
  * @return  void
@@ -61,7 +61,7 @@ class CommentTestValidate extends CommentsModelTestBase {
 		//		'status' => WorkflowComponent::STATUS_PUBLISHED,
 		//		'key' => 'test_content'
 		//	),
-		//	'Comment' => array(
+		//	'WorkflowComment' => array(
 		//		'comment' => '',
 		//	),
 		//);
@@ -71,14 +71,14 @@ class CommentTestValidate extends CommentsModelTestBase {
 		//);
 		//
 		////テスト実行
-		//$result = $this->Comment->validateByStatus($data, $options);
+		//$result = $this->WorkflowComment->validateByStatus($data, $options);
 		//
 		////チェック
 		//$this->assertTrue($result);
 	}
 
 /**
- * Expect Comment->validateByStatus().
+ * Expect WorkflowComment->validateByStatus().
  *   Test case status WorkflowComponent::STATUS_DISAPPROVED and comment empty
  *
  * @return  void
@@ -90,7 +90,7 @@ class CommentTestValidate extends CommentsModelTestBase {
 		//		'status' => WorkflowComponent::STATUS_DISAPPROVED,
 		//		'key' => 'test_content'
 		//	),
-		//	'Comment' => array(
+		//	'WorkflowComment' => array(
 		//		'comment' => '',
 		//	),
 		//);
@@ -100,14 +100,14 @@ class CommentTestValidate extends CommentsModelTestBase {
 		//);
 		//
 		////テスト実行
-		//$result = $this->Comment->validateByStatus($data, $options);
+		//$result = $this->WorkflowComment->validateByStatus($data, $options);
 		//
 		////チェック
 		//$this->assertFalse($result);
 	}
 
 /**
- * Expect Comment->validateByStatus().
+ * Expect WorkflowComment->validateByStatus().
  *   Test case omission of plugin
  *
  * @return  void
@@ -119,7 +119,7 @@ class CommentTestValidate extends CommentsModelTestBase {
 		//		'status' => WorkflowComponent::STATUS_PUBLISHED,
 		//		'key' => 'test_content'
 		//	),
-		//	'Comment' => array(
+		//	'WorkflowComment' => array(
 		//		'comment' => 'Add comment',
 		//	),
 		//);
@@ -128,15 +128,15 @@ class CommentTestValidate extends CommentsModelTestBase {
 		//);
 		//
 		////テスト実行
-		//$result = $this->Comment->validateByStatus($data, $options);
+		//$result = $this->WorkflowComment->validateByStatus($data, $options);
 		//
 		////チェック
 		//$this->assertTrue($result);
-		//$this->assertTextEquals('testcontets', $this->Comment->data['Comment']['plugin_key']);
+		//$this->assertTextEquals('testcontets', $this->WorkflowComment->data['WorkflowComment']['plugin_key']);
 	}
 
 /**
- * Expect Comment->validateByStatus().
+ * Expect WorkflowComment->validateByStatus().
  *   Test case コンテンツキーあり
  *
  * @return  void
@@ -148,7 +148,7 @@ class CommentTestValidate extends CommentsModelTestBase {
 		//		'status' => WorkflowComponent::STATUS_PUBLISHED,
 		//		'key' => 'test_content'
 		//	),
-		//	'Comment' => array(
+		//	'WorkflowComment' => array(
 		//		'comment' => 'Add comment',
 		//	),
 		//);
@@ -158,10 +158,10 @@ class CommentTestValidate extends CommentsModelTestBase {
 		//);
 		//
 		////テスト実行
-		//$this->Comment->validateByStatus($data, $options);
+		//$this->WorkflowComment->validateByStatus($data, $options);
 		//
 		////content_keyに値がセットされている
-		//$this->assertTrue(isset($this->Comment->data[$this->Comment->name]['content_key']));
+		//$this->assertTrue(isset($this->WorkflowComment->data[$this->WorkflowComment->name]['content_key']));
 	}
 
 /**
@@ -176,7 +176,7 @@ class CommentTestValidate extends CommentsModelTestBase {
 		//	'TestContet' => array(
 		//		'status' => WorkflowComponent::STATUS_PUBLISHED,
 		//	),
-		//	'Comment' => array(
+		//	'WorkflowComment' => array(
 		//		'comment' => 'Add comment',
 		//	),
 		//);
@@ -186,9 +186,9 @@ class CommentTestValidate extends CommentsModelTestBase {
 		//);
 		//
 		////テスト実行
-		//$this->Comment->validateByStatus($data, $options);
+		//$this->WorkflowComment->validateByStatus($data, $options);
 		//
 		////content_keyがセットされてない
-		//$this->assertFalse(isset($this->Comment->data[$this->Comment->name]['content_key']));
+		//$this->assertFalse(isset($this->WorkflowComment->data[$this->WorkflowComment->name]['content_key']));
 	}
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Test Case of Comment->deleteByBlockKey()
+ * Test Case of WorkflowComment->deleteByBlockKey()
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -12,7 +12,7 @@
 App::uses('CommentsModelTestBase', 'Workflow.Test/Case/Model');
 
 /**
- * Test Case of Comment->deleteByBlockKey()
+ * Test Case of WorkflowComment->deleteByBlockKey()
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Workflow\Test\Case\Model
@@ -27,7 +27,7 @@ class CommentTestCommentTestDeleteByBlockKey extends CommentsModelTestBase {
 	public function testByBlockKey() {
 		////テスト実行
 		//$blockKey = 'test_block_key';
-		//$result = $this->Comment->deleteByBlockKey($blockKey);
+		//$result = $this->WorkflowComment->deleteByBlockKey($blockKey);
 		//$this->assertTrue($result);
 		//
 		////チェック
@@ -35,13 +35,13 @@ class CommentTestCommentTestDeleteByBlockKey extends CommentsModelTestBase {
 		//	'plugin_key' => 'test_plugin',
 		//	'content_key' => 'test_content',
 		//);
-		//$result = $this->Comment->getComments($conditions);
+		//$result = $this->WorkflowComment->getComments($conditions);
 		//
 		//$this->assertEquals(0, count($result));
 	}
 
 /**
- * Expect to fail on Comment->deleteAll()
+ * Expect to fail on WorkflowComment->deleteAll()
  * e.g.) connection error
  *
  * @return  void
@@ -51,13 +51,13 @@ class CommentTestCommentTestDeleteByBlockKey extends CommentsModelTestBase {
 		//
 		//$blockKey = 'test_block_key';
 		//
-		//$this->Comment = $this->getMockForModel('Workflow.Comment', array('deleteAll'));
-		//$this->Comment->expects($this->any())
+		//$this->WorkflowComment = $this->getMockForModel('Workflow.WorkflowComment', array('deleteAll'));
+		//$this->WorkflowComment->expects($this->any())
 		//	->method('deleteAll')
 		//	->will($this->returnValue(false));
 		//
 		////実施
-		//$this->Comment->deleteByBlockKey($blockKey);
+		//$this->WorkflowComment->deleteByBlockKey($blockKey);
 	}
 
 }

@@ -31,7 +31,7 @@ class Init extends CakeMigration {
 	public $migration = array(
 		'up' => array(
 			'create_table' => array(
-				'comments' => array(
+				'workflow_comments' => array(
 					'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false, 'key' => 'primary', 'comment' => 'ID |  |  | '),
 					'plugin_key' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => 'plugin key | プラグインKey | plugins.key | ', 'charset' => 'utf8'),
 					'block_key' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => 'blocks.key | ブロックKey', 'charset' => 'utf8'),

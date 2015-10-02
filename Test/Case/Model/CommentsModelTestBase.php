@@ -11,7 +11,7 @@
 
 App::uses('NetCommonsBlockComponent', 'NetCommons.Controller/Component');
 App::uses('NetCommonsRoomRoleComponent', 'NetCommons.Controller/Component');
-App::uses('Comment', 'Workflow.Model');
+App::uses('WorkflowComment', 'Workflow.Model');
 App::uses('YACakeTestCase', 'NetCommons.TestSuite');
 
 /**
@@ -38,7 +38,7 @@ class CommentsModelTestBase extends YACakeTestCase {
  */
 	public function setUp() {
 		parent::setUp();
-		$this->Comment = ClassRegistry::init('Workflow.Comment');
+		$this->WorkflowComment = ClassRegistry::init('Workflow.WorkflowComment');
 	}
 
 /**
@@ -47,7 +47,7 @@ class CommentsModelTestBase extends YACakeTestCase {
  * @return void
  */
 	public function tearDown() {
-		unset($this->Comment);
+		unset($this->WorkflowComment);
 
 		parent::tearDown();
 	}

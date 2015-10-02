@@ -14,20 +14,20 @@
 	<div class="panel panel-default" ng-init="more=false">
 		<div class="panel-body workflow-comments">
 			<?php foreach ($comments as $i => $comment): ?>
-				<div class="comment form-group" ng-show="<?php echo $i >= Comment::START_LIMIT ? 'more' : 'true' ?>">
+				<div class="comment form-group" ng-show="<?php echo $i >= WorkflowComment::START_LIMIT ? 'more' : 'true' ?>">
 					<div>
 						<a href="" ng-click="user.showUser(<?php echo $comment['TrackableCreator']['id']; ?>)">
 							<b><?php echo h($comment['TrackableCreator']['handlename']); ?></b>
 						</a>
-						<small class="text-muted"><?php echo $comment['Comment']['created']; ?></small>
+						<small class="text-muted"><?php echo $comment['WorkflowComment']['created']; ?></small>
 					</div>
 					<div>
-						<?php echo nl2br(h($comment['Comment']['comment'])) ?>
+						<?php echo nl2br(h($comment['WorkflowComment']['comment'])) ?>
 					</div>
 				</div>
 			<?php endforeach ?>
 
-			<div class="form-group <?php echo $i < Comment::START_LIMIT ? 'hidden' : '' ?>" ng-hide="more">
+			<div class="form-group <?php echo $i < WorkflowComment::START_LIMIT ? 'hidden' : '' ?>" ng-hide="more">
 				<button type="button" class="btn btn-info btn-block" ng-click="more=true">
 					<?php echo h(__d('net_commons', 'More')); ?>
 				</button>

@@ -1,6 +1,6 @@
 <?php
 /**
- * CommentFixture
+ * WorkflowCommentFixture
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -10,12 +10,12 @@
  */
 
 /**
- * CommentFixture
+ * WorkflowCommentFixture
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
- * @package NetCommons\Blocks\Test\Fixture
+ * @package NetCommons\Workflow\Test\Fixture
  */
-class CommentFixture extends CakeTestFixture {
+class WorkflowCommentFixture extends CakeTestFixture {
 
 /**
  * Fields
@@ -49,7 +49,7 @@ class CommentFixture extends CakeTestFixture {
 			'plugin_key' => 'comments',
 			'block_key' => 'block_1',
 			'content_key' => 'comment_content_1',
-			'comment' => 'Comment data',
+			'comment' => 'WorkflowComment data',
 			'created_user' => 1,
 			'created' => '2014-11-19 07:17:01',
 			'modified_user' => 1,
@@ -69,7 +69,7 @@ class CommentFixture extends CakeTestFixture {
 			'plugin_key' => 'comments',
 			'block_key' => 'block_1',
 			'content_key' => 'comment_content_2',
-			'comment' => 'Comment %s',
+			'comment' => 'WorkflowComment %s',
 			'created_user' => '1',
 			'created' => '2014-10-09 16:07:57',
 		);

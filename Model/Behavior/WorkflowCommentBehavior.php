@@ -1,6 +1,6 @@
 <?php
 /**
- * Comment Behavior
+ * WorkflowComment Behavior
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -12,12 +12,12 @@
 App::uses('ModelBehavior', 'Model');
 
 /**
- * Comment Behavior
+ * WorkflowComment Behavior
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Workflow\Model\Behavior
  */
-class CommentBehavior extends ModelBehavior {
+class WorkflowCommentBehavior extends ModelBehavior {
 
 /**
  * beforeValidate is called before a model is validated, you can use this callback to
@@ -30,12 +30,12 @@ class CommentBehavior extends ModelBehavior {
  * @see Model::save()
  */
 	public function beforeValidate(Model $model, $options = array()) {
-		if (! isset($model->data['Comment'])) {
+		if (! isset($model->data['WorkflowComment'])) {
 			return true;
 		}
 
 		$model->loadModels(array(
-			'Comment' => 'Workflow.Comment',
+			'WorkflowComment' => 'Workflow.WorkflowComment',
 		));
 
 		//コメントの登録(ステータス 差し戻しのみコメント必須)
@@ -43,13 +43,13 @@ class CommentBehavior extends ModelBehavior {
 			$model->data[$model->alias]['status'] = null;
 		}
 		if ($model->data[$model->alias]['status'] === WorkflowComponent::STATUS_DISAPPROVED ||
-				isset($model->data['Comment']['comment']) && $model->data['Comment']['comment'] !== '') {
+				isset($model->data['WorkflowComment']['comment']) && $model->data['WorkflowComment']['comment'] !== '') {
 
-			$model->Comment->set($model->data['Comment']);
-			$model->Comment->validates();
+			$model->WorkflowComment->set($model->data['WorkflowComment']);
+			$model->WorkflowComment->validates();
 
-			if ($model->Comment->validationErrors) {
-				$model->validationErrors = Hash::merge($model->validationErrors, $model->Comment->validationErrors);
+			if ($model->WorkflowComment->validationErrors) {
+				$model->validationErrors = Hash::merge($model->validationErrors, $model->WorkflowComment->validationErrors);
 				return false;
 			}
 		}
@@ -68,19 +68,19 @@ class CommentBehavior extends ModelBehavior {
  * @see Model::save()
  */
 	public function afterSave(Model $model, $created, $options = array()) {
-		if (! isset($model->data['Comment']) || ! $model->data['Comment']['comment']) {
+		if (! isset($model->data['WorkflowComment']) || ! $model->data['WorkflowComment']['comment']) {
 			return true;
 		}
 
 		$model->loadModels([
-			'Comment' => 'Workflow.Comment',
+			'WorkflowComment' => 'Workflow.WorkflowComment',
 		]);
 
-		$model->data['Comment']['plugin_key'] = Inflector::underscore($model->plugin);
-		$model->data['Comment']['block_key'] = $model->data['Block']['key'];
-		$model->data['Comment']['content_key'] = $model->data[$model->alias]['key'];
+		$model->data['WorkflowComment']['plugin_key'] = Inflector::underscore($model->plugin);
+		$model->data['WorkflowComment']['block_key'] = $model->data['Block']['key'];
+		$model->data['WorkflowComment']['content_key'] = $model->data[$model->alias]['key'];
 
-		if (! $model->Comment->save($model->data['Comment'], false)) {
+		if (! $model->WorkflowComment->save($model->data['WorkflowComment'], false)) {
 			throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 		}
 
@@ -88,14 +88,14 @@ class CommentBehavior extends ModelBehavior {
 	}
 
 /**
- * Get Comments data
+ * Get WorkflowComment data
  *
  * @param Model $model Model using this behavior
  * @param string $contentKey Content key
  * @return array
  */
 	public function getCommentsByContentKey(Model $model, $contentKey) {
-		$model->Comment = ClassRegistry::init('Workflow.Comment');
+		$model->WorkflowComment = ClassRegistry::init('Workflow.WorkflowComment');
 
 		if (! $contentKey) {
 			return array();
@@ -105,9 +105,9 @@ class CommentBehavior extends ModelBehavior {
 			'content_key' => $contentKey,
 			'plugin_key' => Inflector::underscore($model->plugin),
 		);
-		$comments = $model->Comment->find('all', array(
+		$comments = $model->WorkflowComment->find('all', array(
 			'conditions' => $conditions,
-			'order' => 'Comment.id DESC',
+			'order' => 'WorkflowComment.id DESC',
 		));
 
 		return $comments;
@@ -123,10 +123,10 @@ class CommentBehavior extends ModelBehavior {
  */
 	public function deleteCommentsByContentKey(Model $model, $contentKey) {
 		$model->loadModels(array(
-			'Comment' => 'Workflow.Comment',
+			'WorkflowComment' => 'Workflow.WorkflowComment',
 		));
 
-		if (! $model->Comment->deleteAll(array($model->Comment->alias . '.content_key' => $contentKey), false)) {
+		if (! $model->WorkflowComment->deleteAll(array($model->WorkflowComment->alias . '.content_key' => $contentKey), false)) {
 			throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 		}
 

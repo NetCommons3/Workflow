@@ -1,6 +1,6 @@
 <?php
 /**
- * Comment Model
+ * WorkflowComment Model
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -12,12 +12,12 @@
 App::uses('WorkflowAppModel', 'Workflow.Model');
 
 /**
- * Comment Model
+ * WorkflowComment Model
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Workflow\Model
  */
-class Comment extends WorkflowAppModel {
+class WorkflowComment extends WorkflowAppModel {
 
 /**
  * start limit

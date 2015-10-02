@@ -12,7 +12,7 @@
 
 <div class="row">
 	<div class="col-xs-offset-1 col-xs-11">
-		<?php echo $this->NetCommonsForm->input('Comment.comment', array(
+		<?php echo $this->NetCommonsForm->input('WorkflowComment.comment', array(
 				'type' => 'textarea',
 				'class' => 'form-control nc-noresize',
 				'label' => '<span class="glyphicon glyphicon-comment"> </span> ' .

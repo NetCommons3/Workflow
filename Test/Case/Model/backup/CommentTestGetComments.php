@@ -1,6 +1,6 @@
 <?php
 /**
- * Test Case of Comment->getComments()
+ * Test Case of WorkflowComment->getComments()
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -12,7 +12,7 @@
 App::uses('CommentsModelTestBase', 'Workflow.Test/Case/Model');
 
 /**
- * Test Case of Comment->getComments()
+ * Test Case of WorkflowComment->getComments()
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Workflow\Test\Case\Model
@@ -30,11 +30,11 @@ class CommentTestGetComments extends CommentsModelTestBase {
 		//	'plugin_key' => 'test_plugin',
 		//	'content_key' => 'test_content',
 		//);
-		//$result = $this->Comment->getComments($conditions);
+		//$result = $this->WorkflowComment->getComments($conditions);
 		//
 		////期待値セット
 		//$expected = array(0 => array(
-		//	'Comment' => array(
+		//	'WorkflowComment' => array(
 		//		'id' => '1',
 		//		'plugin_key' => 'test_plugin',
 		//		'block_key' => 'test_block_key',

@@ -1,6 +1,6 @@
 <?php
 /**
- * Test Case of Comment->deleteByContentKey()
+ * Test Case of WorkflowComment->deleteByContentKey()
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -12,7 +12,7 @@
 App::uses('CommentsModelTestBase', 'Workflow.Test/Case/Model');
 
 /**
- * Test Case of Comment->deleteByContentKey()
+ * Test Case of WorkflowComment->deleteByContentKey()
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Workflow\Test\Case\Model
@@ -27,7 +27,7 @@ class CommentTestDeleteByContentKey extends CommentsModelTestBase {
 	public function testByContentKey() {
 		////テスト実行
 		//$contentKey = 'test_content';
-		//$result = $this->Comment->deleteByContentKey($contentKey);
+		//$result = $this->WorkflowComment->deleteByContentKey($contentKey);
 		//$this->assertTrue($result);
 		//
 		////チェック
@@ -35,13 +35,13 @@ class CommentTestDeleteByContentKey extends CommentsModelTestBase {
 		//	'plugin_key' => 'test_plugin',
 		//	'content_key' => 'test_content',
 		//);
-		//$result = $this->Comment->getComments($conditions);
+		//$result = $this->WorkflowComment->getComments($conditions);
 		//
 		//$this->assertEquals(0, count($result));
 	}
 
 /**
- * Expect to fail on Comment->deleteAll()
+ * Expect to fail on WorkflowComment->deleteAll()
  * e.g.) connection error
  *
  * @return  void
@@ -51,13 +51,13 @@ class CommentTestDeleteByContentKey extends CommentsModelTestBase {
 		//
 		//$contentKey = 'test_content';
 		//
-		//$this->Comment = $this->getMockForModel('Workflow.Comment', array('deleteAll'));
-		//$this->Comment->expects($this->any())
+		//$this->WorkflowComment = $this->getMockForModel('Workflow.WorkflowComment', array('deleteAll'));
+		//$this->WorkflowComment->expects($this->any())
 		//	->method('deleteAll')
 		//	->will($this->returnValue(false));
 		//
 		////実施
-		//$this->Comment->deleteByContentKey($contentKey);
+		//$this->WorkflowComment->deleteByContentKey($contentKey);
 	}
 
 }
