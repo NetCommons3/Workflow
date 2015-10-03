@@ -28,7 +28,7 @@ class CommentsModelTestBase extends YACakeTestCase {
  * @var array
  */
 	public $fixtures = array(
-		'plugin.workflow.comment',
+		'plugin.workflow.workflow_comment',
 	);
 
 /**
