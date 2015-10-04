@@ -65,10 +65,10 @@ class WorkflowBehavior extends ModelBehavior {
 			$originalField = 'origin_id';
 		} elseif ($this->__hasSaveField($model, array('key', 'language_id'), true)) {
 			$originalField = 'key';
+			if (! $model->data[$model->alias][$originalField]) {
+				return true;
+			}
 		} else {
-			return true;
-		}
-		if (! $model->data[$model->alias][$originalField]) {
 			return true;
 		}
 
