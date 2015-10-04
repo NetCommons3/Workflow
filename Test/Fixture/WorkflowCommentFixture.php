@@ -79,10 +79,10 @@ class WorkflowCommentFixture extends CakeTestFixture {
 			$this->records[] = $comments;
 		}
 
-		if (class_exists('NetCommonsCakeTestCase') && NetCommonsCakeTestCase::$plugin) {
+		if (class_exists('NetCommonsTestSuite') && NetCommonsTestSuite::$plugin) {
 			$records = array_keys($this->records);
 			foreach ($records as $i) {
-				$this->records[$i]['plugin_key'] = NetCommonsCakeTestCase::$plugin;
+				$this->records[$i]['plugin_key'] = NetCommonsTestSuite::$plugin;
 			}
 		}
 
