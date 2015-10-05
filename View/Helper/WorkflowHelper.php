@@ -27,6 +27,7 @@ class WorkflowHelper extends AppHelper {
 	public $helpers = array(
 		'Form',
 		'Html',
+		'NetCommons.Button',
 		'NetCommons.NetCommonsForm',
 		'NetCommons.NetCommonsHtml',
 	);
@@ -249,6 +250,40 @@ class WorkflowHelper extends AppHelper {
 		if (isset($options['tooltip']) && $options['tooltip']) {
 			$output .= '</span>';
 		}
+		return $output;
+	}
+
+/**
+ * Creates a `<a>` tag for add link. The type attribute defaults
+ *
+ * @param string $title The button's caption. Not automatically HTML encoded
+ * @param mixed $url Link url
+ * @param array $options Array of options and HTML attributes.
+ * @return string A HTML button tag.
+ */
+	public function addLinkButton($title = '', $url = null, $options = array()) {
+		$output = '';
+
+		if (Current::permission('content_creatable')) {
+			return $output;
+		}
+
+		//URLの設定
+		if (! isset($url)) {
+			$url = array(
+				'plugin' => $this->_View->request->params['plugin'],
+				'controller' => $this->_View->request->params['controller'],
+				'action' => 'add',
+				'block_id' => Current::read('Block.id'),
+				'frame_id' => Current::read('Frame.id'),
+			);
+			if (isset($this->_View->viewVars['addActionController'])) {
+				$url['controller'] = $this->_View->viewVars['addActionController'];
+			}
+			$url = NetCommonsUrl::actionUrl($url);
+		}
+
+		$output = $this->Button->addLink($title, $url, $options);
 		return $output;
 	}
 
