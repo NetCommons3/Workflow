@@ -32,24 +32,21 @@ class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
 /**
  * editアクションのGETテスト
  *
- * @param string $role ロール
  * @param array $urlOptions URLオプション
- * @param array $asserts テストの期待値
+ * @param array $assert テストの期待値
  * @param bool $hasDelete 削除ボタン(リンク)の有無
  * @param string|null $exception Exception
  * @dataProvider dataProviderEditGet
  * @return void
  * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
-	public function testEditGet($role, $urlOptions, $asserts, $hasDelete = false, $exception = null) {
+	public function testEditGet($urlOptions, $assert, $hasDelete = false, $exception = null) {
 		if ($exception) {
 			$this->setExpectedException($exception);
 		}
-		if (isset($role)) {
-			TestAuthGeneral::login($this, $role);
-		}
-		if (! isset($asserts)) {
-			$asserts = array();
+		$asserts = array();
+		if ($assert) {
+			$asserts[] = $assert;
 		}
 
 		//URL設定
@@ -81,6 +78,7 @@ class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
 			if (! Current::read('Block.id')) {
 				unset($deleteUrl['block_id']);
 			}
+			$assert = array();
 			if ($hasDelete) {
 				$assert['method'] = 'assertRegExp';
 			} else {
@@ -92,11 +90,69 @@ class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
 
 		//チェック
 		$this->asserts($asserts, $result);
+	}
+
+/**
+ * editアクションのGETテスト(作成権限のみ)
+ *
+ * @param array $urlOptions URLオプション
+ * @param array $assert テストの期待値
+ * @param bool $hasDelete 削除ボタン(リンク)の有無
+ * @param string|null $exception Exception
+ * @dataProvider dataProviderEditGetByCreatable
+ * @return void
+ * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+ */
+	public function testEditGetByCreatable($urlOptions, $assert, $hasDelete = false, $exception = null) {
+		//ログイン
+		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_GENERAL_USER);
+
+		$this->testEditGet($urlOptions, $assert, $hasDelete, $exception);
 
 		//ログアウト
-		if (isset($role)) {
-			TestAuthGeneral::logout($this);
-		}
+		TestAuthGeneral::logout($this);
+	}
+
+/**
+ * editアクションのGETテスト(編集権限、公開権限なし)
+ *
+ * @param array $urlOptions URLオプション
+ * @param array $assert テストの期待値
+ * @param bool $hasDelete 削除ボタン(リンク)の有無
+ * @param string|null $exception Exception
+ * @dataProvider dataProviderEditGetByEditable
+ * @return void
+ * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+ */
+	public function testEditGetByEditable($urlOptions, $assert, $hasDelete = false, $exception = null) {
+		//ログイン
+		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_EDITOR);
+
+		$this->testEditGet($urlOptions, $assert, $hasDelete, $exception);
+
+		//ログアウト
+		TestAuthGeneral::logout($this);
+	}
+
+/**
+ * editアクションのGETテスト(公開権限あり)
+ *
+ * @param array $urlOptions URLオプション
+ * @param array $assert テストの期待値
+ * @param bool $hasDelete 削除ボタン(リンク)の有無
+ * @param string|null $exception Exception
+ * @dataProvider dataProviderEditGetByPublishable
+ * @return void
+ * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+ */
+	public function testEditGetByPublishable($urlOptions, $assert, $hasDelete = false, $exception = null) {
+		//ログイン
+		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR);
+
+		$this->testEditGet($urlOptions, $assert, $hasDelete, $exception);
+
+		//ログアウト
+		TestAuthGeneral::logout($this);
 	}
 
 /**

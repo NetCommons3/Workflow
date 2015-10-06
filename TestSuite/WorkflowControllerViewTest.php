@@ -32,9 +32,8 @@ class WorkflowControllerViewTest extends NetCommonsControllerTestCase {
 /**
  * viewアクションのテスト
  *
- * @param string $role ロール
  * @param array $urlOptions URLオプション
- * @param array $asserts テストの期待値
+ * @param array $assert テストの期待値
  * @param bool $hasEdit 編集ボタン(リンク)の有無
  * @param string $return testActionの実行後の結果
  * @param string|null $exception Exception
@@ -42,15 +41,13 @@ class WorkflowControllerViewTest extends NetCommonsControllerTestCase {
  * @return void
  * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
-	public function testView($role, $urlOptions, $asserts, $hasEdit = false, $return = 'contents', $exception = null) {
+	public function testView($urlOptions, $assert, $hasEdit = false, $return = 'contents', $exception = null) {
 		if ($exception) {
 			$this->setExpectedException($exception);
 		}
-		if (isset($role)) {
-			TestAuthGeneral::login($this, $role);
-		}
-		if (! isset($asserts)) {
-			$asserts = array();
+		$asserts = array();
+		if ($assert) {
+			$asserts[] = $assert;
 		}
 
 		//URL設定
@@ -82,6 +79,7 @@ class WorkflowControllerViewTest extends NetCommonsControllerTestCase {
 			if (! Current::read('Block.id')) {
 				unset($editUrl['block_id']);
 			}
+			$assert = array();
 			if ($hasEdit) {
 				$assert['method'] = 'assertRegExp';
 			} else {
@@ -93,10 +91,50 @@ class WorkflowControllerViewTest extends NetCommonsControllerTestCase {
 
 		//チェック
 		$this->asserts($asserts, $result);
+	}
+
+/**
+ * viewアクションのテスト(作成権限のみ)
+ *
+ * @param array $urlOptions URLオプション
+ * @param array $assert テストの期待値
+ * @param bool $hasEdit 編集ボタン(リンク)の有無
+ * @param string $return testActionの実行後の結果
+ * @param string|null $exception Exception
+ * @dataProvider dataProviderViewByCreatable
+ * @return void
+ * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+ */
+	public function testViewByCreatable($urlOptions, $assert, $hasEdit = false, $return = 'contents', $exception = null) {
+		//ログイン
+		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_GENERAL_USER);
+
+		$this->testView($urlOptions, $assert, $hasEdit, $return, $exception);
 
 		//ログアウト
-		if (isset($role)) {
-			TestAuthGeneral::logout($this);
-		}
+		TestAuthGeneral::logout($this);
 	}
+
+/**
+ * viewアクションのテスト(編集権限、公開権限なし)
+ *
+ * @param array $urlOptions URLオプション
+ * @param array $assert テストの期待値
+ * @param bool $hasEdit 編集ボタン(リンク)の有無
+ * @param string $return testActionの実行後の結果
+ * @param string|null $exception Exception
+ * @dataProvider dataProviderViewByEditable
+ * @return void
+ * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+ */
+	public function testViewByEditable($urlOptions, $assert, $hasEdit = false, $return = 'contents', $exception = null) {
+		//ログイン
+		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_EDITOR);
+
+		$this->testView($urlOptions, $assert, $hasEdit, $return, $exception);
+
+		//ログアウト
+		TestAuthGeneral::logout($this);
+	}
+
 }
