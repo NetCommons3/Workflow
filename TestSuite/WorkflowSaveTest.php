@@ -9,7 +9,7 @@
  */
 
 App::uses('WorkflowComponent', 'Workflow.Controller/Component');
-App::uses('NetCommonsModelTestCase', 'NetCommons.TestSuite');
+App::uses('NetCommonsSaveTest', 'NetCommons.TestSuite');
 
 /**
  * WorkflowSaveTest
@@ -17,7 +17,7 @@ App::uses('NetCommonsModelTestCase', 'NetCommons.TestSuite');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Workflow\TestSuite
  */
-class WorkflowSaveTest extends NetCommonsModelTestCase {
+class WorkflowSaveTest extends NetCommonsSaveTest {
 
 /**
  * setUp method
@@ -51,8 +51,7 @@ class WorkflowSaveTest extends NetCommonsModelTestCase {
 
 		//テスト実行
 		$saveData = Hash::remove($data, $this->$model->alias . '.id');
-		$result = $this->$model->$method($saveData);
-		$this->assertNotEmpty($result);
+		parent::testSave($saveData, $model, $method);
 		$lastInsertId = $this->$model->getLastInsertID();
 
 		//is_latestのチェック
@@ -87,67 +86,6 @@ class WorkflowSaveTest extends NetCommonsModelTestCase {
 		$expected[$this->$model->alias] = Hash::remove($expected[$this->$model->alias], 'modified_user');
 
 		$this->assertEquals($latest, $expected);
-	}
-
-/**
- * SaveのExceptionErrorテスト
- *
- * @param array $data 登録データ
- * @param string $model モデル名
- * @param string $method メソッド
- * @param string $mockModel Mockのモデル
- * @param string $mockMethod Mockのメソッド
- * @dataProvider dataProviderSaveOnExceptionError
- * @return void
- */
-	public function testSaveOnExceptionError($data, $model, $method, $mockModel, $mockMethod) {
-		$this->_mockForReturnFalse($model, $mockModel, $mockMethod);
-
-		$this->setExpectedException('InternalErrorException');
-		$this->$model->$method($data);
-	}
-
-/**
- * SaveのValidationErrorテスト
- *
- * @param array $data 登録データ
- * @param string $model モデル名
- * @param string $method メソッド
- * @dataProvider dataProviderSaveOnValidationError
- * @return void
- */
-	public function testSaveOnValidationError($data, $model, $method, $mockModel) {
-		$this->_mockForReturnFalse($model, $mockModel, 'validates');
-		$result = $this->$model->$method($data);
-		$this->assertFalse($result);
-	}
-
-/**
- * Validatesのテスト
- *
- * @param array $data 登録データ
- * @param string $model モデル名
- * @param string $field フィールド名
- * @param string $value セットする値
- * @param string $message エラーメッセージ
- * @param array $overwrite 上書きするデータ
- * @dataProvider dataProviderValidationError
- * @return void
- */
-	public function testValidationError($data, $model, $field, $value, $message, $overwrite = array()) {
-		if (is_null($value)) {
-			unset($data[$model][$field]);
-		} else {
-			$data[$model][$field] = $value;
-		}
-		$data = Hash::merge($data, $overwrite);
-
-		//validate処理実行
-		$this->$model->set($data);
-		$result = $this->$model->validates();
-		$this->assertFalse($result);
-
-		$this->assertEquals($this->$model->validationErrors[$field][0], $message);
 	}
 
 }

@@ -8,7 +8,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('NetCommonsControllerTestCase', 'NetCommons.TestSuite');
+App::uses('NetCommonsControllerViewTest', 'NetCommons.TestSuite');
 App::uses('WorkflowComponent', 'Workflow.Controller/Component');
 
 /**
@@ -17,68 +17,27 @@ App::uses('WorkflowComponent', 'Workflow.Controller/Component');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Workflow\TestSuite
  */
-class WorkflowControllerViewTest extends NetCommonsControllerTestCase {
-
-/**
- * setUp method
- *
- * @return void
- */
-	public function setUp() {
-		parent::setUp();
-		$this->generateNc(Inflector::camelize($this->_controller));
-	}
+class WorkflowControllerViewTest extends NetCommonsControllerViewTest {
 
 /**
  * viewアクションのテスト
  *
+ * @param bool $hasEdit 編集ボタン(リンク)の有無
  * @param array $urlOptions URLオプション
  * @param array $assert テストの期待値
- * @param bool $hasEdit 編集ボタン(リンク)の有無
  * @param string|null $exception Exception
  * @param string $return testActionの実行後の結果
  * @dataProvider dataProviderView
  * @return void
- * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
-	public function testView($urlOptions, $assert, $hasEdit = false, $exception = null, $return = 'contents') {
-		if ($exception && $return !== 'json') {
-			$this->setExpectedException($exception);
-		}
-		$asserts = array();
-		if ($assert) {
-			$asserts[] = $assert;
-		}
-
-		//URL設定
+	public function testView($hasEdit, $urlOptions, $assert, $exception = null, $return = 'view') {
+		//テスト実施
 		$url = Hash::merge(array(
 			'plugin' => $this->plugin,
 			'controller' => $this->_controller,
 			'action' => 'view',
 		), $urlOptions);
-		$params = array(
-			'method' => 'get',
-			'return' => 'view'
-		);
-		if ($return === 'json') {
-			$params['type'] = 'json';
-		}
-
-		//テスト実施
-		$this->testAction(NetCommonsUrl::actionUrl($url), $params);
-		if ($return === 'view') {
-			$result = $this->controller->view;
-		} else {
-			$result = $this->contents;
-		}
-		if ($exception) {
-			if ($return === 'json') {
-				$result = json_decode($this->contents, true);
-				$this->assertArrayHasKey('code', $result);
-				$this->assertEquals(400, $result['code']);
-			}
-			return;
-		}
+		$result = parent::testView($url, $assert, $exception, $return);
 
 		//編集ボタン(リンク)のチェック
 		if (isset($hasEdit)) {
@@ -97,30 +56,29 @@ class WorkflowControllerViewTest extends NetCommonsControllerTestCase {
 				$assert['method'] = 'assertNotRegExp';
 			}
 			$assert['expected'] = '/' . preg_quote(NetCommonsUrl::actionUrl($editUrl), '/') . '/';
-			$asserts[] = $assert;
+
+			//チェック
+			$this->asserts(array($assert), $result);
 		}
 
-		//チェック
-		$this->asserts($asserts, $result);
 	}
 
 /**
  * viewアクションのテスト(作成権限のみ)
  *
+ * @param bool $hasEdit 編集ボタン(リンク)の有無
  * @param array $urlOptions URLオプション
  * @param array $assert テストの期待値
- * @param bool $hasEdit 編集ボタン(リンク)の有無
  * @param string|null $exception Exception
  * @param string $return testActionの実行後の結果
  * @dataProvider dataProviderViewByCreatable
  * @return void
- * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
-	public function testViewByCreatable($urlOptions, $assert, $hasEdit = false, $exception = null, $return = 'contents') {
+	public function testViewByCreatable($hasEdit, $urlOptions, $assert, $exception = null, $return = 'view') {
 		//ログイン
 		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_GENERAL_USER);
 
-		$this->testView($urlOptions, $assert, $hasEdit, $exception, $return);
+		$this->testView($hasEdit, $urlOptions, $assert, $exception, $return);
 
 		//ログアウト
 		TestAuthGeneral::logout($this);
@@ -129,20 +87,19 @@ class WorkflowControllerViewTest extends NetCommonsControllerTestCase {
 /**
  * viewアクションのテスト(編集権限、公開権限なし)
  *
+ * @param bool $hasEdit 編集ボタン(リンク)の有無
  * @param array $urlOptions URLオプション
  * @param array $assert テストの期待値
- * @param bool $hasEdit 編集ボタン(リンク)の有無
  * @param string|null $exception Exception
  * @param string $return testActionの実行後の結果
  * @dataProvider dataProviderViewByEditable
  * @return void
- * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
-	public function testViewByEditable($urlOptions, $assert, $hasEdit = false, $exception = null, $return = 'contents') {
+	public function testViewByEditable($hasEdit, $urlOptions, $assert, $exception = null, $return = 'view') {
 		//ログイン
 		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_EDITOR);
 
-		$this->testView($urlOptions, $assert, $hasEdit, $exception, $return);
+		$this->testView($hasEdit, $urlOptions, $assert, $exception, $return);
 
 		//ログアウト
 		TestAuthGeneral::logout($this);

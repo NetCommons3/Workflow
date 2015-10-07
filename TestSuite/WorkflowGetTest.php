@@ -9,7 +9,7 @@
  */
 
 App::uses('WorkflowComponent', 'Workflow.Controller/Component');
-App::uses('NetCommonsModelTestCase', 'NetCommons.TestSuite');
+App::uses('NetCommonsGetTest', 'NetCommons.TestSuite');
 
 /**
  * WorkflowSaveTest
@@ -17,7 +17,7 @@ App::uses('NetCommonsModelTestCase', 'NetCommons.TestSuite');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Workflow\TestSuite
  */
-class WorkflowGetTest extends NetCommonsModelTestCase {
+class WorkflowGetTest extends NetCommonsGetTest {
 
 /**
  * setUp method

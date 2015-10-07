@@ -8,7 +8,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('NetCommonsControllerTestCase', 'NetCommons.TestSuite');
+App::uses('NetCommonsControllerEditTest', 'NetCommons.TestSuite');
 App::uses('WorkflowComponent', 'Workflow.Controller/Component');
 
 /**
@@ -17,68 +17,27 @@ App::uses('WorkflowComponent', 'Workflow.Controller/Component');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Workflow\TestSuite
  */
-class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
-
-/**
- * setUp method
- *
- * @return void
- */
-	public function setUp() {
-		parent::setUp();
-		$this->generateNc(Inflector::camelize($this->_controller));
-	}
+class WorkflowControllerEditTest extends NetCommonsControllerEditTest {
 
 /**
  * editアクションのGETテスト
  *
+ * @param bool $hasDelete 削除ボタン(リンク)の有無
  * @param array $urlOptions URLオプション
  * @param array $assert テストの期待値
- * @param bool $hasDelete 削除ボタン(リンク)の有無
  * @param string|null $exception Exception
  * @param string $return testActionの実行後の結果
  * @dataProvider dataProviderEditGet
  * @return void
- * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
-	public function testEditGet($urlOptions, $assert, $hasDelete = false, $exception = null, $return = 'contents') {
-		if ($exception && $return !== 'json') {
-			$this->setExpectedException($exception);
-		}
-		$asserts = array();
-		if ($assert) {
-			$asserts[] = $assert;
-		}
-
-		//URL設定
+	public function testEditGet($hasDelete, $urlOptions, $assert, $exception = null, $return = 'view') {
+		//テスト実施
 		$url = Hash::merge(array(
 			'plugin' => $this->plugin,
 			'controller' => $this->_controller,
 			'action' => 'edit',
 		), $urlOptions);
-		$params = array(
-			'method' => 'get',
-			'return' => 'view'
-		);
-		if ($return === 'json') {
-			$params['type'] = 'json';
-		}
-
-		//テスト実施
-		$this->testAction(NetCommonsUrl::actionUrl($url), $params);
-		if ($return === 'view') {
-			$result = $this->controller->view;
-		} else {
-			$result = $this->contents;
-		}
-		if ($exception) {
-			if ($return === 'json') {
-				$result = json_decode($this->contents, true);
-				$this->assertArrayHasKey('code', $result);
-				$this->assertEquals(400, $result['code']);
-			}
-			return;
-		}
+		$result = parent::testEditGet($url, $assert, $exception, $return);
 
 		//削除ボタン(リンク)のチェック
 		if (isset($hasDelete)) {
@@ -97,30 +56,28 @@ class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
 				$assert['method'] = 'assertNotRegExp';
 			}
 			$assert['expected'] = '/' . preg_quote(NetCommonsUrl::actionUrl($deleteUrl), '/') . '/';
-			$asserts[] = $assert;
-		}
 
-		//チェック
-		$this->asserts($asserts, $result);
+			//チェック
+			$this->asserts(array($assert), $result);
+		}
 	}
 
 /**
  * editアクションのGETテスト(作成権限のみ)
  *
+ * @param bool $hasDelete 削除ボタン(リンク)の有無
  * @param array $urlOptions URLオプション
  * @param array $assert テストの期待値
- * @param bool $hasDelete 削除ボタン(リンク)の有無
  * @param string|null $exception Exception
  * @param string $return testActionの実行後の結果
  * @dataProvider dataProviderEditGetByCreatable
  * @return void
- * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
-	public function testEditGetByCreatable($urlOptions, $assert, $hasDelete = false, $exception = null, $return = 'contents') {
+	public function testEditGetByCreatable($hasDelete, $urlOptions, $assert, $exception = null, $return = 'view') {
 		//ログイン
 		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_GENERAL_USER);
 
-		$this->testEditGet($urlOptions, $assert, $hasDelete, $exception, $return);
+		$this->testEditGet($hasDelete, $urlOptions, $assert, $exception, $return);
 
 		//ログアウト
 		TestAuthGeneral::logout($this);
@@ -129,20 +86,19 @@ class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
 /**
  * editアクションのGETテスト(編集権限、公開権限なし)
  *
+ * @param bool $hasDelete 削除ボタン(リンク)の有無
  * @param array $urlOptions URLオプション
  * @param array $assert テストの期待値
- * @param bool $hasDelete 削除ボタン(リンク)の有無
  * @param string|null $exception Exception
  * @param string $return testActionの実行後の結果
  * @dataProvider dataProviderEditGetByEditable
  * @return void
- * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
-	public function testEditGetByEditable($urlOptions, $assert, $hasDelete = false, $exception = null, $return = 'contents') {
+	public function testEditGetByEditable($hasDelete, $urlOptions, $assert, $exception = null, $return = 'contents') {
 		//ログイン
 		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_EDITOR);
 
-		$this->testEditGet($urlOptions, $assert, $hasDelete, $exception, $return);
+		$this->testEditGet($hasDelete, $urlOptions, $assert, $exception, $return);
 
 		//ログアウト
 		TestAuthGeneral::logout($this);
@@ -151,20 +107,19 @@ class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
 /**
  * editアクションのGETテスト(公開権限あり)
  *
+ * @param bool $hasDelete 削除ボタン(リンク)の有無
  * @param array $urlOptions URLオプション
  * @param array $assert テストの期待値
- * @param bool $hasDelete 削除ボタン(リンク)の有無
  * @param string|null $exception Exception
  * @param string $return testActionの実行後の結果
  * @dataProvider dataProviderEditGetByPublishable
  * @return void
- * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
-	public function testEditGetByPublishable($urlOptions, $assert, $hasDelete = false, $exception = null, $return = 'contents') {
+	public function testEditGetByPublishable($hasDelete, $urlOptions, $assert, $exception = null, $return = 'contents') {
 		//ログイン
 		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR);
 
-		$this->testEditGet($urlOptions, $assert, $hasDelete, $exception, $return);
+		$this->testEditGet($hasDelete, $urlOptions, $assert, $exception, $return);
 
 		//ログアウト
 		TestAuthGeneral::logout($this);
@@ -181,39 +136,14 @@ class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
  * @dataProvider dataProviderEditPost
  * @return void
  */
-	public function testEditPost($data, $role, $urlOptions, $exception = null, $return = 'contents') {
-		if ($exception && $return !== 'json') {
-			$this->setExpectedException($exception);
-		}
+	public function testEditPost($data, $role, $urlOptions, $exception = null, $return = 'view') {
+		//ログイン
 		if (isset($role)) {
 			TestAuthGeneral::login($this, $role);
 		}
 
-		//URL設定
-		$url = Hash::merge(array(
-			'plugin' => $this->plugin,
-			'controller' => $this->_controller,
-			'action' => 'edit',
-		), $urlOptions);
-		$params = array(
-			'method' => 'put',
-			'return' => 'view',
-			'data' => $data
-		);
-		if ($return === 'json') {
-			$params['type'] = 'json';
-		}
-
 		//テスト実施
-		$this->testAction(NetCommonsUrl::actionUrl($url), $params);
-		if ($exception) {
-			if ($return === 'json') {
-				$result = json_decode($this->contents, true);
-				$this->assertArrayHasKey('code', $result);
-				$this->assertEquals(400, $result['code']);
-			}
-			return;
-		}
+		parent::testEditPost($data, Hash::merge(array('action' => 'edit'), $urlOptions), $exception, $return);
 
 		//正常の場合、リダイレクト
 		if (! $exception) {
@@ -238,35 +168,13 @@ class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
  * @return void
  */
 	public function testEditValidationError($data, $role, $urlOptions, $validationError = null) {
+		//ログイン
 		if (isset($role)) {
 			TestAuthGeneral::login($this, $role);
 		}
-		$data = Hash::remove($data, $validationError['field']);
-		$data = Hash::insert($data, $validationError['field'], $validationError['value']);
-
-		//URL設定
-		$url = Hash::merge(array(
-			'plugin' => $this->plugin,
-			'controller' => $this->_controller,
-			'action' => 'edit',
-		), $urlOptions);
-		$params = array(
-			'method' => 'put',
-			'return' => 'view',
-			'data' => $data
-		);
 
 		//テスト実施
-		$this->testAction(NetCommonsUrl::actionUrl($url), $params);
-
-		//バリデーションエラー
-		$asserts = array(
-			array('method' => 'assertNotEmpty', 'value' => $this->controller->validationErrors),
-			array('method' => 'assertTextContains', 'expected' => $validationError['message']),
-		);
-
-		//チェック
-		$this->asserts($asserts, $this->contents);
+		parent::testEditValidationError($data, Hash::merge(array('action' => 'edit'), $urlOptions), $validationError);
 
 		//ログアウト
 		if (isset($role)) {
