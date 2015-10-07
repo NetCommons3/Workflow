@@ -36,11 +36,12 @@ class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
  * @param array $assert テストの期待値
  * @param bool $hasDelete 削除ボタン(リンク)の有無
  * @param string|null $exception Exception
+ * @param string $return testActionの実行後の結果
  * @dataProvider dataProviderEditGet
  * @return void
  * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
-	public function testEditGet($urlOptions, $assert, $hasDelete = false, $exception = null) {
+	public function testEditGet($urlOptions, $assert, $hasDelete = false, $exception = null, $return = 'contents') {
 		if ($exception) {
 			$this->setExpectedException($exception);
 		}
@@ -62,7 +63,11 @@ class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
 
 		//テスト実施
 		$this->testAction(NetCommonsUrl::actionUrl($url), $params);
-		$result = $this->contents;
+		if ($return === 'view') {
+			$result = $this->controller->view;
+		} else {
+			$result = $this->contents;
+		}
 
 		if ($exception) {
 			return;
@@ -99,15 +104,16 @@ class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
  * @param array $assert テストの期待値
  * @param bool $hasDelete 削除ボタン(リンク)の有無
  * @param string|null $exception Exception
+ * @param string $return testActionの実行後の結果
  * @dataProvider dataProviderEditGetByCreatable
  * @return void
  * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
-	public function testEditGetByCreatable($urlOptions, $assert, $hasDelete = false, $exception = null) {
+	public function testEditGetByCreatable($urlOptions, $assert, $hasDelete = false, $exception = null, $return = 'contents') {
 		//ログイン
 		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_GENERAL_USER);
 
-		$this->testEditGet($urlOptions, $assert, $hasDelete, $exception);
+		$this->testEditGet($urlOptions, $assert, $hasDelete, $exception, $return);
 
 		//ログアウト
 		TestAuthGeneral::logout($this);
@@ -120,15 +126,16 @@ class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
  * @param array $assert テストの期待値
  * @param bool $hasDelete 削除ボタン(リンク)の有無
  * @param string|null $exception Exception
+ * @param string $return testActionの実行後の結果
  * @dataProvider dataProviderEditGetByEditable
  * @return void
  * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
-	public function testEditGetByEditable($urlOptions, $assert, $hasDelete = false, $exception = null) {
+	public function testEditGetByEditable($urlOptions, $assert, $hasDelete = false, $exception = null, $return = 'contents') {
 		//ログイン
 		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_EDITOR);
 
-		$this->testEditGet($urlOptions, $assert, $hasDelete, $exception);
+		$this->testEditGet($urlOptions, $assert, $hasDelete, $exception, $return);
 
 		//ログアウト
 		TestAuthGeneral::logout($this);
@@ -141,15 +148,16 @@ class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
  * @param array $assert テストの期待値
  * @param bool $hasDelete 削除ボタン(リンク)の有無
  * @param string|null $exception Exception
+ * @param string $return testActionの実行後の結果
  * @dataProvider dataProviderEditGetByPublishable
  * @return void
  * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
-	public function testEditGetByPublishable($urlOptions, $assert, $hasDelete = false, $exception = null) {
+	public function testEditGetByPublishable($urlOptions, $assert, $hasDelete = false, $exception = null, $return = 'contents') {
 		//ログイン
 		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR);
 
-		$this->testEditGet($urlOptions, $assert, $hasDelete, $exception);
+		$this->testEditGet($urlOptions, $assert, $hasDelete, $exception, $return);
 
 		//ログアウト
 		TestAuthGeneral::logout($this);

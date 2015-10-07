@@ -35,13 +35,13 @@ class WorkflowControllerViewTest extends NetCommonsControllerTestCase {
  * @param array $urlOptions URLオプション
  * @param array $assert テストの期待値
  * @param bool $hasEdit 編集ボタン(リンク)の有無
- * @param string $return testActionの実行後の結果
  * @param string|null $exception Exception
+ * @param string $return testActionの実行後の結果
  * @dataProvider dataProviderView
  * @return void
  * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
-	public function testView($urlOptions, $assert, $hasEdit = false, $return = 'contents', $exception = null) {
+	public function testView($urlOptions, $assert, $hasEdit = false, $exception = null, $return = 'contents') {
 		if ($exception) {
 			$this->setExpectedException($exception);
 		}
@@ -99,17 +99,17 @@ class WorkflowControllerViewTest extends NetCommonsControllerTestCase {
  * @param array $urlOptions URLオプション
  * @param array $assert テストの期待値
  * @param bool $hasEdit 編集ボタン(リンク)の有無
- * @param string $return testActionの実行後の結果
  * @param string|null $exception Exception
+ * @param string $return testActionの実行後の結果
  * @dataProvider dataProviderViewByCreatable
  * @return void
  * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
-	public function testViewByCreatable($urlOptions, $assert, $hasEdit = false, $return = 'contents', $exception = null) {
+	public function testViewByCreatable($urlOptions, $assert, $hasEdit = false, $exception = null, $return = 'contents') {
 		//ログイン
 		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_GENERAL_USER);
 
-		$this->testView($urlOptions, $assert, $hasEdit, $return, $exception);
+		$this->testView($urlOptions, $assert, $hasEdit, $exception, $return);
 
 		//ログアウト
 		TestAuthGeneral::logout($this);
@@ -121,17 +121,17 @@ class WorkflowControllerViewTest extends NetCommonsControllerTestCase {
  * @param array $urlOptions URLオプション
  * @param array $assert テストの期待値
  * @param bool $hasEdit 編集ボタン(リンク)の有無
- * @param string $return testActionの実行後の結果
  * @param string|null $exception Exception
+ * @param string $return testActionの実行後の結果
  * @dataProvider dataProviderViewByEditable
  * @return void
  * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
-	public function testViewByEditable($urlOptions, $assert, $hasEdit = false, $return = 'contents', $exception = null) {
+	public function testViewByEditable($urlOptions, $assert, $hasEdit = false, $exception = null, $return = 'contents') {
 		//ログイン
 		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_EDITOR);
 
-		$this->testView($urlOptions, $assert, $hasEdit, $return, $exception);
+		$this->testView($urlOptions, $assert, $hasEdit, $exception, $return);
 
 		//ログアウト
 		TestAuthGeneral::logout($this);
