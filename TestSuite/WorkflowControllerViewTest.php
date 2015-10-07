@@ -8,7 +8,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('NetCommonsControllerViewTest', 'NetCommons.TestSuite');
+App::uses('NetCommonsControllerTestCase', 'NetCommons.TestSuite');
 App::uses('WorkflowComponent', 'Workflow.Controller/Component');
 
 /**
@@ -17,7 +17,17 @@ App::uses('WorkflowComponent', 'Workflow.Controller/Component');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Workflow\TestSuite
  */
-class WorkflowControllerViewTest extends NetCommonsControllerViewTest {
+class WorkflowControllerViewTest extends NetCommonsControllerTestCase {
+
+/**
+ * setUp method
+ *
+ * @return void
+ */
+	public function setUp() {
+		parent::setUp();
+		$this->generateNc(Inflector::camelize($this->_controller));
+	}
 
 /**
  * viewアクションのテスト
@@ -37,7 +47,7 @@ class WorkflowControllerViewTest extends NetCommonsControllerViewTest {
 			'controller' => $this->_controller,
 			'action' => 'view',
 		), $urlOptions);
-		$result = parent::_testView($url, $assert, $exception, $return);
+		$result = $this->_testGetAction($url, $assert, $exception, $return);
 
 		//編集ボタン(リンク)のチェック
 		if (isset($hasEdit)) {

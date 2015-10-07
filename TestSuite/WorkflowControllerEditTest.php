@@ -8,7 +8,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('NetCommonsControllerEditTest', 'NetCommons.TestSuite');
+App::uses('NetCommonsControllerTestCase', 'NetCommons.TestSuite');
 App::uses('WorkflowComponent', 'Workflow.Controller/Component');
 
 /**
@@ -17,7 +17,17 @@ App::uses('WorkflowComponent', 'Workflow.Controller/Component');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Workflow\TestSuite
  */
-class WorkflowControllerEditTest extends NetCommonsControllerEditTest {
+class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
+
+/**
+ * setUp method
+ *
+ * @return void
+ */
+	public function setUp() {
+		parent::setUp();
+		$this->generateNc(Inflector::camelize($this->_controller));
+	}
 
 /**
  * editアクションのGETテスト
@@ -37,7 +47,7 @@ class WorkflowControllerEditTest extends NetCommonsControllerEditTest {
 			'controller' => $this->_controller,
 			'action' => 'edit',
 		), $urlOptions);
-		$result = parent::_testEditGet($url, $assert, $exception, $return);
+		$result = $this->_testGetAction($url, $assert, $exception, $return);
 
 		//削除ボタン(リンク)のチェック
 		if (isset($hasDelete)) {
@@ -143,7 +153,7 @@ class WorkflowControllerEditTest extends NetCommonsControllerEditTest {
 		}
 
 		//テスト実施
-		parent::_testEditPost($data, Hash::merge(array('action' => 'edit'), $urlOptions), $exception, $return);
+		$this->_testPostAction('put', $data, Hash::merge(array('action' => 'edit'), $urlOptions), $exception, $return);
 
 		//正常の場合、リダイレクト
 		if (! $exception) {
@@ -174,7 +184,7 @@ class WorkflowControllerEditTest extends NetCommonsControllerEditTest {
 		}
 
 		//テスト実施
-		parent::_testEditValidationError($data, Hash::merge(array('action' => 'edit'), $urlOptions), $validationError);
+		$this->_testActionOnValidationError('put', $data, Hash::merge(array('action' => 'edit'), $urlOptions), $validationError);
 
 		//ログアウト
 		if (isset($role)) {

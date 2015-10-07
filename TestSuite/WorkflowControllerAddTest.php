@@ -8,7 +8,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('NetCommonsControllerAddTest', 'NetCommons.TestSuite');
+App::uses('NetCommonsControllerTestCase', 'NetCommons.TestSuite');
 App::uses('WorkflowComponent', 'Workflow.Controller/Component');
 
 /**
@@ -17,7 +17,17 @@ App::uses('WorkflowComponent', 'Workflow.Controller/Component');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Workflow\TestSuite
  */
-class WorkflowControllerAddTest extends NetCommonsControllerAddTest {
+class WorkflowControllerAddTest extends NetCommonsControllerTestCase {
+
+/**
+ * setUp method
+ *
+ * @return void
+ */
+	public function setUp() {
+		parent::setUp();
+		$this->generateNc(Inflector::camelize($this->_controller));
+	}
 
 /**
  * addアクションのGETテスト
@@ -36,7 +46,7 @@ class WorkflowControllerAddTest extends NetCommonsControllerAddTest {
 			'controller' => $this->_controller,
 			'action' => 'add',
 		), $urlOptions);
-		parent::_testAddGet($url, $assert, $exception, $return);
+		$this->_testGetAction($url, $assert, $exception, $return);
 	}
 
 /**
@@ -77,7 +87,7 @@ class WorkflowControllerAddTest extends NetCommonsControllerAddTest {
 		}
 
 		//テスト実施
-		parent::_testAddPost($data, Hash::merge(array('action' => 'add'), $urlOptions), $exception, $return);
+		$this->_testPostAction('post', $data, Hash::merge(array('action' => 'add'), $urlOptions), $exception, $return);
 
 		//正常の場合、リダイレクト
 		if (! $exception) {
@@ -108,7 +118,7 @@ class WorkflowControllerAddTest extends NetCommonsControllerAddTest {
 		}
 
 		//テスト実施
-		parent::_testAddValidationError($data, Hash::merge(array('action' => 'add'), $urlOptions), $validationError);
+		$this->_testActionOnValidationError('post', $data, Hash::merge(array('action' => 'add'), $urlOptions), $validationError);
 
 		//ログアウト
 		if (isset($role)) {
