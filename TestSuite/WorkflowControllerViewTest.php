@@ -37,7 +37,7 @@ class WorkflowControllerViewTest extends NetCommonsControllerViewTest {
 			'controller' => $this->_controller,
 			'action' => 'view',
 		), $urlOptions);
-		$result = parent::testView($url, $assert, $exception, $return);
+		$result = parent::_testView($url, $assert, $exception, $return);
 
 		//編集ボタン(リンク)のチェック
 		if (isset($hasEdit)) {
