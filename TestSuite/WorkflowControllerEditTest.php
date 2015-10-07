@@ -42,7 +42,7 @@ class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
  * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
 	public function testEditGet($urlOptions, $assert, $hasDelete = false, $exception = null, $return = 'contents') {
-		if ($exception) {
+		if ($exception && $return !== 'json') {
 			$this->setExpectedException($exception);
 		}
 		$asserts = array();
@@ -60,6 +60,9 @@ class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
 			'method' => 'get',
 			'return' => 'view'
 		);
+		if ($return === 'json') {
+			$params['type'] = 'json';
+		}
 
 		//テスト実施
 		$this->testAction(NetCommonsUrl::actionUrl($url), $params);
@@ -68,8 +71,12 @@ class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
 		} else {
 			$result = $this->contents;
 		}
-
 		if ($exception) {
+			if ($return === 'json') {
+				$result = json_decode($this->contents, true);
+				$this->assertArrayHasKey('code', $result);
+				$this->assertEquals(400, $result['code']);
+			}
 			return;
 		}
 
@@ -170,11 +177,12 @@ class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
  * @param string $role ロール
  * @param array $urlOptions URLオプション
  * @param string|null $exception Exception
+ * @param string $return testActionの実行後の結果
  * @dataProvider dataProviderEditPost
  * @return void
  */
-	public function testEditPost($data, $role, $urlOptions, $exception = null) {
-		if ($exception) {
+	public function testEditPost($data, $role, $urlOptions, $exception = null, $return = 'contents') {
+		if ($exception && $return !== 'json') {
 			$this->setExpectedException($exception);
 		}
 		if (isset($role)) {
@@ -188,13 +196,24 @@ class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
 			'action' => 'edit',
 		), $urlOptions);
 		$params = array(
-			'method' => 'post',
+			'method' => 'put',
 			'return' => 'view',
 			'data' => $data
 		);
+		if ($return === 'json') {
+			$params['type'] = 'json';
+		}
 
 		//テスト実施
 		$this->testAction(NetCommonsUrl::actionUrl($url), $params);
+		if ($exception) {
+			if ($return === 'json') {
+				$result = json_decode($this->contents, true);
+				$this->assertArrayHasKey('code', $result);
+				$this->assertEquals(400, $result['code']);
+			}
+			return;
+		}
 
 		//正常の場合、リダイレクト
 		if (! $exception) {
@@ -232,7 +251,7 @@ class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
 			'action' => 'edit',
 		), $urlOptions);
 		$params = array(
-			'method' => 'post',
+			'method' => 'put',
 			'return' => 'view',
 			'data' => $data
 		);

@@ -42,7 +42,7 @@ class WorkflowControllerViewTest extends NetCommonsControllerTestCase {
  * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
 	public function testView($urlOptions, $assert, $hasEdit = false, $exception = null, $return = 'contents') {
-		if ($exception) {
+		if ($exception && $return !== 'json') {
 			$this->setExpectedException($exception);
 		}
 		$asserts = array();
@@ -60,6 +60,9 @@ class WorkflowControllerViewTest extends NetCommonsControllerTestCase {
 			'method' => 'get',
 			'return' => 'view'
 		);
+		if ($return === 'json') {
+			$params['type'] = 'json';
+		}
 
 		//テスト実施
 		$this->testAction(NetCommonsUrl::actionUrl($url), $params);
@@ -67,6 +70,14 @@ class WorkflowControllerViewTest extends NetCommonsControllerTestCase {
 			$result = $this->controller->view;
 		} else {
 			$result = $this->contents;
+		}
+		if ($exception) {
+			if ($return === 'json') {
+				$result = json_decode($this->contents, true);
+				$this->assertArrayHasKey('code', $result);
+				$this->assertEquals(400, $result['code']);
+			}
+			return;
 		}
 
 		//編集ボタン(リンク)のチェック
