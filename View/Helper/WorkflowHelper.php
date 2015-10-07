@@ -264,7 +264,7 @@ class WorkflowHelper extends AppHelper {
 	public function addLinkButton($title = '', $url = null, $options = array()) {
 		$output = '';
 
-		if (Current::permission('content_creatable')) {
+		if (! Current::permission('content_creatable')) {
 			return $output;
 		}
 

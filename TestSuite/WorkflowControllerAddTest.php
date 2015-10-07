@@ -46,6 +46,7 @@ class WorkflowControllerAddTest extends NetCommonsControllerTestCase {
 			'controller' => $this->_controller,
 			'action' => 'add',
 		), $urlOptions);
+		
 		$this->_testGetAction($url, $assert, $exception, $return);
 	}
 

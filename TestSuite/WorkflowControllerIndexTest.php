@@ -1,6 +1,6 @@
 <?php
 /**
- * WorkflowControllerViewTest
+ * WorkflowControllerIndexTest
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @link http://www.netcommons.org NetCommons Project
@@ -12,12 +12,12 @@ App::uses('NetCommonsControllerTestCase', 'NetCommons.TestSuite');
 App::uses('WorkflowComponent', 'Workflow.Controller/Component');
 
 /**
- * WorkflowControllerViewTest
+ * WorkflowControllerIndexTest
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Workflow\TestSuite
  */
-class WorkflowControllerViewTest extends NetCommonsControllerTestCase {
+class WorkflowControllerIndexTest extends NetCommonsControllerTestCase {
 
 /**
  * setUp method
@@ -30,61 +30,61 @@ class WorkflowControllerViewTest extends NetCommonsControllerTestCase {
 	}
 
 /**
- * viewアクションのテスト
+ * indexアクションのテスト
  *
  * @param array $urlOptions URLオプション
  * @param array $assert テストの期待値
  * @param string|null $exception Exception
  * @param string $return testActionの実行後の結果
- * @dataProvider dataProviderView
+ * @dataProvider dataProviderIndex
  * @return void
  */
-	public function testView($urlOptions, $assert, $exception = null, $return = 'view') {
+	public function testIndex($urlOptions, $assert, $exception = null, $return = 'view') {
 		//テスト実施
 		$url = Hash::merge(array(
 			'plugin' => $this->plugin,
 			'controller' => $this->_controller,
-			'action' => 'view',
+			'action' => 'index',
 		), $urlOptions);
 
 		$this->_testGetAction($url, $assert, $exception, $return);
 	}
 
 /**
- * viewアクションのテスト(作成権限のみ)
+ * indexアクションのテスト(作成権限のみ)
  *
  * @param array $urlOptions URLオプション
  * @param array $assert テストの期待値
  * @param string|null $exception Exception
  * @param string $return testActionの実行後の結果
- * @dataProvider dataProviderViewByCreatable
+ * @dataProvider dataProviderIndexByCreatable
  * @return void
  */
-	public function testViewByCreatable($urlOptions, $assert, $exception = null, $return = 'view') {
+	public function testIndexByCreatable($urlOptions, $assert, $exception = null, $return = 'view') {
 		//ログイン
 		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_GENERAL_USER);
 
-		$this->testView($urlOptions, $assert, $exception, $return);
+		$this->testIndex($urlOptions, $assert, $exception, $return);
 
 		//ログアウト
 		TestAuthGeneral::logout($this);
 	}
 
 /**
- * viewアクションのテスト(編集権限、公開権限なし)
+ * indexアクションのテスト(編集権限あり)
  *
  * @param array $urlOptions URLオプション
  * @param array $assert テストの期待値
  * @param string|null $exception Exception
  * @param string $return testActionの実行後の結果
- * @dataProvider dataProviderViewByEditable
+ * @dataProvider dataProviderIndexByEditable
  * @return void
  */
-	public function testViewByEditable($urlOptions, $assert, $exception = null, $return = 'view') {
+	public function testIndexByEditable($urlOptions, $assert, $exception = null, $return = 'view') {
 		//ログイン
 		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_EDITOR);
 
-		$this->testView($urlOptions, $assert, $exception, $return);
+		$this->testIndex($urlOptions, $assert, $exception, $return);
 
 		//ログアウト
 		TestAuthGeneral::logout($this);

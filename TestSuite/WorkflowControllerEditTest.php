@@ -32,7 +32,6 @@ class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
 /**
  * editアクションのGETテスト
  *
- * @param bool $hasDelete 削除ボタン(リンク)の有無
  * @param array $urlOptions URLオプション
  * @param array $assert テストの期待値
  * @param string|null $exception Exception
@@ -40,42 +39,20 @@ class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
  * @dataProvider dataProviderEditGet
  * @return void
  */
-	public function testEditGet($hasDelete, $urlOptions, $assert, $exception = null, $return = 'view') {
+	public function testEditGet($urlOptions, $assert, $exception = null, $return = 'view') {
 		//テスト実施
 		$url = Hash::merge(array(
 			'plugin' => $this->plugin,
 			'controller' => $this->_controller,
 			'action' => 'edit',
 		), $urlOptions);
-		$result = $this->_testGetAction($url, $assert, $exception, $return);
 
-		//削除ボタン(リンク)のチェック
-		if (isset($hasDelete)) {
-			$deleteUrl = $url;
-			$deleteUrl['action'] = 'delete';
-			if (! Current::read('Frame.id')) {
-				unset($deleteUrl['frame_id']);
-			}
-			if (! Current::read('Block.id')) {
-				unset($deleteUrl['block_id']);
-			}
-			$assert = array();
-			if ($hasDelete) {
-				$assert['method'] = 'assertRegExp';
-			} else {
-				$assert['method'] = 'assertNotRegExp';
-			}
-			$assert['expected'] = '/' . preg_quote(NetCommonsUrl::actionUrl($deleteUrl), '/') . '/';
-
-			//チェック
-			$this->asserts(array($assert), $result);
-		}
+		$this->_testGetAction($url, $assert, $exception, $return);
 	}
 
 /**
  * editアクションのGETテスト(作成権限のみ)
  *
- * @param bool $hasDelete 削除ボタン(リンク)の有無
  * @param array $urlOptions URLオプション
  * @param array $assert テストの期待値
  * @param string|null $exception Exception
@@ -83,11 +60,11 @@ class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
  * @dataProvider dataProviderEditGetByCreatable
  * @return void
  */
-	public function testEditGetByCreatable($hasDelete, $urlOptions, $assert, $exception = null, $return = 'view') {
+	public function testEditGetByCreatable($urlOptions, $assert, $exception = null, $return = 'view') {
 		//ログイン
 		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_GENERAL_USER);
 
-		$this->testEditGet($hasDelete, $urlOptions, $assert, $exception, $return);
+		$this->testEditGet($urlOptions, $assert, $exception, $return);
 
 		//ログアウト
 		TestAuthGeneral::logout($this);
@@ -96,7 +73,6 @@ class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
 /**
  * editアクションのGETテスト(編集権限、公開権限なし)
  *
- * @param bool $hasDelete 削除ボタン(リンク)の有無
  * @param array $urlOptions URLオプション
  * @param array $assert テストの期待値
  * @param string|null $exception Exception
@@ -104,11 +80,11 @@ class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
  * @dataProvider dataProviderEditGetByEditable
  * @return void
  */
-	public function testEditGetByEditable($hasDelete, $urlOptions, $assert, $exception = null, $return = 'contents') {
+	public function testEditGetByEditable($urlOptions, $assert, $exception = null, $return = 'view') {
 		//ログイン
 		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_EDITOR);
 
-		$this->testEditGet($hasDelete, $urlOptions, $assert, $exception, $return);
+		$this->testEditGet($urlOptions, $assert, $exception, $return);
 
 		//ログアウト
 		TestAuthGeneral::logout($this);
@@ -117,7 +93,6 @@ class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
 /**
  * editアクションのGETテスト(公開権限あり)
  *
- * @param bool $hasDelete 削除ボタン(リンク)の有無
  * @param array $urlOptions URLオプション
  * @param array $assert テストの期待値
  * @param string|null $exception Exception
@@ -125,11 +100,11 @@ class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
  * @dataProvider dataProviderEditGetByPublishable
  * @return void
  */
-	public function testEditGetByPublishable($hasDelete, $urlOptions, $assert, $exception = null, $return = 'contents') {
+	public function testEditGetByPublishable($urlOptions, $assert, $exception = null, $return = 'view') {
 		//ログイン
 		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR);
 
-		$this->testEditGet($hasDelete, $urlOptions, $assert, $exception, $return);
+		$this->testEditGet($urlOptions, $assert, $exception, $return);
 
 		//ログアウト
 		TestAuthGeneral::logout($this);
