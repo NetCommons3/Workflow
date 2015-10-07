@@ -283,7 +283,7 @@ class WorkflowBehavior extends ModelBehavior {
 		if (! isset($data[$model->alias]['created_user'])) {
 			return false;
 		}
-		return ($data[$model->alias]['created_user'] === Current::read('User.id'));
+		return ((int)$data[$model->alias]['created_user'] === (int)Current::read('User.id'));
 	}
 
 /**
