@@ -45,34 +45,48 @@ class WorkflowSaveTest extends NetCommonsSaveTest {
 		$method = $this->_methodName;
 
 		//チェック用データ取得
-		$before = $this->$model->find('first', array(
-			'recursive' => -1,
-			'conditions' => array('id' => $data[$this->$model->alias]['id']),
-		));
+		if (isset($data[$this->$model->alias]['id'])) {
+			$before = $this->$model->find('first', array(
+				'recursive' => -1,
+				'conditions' => array('id' => $data[$this->$model->alias]['id']),
+			));
+			$saveData = Hash::remove($data, $this->$model->alias . '.id');
+		} else {
+			$saveData = $data;
+		}
 
 		//テスト実行
-		$saveData = Hash::remove($data, $this->$model->alias . '.id');
 		parent::testSave($saveData, $model, $method);
 		$lastInsertId = $this->$model->getLastInsertID();
 
-		//is_latestのチェック
-		$after = $this->$model->find('first', array(
-			'recursive' => -1,
-			'conditions' => array('id' => $data[$this->$model->alias]['id']),
-		));
-		$this->assertEquals($after,
-			Hash::merge($before, array(
-				$this->$model->alias => array('is_latest' => false)
-			)
-		));
-
-		//登録データのチェック
+		//登録データ取得
 		$latest = $this->$model->find('first', array(
 			'recursive' => -1,
 			'conditions' => array('id' => $lastInsertId),
 		));
-		$latest[$this->$model->alias] = Hash::remove($latest[$this->$model->alias], 'modified');
-		$latest[$this->$model->alias] = Hash::remove($latest[$this->$model->alias], 'modified_user');
+
+		//is_latestのチェック
+		if (isset($before)) {
+			$after = $this->$model->find('first', array(
+				'recursive' => -1,
+				'conditions' => array('id' => $data[$this->$model->alias]['id']),
+			));
+			$this->assertEquals($after,
+				Hash::merge($before, array(
+					$this->$model->alias => array('is_latest' => false)
+				)
+			));
+			$latest[$this->$model->alias] = Hash::remove($latest[$this->$model->alias], 'modified');
+			$latest[$this->$model->alias] = Hash::remove($latest[$this->$model->alias], 'modified_user');
+		} else {
+			$latest[$this->$model->alias] = Hash::remove($latest[$this->$model->alias], 'created');
+			$latest[$this->$model->alias] = Hash::remove($latest[$this->$model->alias], 'created_user');
+			$latest[$this->$model->alias] = Hash::remove($latest[$this->$model->alias], 'modified');
+			$latest[$this->$model->alias] = Hash::remove($latest[$this->$model->alias], 'modified_user');
+
+			$data[$this->$model->alias]['key'] = OriginalKeyBehavior::generateKey($this->$model->name, $this->$model->useDbConfig);
+			$before[$this->$model->alias] = array();
+		}
 
 		$expected[$this->$model->alias] = Hash::merge(
 			$before[$this->$model->alias],
