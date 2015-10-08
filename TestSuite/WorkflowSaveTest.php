@@ -37,12 +37,13 @@ class WorkflowSaveTest extends NetCommonsSaveTest {
  * Saveのテスト
  *
  * @param array $data 登録データ
- * @param string $model モデル名
- * @param string $method メソッド
  * @dataProvider dataProviderSave
  * @return void
  */
-	public function testSave($data, $model, $method) {
+	public function testSave($data) {
+		$model = $this->_modelName;
+		$method = $this->_methodName;
+
 		//チェック用データ取得
 		$before = $this->$model->find('first', array(
 			'recursive' => -1,

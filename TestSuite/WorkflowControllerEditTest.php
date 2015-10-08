@@ -146,25 +146,20 @@ class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
  * editアクションのValidateionErrorテスト
  *
  * @param array $data POSTデータ
- * @param string $role ロール
  * @param array $urlOptions URLオプション
  * @param string|null $validationError ValidationError
  * @dataProvider dataProviderEditValidationError
  * @return void
  */
-	public function testEditValidationError($data, $role, $urlOptions, $validationError = null) {
+	public function testEditValidationError($data, $urlOptions, $validationError = null) {
 		//ログイン
-		if (isset($role)) {
-			TestAuthGeneral::login($this, $role);
-		}
+		TestAuthGeneral::login($this);
 
 		//テスト実施
 		$this->_testActionOnValidationError('put', $data, Hash::merge(array('action' => 'edit'), $urlOptions), $validationError);
 
 		//ログアウト
-		if (isset($role)) {
-			TestAuthGeneral::logout($this);
-		}
+		TestAuthGeneral::logout($this);
 	}
 
 }

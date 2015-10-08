@@ -46,7 +46,7 @@ class WorkflowControllerAddTest extends NetCommonsControllerTestCase {
 			'controller' => $this->_controller,
 			'action' => 'add',
 		), $urlOptions);
-		
+
 		$this->_testGetAction($url, $assert, $exception, $return);
 	}
 
@@ -106,25 +106,20 @@ class WorkflowControllerAddTest extends NetCommonsControllerTestCase {
  * addアクションのValidateionErrorテスト
  *
  * @param array $data POSTデータ
- * @param string $role ロール
  * @param array $urlOptions URLオプション
  * @param string|null $validationError ValidationError
  * @dataProvider dataProviderAddValidationError
  * @return void
  */
-	public function testAddValidationError($data, $role, $urlOptions, $validationError = null) {
+	public function testAddValidationError($data, $urlOptions, $validationError = null) {
 		//ログイン
-		if (isset($role)) {
-			TestAuthGeneral::login($this, $role);
-		}
+		TestAuthGeneral::login($this);
 
 		//テスト実施
 		$this->_testActionOnValidationError('post', $data, Hash::merge(array('action' => 'add'), $urlOptions), $validationError);
 
 		//ログアウト
-		if (isset($role)) {
-			TestAuthGeneral::logout($this);
-		}
+		TestAuthGeneral::logout($this);
 	}
 
 }
