@@ -38,7 +38,7 @@ class WorkflowSaveTest extends NetCommonsSaveTest {
  *
  * @param array $data 登録データ
  * @dataProvider dataProviderSave
- * @return void
+ * @return array 登録後のデータ
  */
 	public function testSave($data) {
 		$model = $this->_modelName;
@@ -65,6 +65,8 @@ class WorkflowSaveTest extends NetCommonsSaveTest {
 			'conditions' => array('id' => $lastInsertId),
 		));
 
+		$actual = $latest;
+
 		//is_latestのチェック
 		if (isset($before)) {
 			$after = $this->$model->find('first', array(
@@ -76,13 +78,13 @@ class WorkflowSaveTest extends NetCommonsSaveTest {
 					$this->$model->alias => array('is_latest' => false)
 				)
 			));
-			$latest[$this->$model->alias] = Hash::remove($latest[$this->$model->alias], 'modified');
-			$latest[$this->$model->alias] = Hash::remove($latest[$this->$model->alias], 'modified_user');
+			$actual[$this->$model->alias] = Hash::remove($actual[$this->$model->alias], 'modified');
+			$actual[$this->$model->alias] = Hash::remove($actual[$this->$model->alias], 'modified_user');
 		} else {
-			$latest[$this->$model->alias] = Hash::remove($latest[$this->$model->alias], 'created');
-			$latest[$this->$model->alias] = Hash::remove($latest[$this->$model->alias], 'created_user');
-			$latest[$this->$model->alias] = Hash::remove($latest[$this->$model->alias], 'modified');
-			$latest[$this->$model->alias] = Hash::remove($latest[$this->$model->alias], 'modified_user');
+			$actual[$this->$model->alias] = Hash::remove($actual[$this->$model->alias], 'created');
+			$actual[$this->$model->alias] = Hash::remove($actual[$this->$model->alias], 'created_user');
+			$actual[$this->$model->alias] = Hash::remove($actual[$this->$model->alias], 'modified');
+			$actual[$this->$model->alias] = Hash::remove($actual[$this->$model->alias], 'modified_user');
 
 			$data[$this->$model->alias]['key'] = OriginalKeyBehavior::generateKey($this->$model->name, $this->$model->useDbConfig);
 			$before[$this->$model->alias] = array();
@@ -100,7 +102,9 @@ class WorkflowSaveTest extends NetCommonsSaveTest {
 		$expected[$this->$model->alias] = Hash::remove($expected[$this->$model->alias], 'modified');
 		$expected[$this->$model->alias] = Hash::remove($expected[$this->$model->alias], 'modified_user');
 
-		$this->assertEquals($latest, $expected);
+		$this->assertEquals($expected, $actual);
+
+		return $latest;
 	}
 
 }
