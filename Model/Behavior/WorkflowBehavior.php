@@ -202,12 +202,6 @@ class WorkflowBehavior extends ModelBehavior {
 				$model->alias . '.is_latest' => true,
 				$model->alias . '.created_user' => Current::read('User.id'),
 			);
-			if ($model->hasField('from')) {
-				$activeConditions[$model->alias . '.from <='] = $model->getNowTime();
-			}
-			if ($model->hasField('to')) {
-				$activeConditions[$model->alias . '.to >='] = $model->getNowTime();
-			}
 		} else {
 			$activeConditions = array(
 				$model->alias . '.is_active' => true,
