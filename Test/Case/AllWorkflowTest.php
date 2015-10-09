@@ -29,7 +29,9 @@ class AllWorkflowTest extends CakeTestSuite {
 
 		$directory = CakePlugin::path($plugin) . 'Test' . DS . 'Case';
 		$Folder = new Folder($directory);
-		$exceptions = array();
+		$exceptions = array(
+			'CommentsModelTestBase.php',
+		);
 		$files = $Folder->tree(null, $exceptions, 'files');
 		foreach ($files as $file) {
 			if (substr($file, -4) === '.php') {
