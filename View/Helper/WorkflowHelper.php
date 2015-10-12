@@ -146,15 +146,23 @@ class WorkflowHelper extends AppHelper {
 /**
  * Output workflow input comment
  *
- * @param string $statusFieldName This should be "Modelname.fieldname"
- * @return string Cancel url
+ * @param string $statusFieldName ステータスのフィールド名
+ * @param string $displayBlockKey block_keyを含めるかどうか
+ * @return string Html
+ * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
-	public function inputComment($statusFieldName) {
+	public function inputComment($statusFieldName, $displayBlockKey = true) {
 		$status = Hash::get($this->_View->data, $statusFieldName);
-		return $this->_View->element('Workflow.form', array(
+
+		$output = $this->_View->element('Workflow.form', array(
 			'contentPublishable' => Current::permission('content_publishable'),
 			'contentStatus' => $status,
 		));
+
+		if ($displayBlockKey) {
+			$output .= $this->NetCommonsForm->hidden('Block.key', array('value' => Current::read('Block.key')));
+		}
+		return $output;
 	}
 
 /**

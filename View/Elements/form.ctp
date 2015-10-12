@@ -12,7 +12,6 @@
 
 <div class="row">
 	<div class="col-xs-offset-1 col-xs-11">
-		<?php echo $this->NetCommonsForm->input('Block.key', array('type' => 'hidden', 'value' => Current::read('Block.key'))); ?>
 		<?php echo $this->NetCommonsForm->input('WorkflowComment.comment', array(
 				'type' => 'textarea',
 				'class' => 'form-control nc-noresize',
