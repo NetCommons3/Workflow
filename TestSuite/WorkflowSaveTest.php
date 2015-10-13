@@ -56,7 +56,8 @@ class WorkflowSaveTest extends NetCommonsSaveTest {
 		}
 
 		//テスト実行
-		parent::testSave($saveData, $model, $method);
+		$result = $this->$model->$method($saveData);
+		$this->assertNotEmpty($result);
 		$lastInsertId = $this->$model->getLastInsertID();
 
 		//登録データ取得
