@@ -55,6 +55,8 @@ class WorkflowCommentFixture extends CakeTestFixture {
 			'modified_user' => 1,
 			'modified' => '2014-11-19 07:17:01'
 		),
+
+		//2-102は、ページ遷移のため
 	);
 
 /**
