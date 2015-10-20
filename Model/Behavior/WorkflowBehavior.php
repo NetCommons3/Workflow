@@ -21,6 +21,16 @@ App::uses('WorkflowComponent', 'Workflow.Controller/Component');
 class WorkflowBehavior extends ModelBehavior {
 
 /**
+ * Block type
+ *
+ * @var int
+ */
+	const
+		PUBLIC_TYPE_PRIVATE = '0',
+		PUBLIC_TYPE_PUBLIC = '1',
+		PUBLIC_TYPE_LIMITED = '2';
+
+/**
  * status list for editor
  *
  * @var array
@@ -198,14 +208,24 @@ class WorkflowBehavior extends ModelBehavior {
 				$model->alias . '.is_active' => true,
 				$model->alias . '.created_user !=' => Current::read('User.id'),
 			);
+			// TODO 時限公開条件追加
+			if ($model->hasField('public_type')){
+				$publicTypeConditions = $this->_getPublicTypeConditions($model);
+				$activeConditions[] = $publicTypeConditions;
+			}
 			$latestConditons = array(
 				$model->alias . '.is_latest' => true,
 				$model->alias . '.created_user' => Current::read('User.id'),
 			);
 		} else {
+			// TODO 時限公開条件追加
 			$activeConditions = array(
 				$model->alias . '.is_active' => true,
 			);
+			if ($model->hasField('public_type')){
+				$publicTypeConditions = $this->_getPublicTypeConditions($model);
+				$activeConditions[] = $publicTypeConditions;
+			}
 			$latestConditons = array();
 		}
 
@@ -314,6 +334,40 @@ class WorkflowBehavior extends ModelBehavior {
 			'conditions' => $conditions
 		));
 		return ((int)$count === 0);
+	}
+
+	/**
+	 * @param Model $model
+	 * @return array
+	 */
+	protected function _getPublicTypeConditions(Model $model) {
+		$netCommonsTime = new NetCommonsTime();
+		$limitedConditions = array();
+		$limitedConditions[$model->alias . '.public_type'] = self::PUBLIC_TYPE_LIMITED;
+		if ($model->hasField('publish_start')) {
+			$limitedConditions[] = array(
+				'OR' => array(
+					$model->alias . '.publish_start <=' => $netCommonsTime->getNowDatetime(),
+					$model->alias . '.publish_start' => null,
+				)
+			);
+		}
+		if ($model->hasField('publish_end')) {
+			$limitedConditions[] = array(
+				'OR' => array(
+					$model->alias . '.publish_end >=' => $netCommonsTime->getNowDatetime(),
+					$model->alias . '.publish_end' => null,
+				)
+			);
+		}
+
+		$publicTypeConditions = array(
+			'OR' => array(
+				$model->alias . '.public_type' => self::PUBLIC_TYPE_PUBLIC,
+				$limitedConditions,
+			)
+		);
+		return $publicTypeConditions;
 	}
 
 }
