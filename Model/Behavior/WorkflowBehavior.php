@@ -208,8 +208,8 @@ class WorkflowBehavior extends ModelBehavior {
 				$model->alias . '.is_active' => true,
 				$model->alias . '.created_user !=' => Current::read('User.id'),
 			);
-			// TODO 時限公開条件追加
-			if ($model->hasField('public_type')){
+			// 時限公開条件追加
+			if ($model->hasField('public_type')) {
 				$publicTypeConditions = $this->_getPublicTypeConditions($model);
 				$activeConditions[] = $publicTypeConditions;
 			}
@@ -218,11 +218,11 @@ class WorkflowBehavior extends ModelBehavior {
 				$model->alias . '.created_user' => Current::read('User.id'),
 			);
 		} else {
-			// TODO 時限公開条件追加
+			// 時限公開条件追加
 			$activeConditions = array(
 				$model->alias . '.is_active' => true,
 			);
-			if ($model->hasField('public_type')){
+			if ($model->hasField('public_type')) {
 				$publicTypeConditions = $this->_getPublicTypeConditions($model);
 				$activeConditions[] = $publicTypeConditions;
 			}
@@ -336,10 +336,12 @@ class WorkflowBehavior extends ModelBehavior {
 		return ((int)$count === 0);
 	}
 
-	/**
-	 * @param Model $model
-	 * @return array
-	 */
+/**
+ * 時限公開のconditionsを返す
+ *
+ * @param Model $model 対象モデル
+ * @return array
+ */
 	protected function _getPublicTypeConditions(Model $model) {
 		$netCommonsTime = new NetCommonsTime();
 		$limitedConditions = array();
