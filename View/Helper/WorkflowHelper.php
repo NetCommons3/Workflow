@@ -147,7 +147,7 @@ class WorkflowHelper extends AppHelper {
  * Output workflow input comment
  *
  * @param string $statusFieldName ステータスのフィールド名
- * @param string $displayBlockKey block_keyを含めるかどうか
+ * @param bool $displayBlockKey block_keyを含めるかどうか
  * @return string Html
  * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
