@@ -277,10 +277,12 @@ class WorkflowHelper extends AppHelper {
 		}
 
 		//URLの設定
+		$defaultUrl = array(
+			'plugin' => $this->_View->request->params['plugin'],
+			'controller' => $this->_View->request->params['controller'],
+		);
 		if (! isset($url)) {
 			$url = array(
-				'plugin' => $this->_View->request->params['plugin'],
-				'controller' => $this->_View->request->params['controller'],
 				'action' => 'add',
 				'block_id' => Current::read('Block.id'),
 				'frame_id' => Current::read('Frame.id'),
@@ -288,8 +290,8 @@ class WorkflowHelper extends AppHelper {
 			if (isset($this->_View->viewVars['addActionController'])) {
 				$url['controller'] = $this->_View->viewVars['addActionController'];
 			}
-			$url = NetCommonsUrl::actionUrl($url);
 		}
+		$url = Hash::merge($defaultUrl, $url);
 
 		$output = $this->Button->addLink($title, $url, $options);
 		return $output;
