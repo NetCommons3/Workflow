@@ -108,4 +108,31 @@ class WorkflowSaveTest extends NetCommonsSaveTest {
 		return $latest;
 	}
 
+/**
+ * Test to call WorkflowBehavior::beforeSave
+ *
+ * WorkflowBehaviorをモックに置き換えて登録処理を呼び出します。
+ * 1回呼び出されることをテストします。
+ *
+ * @param array $data 登録データ
+ * @dataProvider dataProviderSave
+ * @return void
+ */
+	public function testCallWorkflowBehavior($data) {
+		$model = $this->_modelName;
+		$method = $this->_methodName;
+
+		ClassRegistry::removeObject('WorkflowBehavior');
+		$workflowBehaviorMock = $this->getMock('WorkflowBehavior', ['beforeSave']);
+		ClassRegistry::addObject('WorkflowBehavior', $workflowBehaviorMock);
+		$this->$model->Behaviors->unload('Workflow');
+		$this->$model->Behaviors->load('Workflow', $this->$model->actsAs['Workflow.Workflow']);
+
+		$workflowBehaviorMock
+			->expects($this->once())
+			->method('beforeSave')
+			->will($this->returnValue(true));
+
+		$this->$model->$method($data);
+	}
 }
