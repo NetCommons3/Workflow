@@ -111,8 +111,8 @@ class WorkflowSaveTest extends NetCommonsSaveTest {
 /**
  * Test to call WorkflowBehavior::beforeSave
  *
- * WorkflowBehaviorをモックに置き換えて登録処理を呼び出します。
- * 1回呼び出されることをテストします。
+ * WorkflowBehaviorをモックに置き換えて登録処理を呼び出します。<br>
+ * WorkflowBehavior::beforeSaveが1回呼び出されることをテストします。
  *
  * @param array $data 登録データ
  * @dataProvider dataProviderSave
@@ -135,4 +135,5 @@ class WorkflowSaveTest extends NetCommonsSaveTest {
 
 		$this->$model->$method($data);
 	}
+
 }
