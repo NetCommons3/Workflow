@@ -112,7 +112,9 @@ class WorkflowSaveTest extends NetCommonsSaveTest {
  * Test to call WorkflowBehavior::beforeSave
  *
  * WorkflowBehaviorをモックに置き換えて登録処理を呼び出します。<br>
- * WorkflowBehavior::beforeSaveが1回呼び出されることをテストします。
+ * WorkflowBehavior::beforeSaveが1回呼び出されることをテストします。<br>
+ * ##### 参考URL
+ * http://stackoverflow.com/questions/19833495/how-to-mock-a-cakephp-behavior-for-unit-testing]
  *
  * @param array $data 登録データ
  * @dataProvider dataProviderSave
