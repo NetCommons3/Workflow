@@ -154,8 +154,9 @@ class WorkflowComponent extends Component {
  * Function to get the data of RoomRolePermmissions.
  *    e.g.) RoomRolePermmissions controller
  *
- * @param array $permissions permissions
- * @param string $type default_role_permissions.type
+ * @param array $permissions パーミッションリスト
+ * @param string $type タイプ(DefaultRolePermissions.type)
+ * @param string $roomId ルームID
  * @return array Role and Permissions and Rooms data
  *   - The `DefaultPermissions` data.
  *   - The `Roles` data.
@@ -163,7 +164,7 @@ class WorkflowComponent extends Component {
  *   - The `RoomRolePermissions` data.
  *   - The `RoomRoles` data.
  */
-	public function getRoomRolePermissions($permissions, $type) {
+	public function getRoomRolePermissions($permissions, $type, $roomId = null) {
 		//戻り値の設定
 		$results = array(
 			'DefaultRolePermission' => null,
@@ -185,7 +186,9 @@ class WorkflowComponent extends Component {
 			$this->$model = ClassRegistry::init($class, true);
 		}
 
-		$roomId = Current::read('Room.id');
+		if (! $roomId) {
+			$roomId = Current::read('Room.id');
+		}
 
 		//RoomRole取得
 		$roomRoles = $this->RoomRole->find('all', array(
