@@ -4,12 +4,12 @@
         <whitelist addUncoveredFilesFromWhitelist="true">
             <directory suffix=".ctp">app/Plugin/Workflow</directory>
             <directory suffix=".php">app/Plugin/Workflow</directory>
-			<exclude>
-				<directory suffix=".php">app/Plugin/Workflow/Config/Migration</directory>
-				<directory suffix=".php">app/Plugin/Workflow/Config/Schema</directory>
-				<directory suffix=".php">app/Plugin/Workflow/Test/Case</directory>
-				<directory suffix=".php">app/Plugin/Workflow/Test/Fixture</directory>
-			</exclude>
+            <exclude>
+                <directory suffix=".php">app/Plugin/Workflow/Config/Migration</directory>
+                <directory suffix=".php">app/Plugin/Workflow/Config/Schema</directory>
+                <directory suffix=".php">app/Plugin/Workflow/Test/Case</directory>
+                <directory suffix=".php">app/Plugin/Workflow/Test/Fixture</directory>
+            </exclude>
         </whitelist>
     </filter>
     <logging>
