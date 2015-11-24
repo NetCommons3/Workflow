@@ -83,10 +83,11 @@ class WorkflowHelper extends AppHelper {
  * @param string $statusFieldName This should be "Modelname.fieldname"
  * @param string|null $cancelUrl Cancel url
  * @param bool $panel If true is add to panel footer div, then false is not div.
+ * @param string|null $backUrl Back url
  * @return string Cancel url
  * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
-	public function buttons($statusFieldName, $cancelUrl = null, $panel = true) {
+	public function buttons($statusFieldName, $cancelUrl = null, $panel = true, $backUrl = null) {
 		$status = Hash::get($this->data, $statusFieldName);
 
 		$output = '';
@@ -103,6 +104,14 @@ class WorkflowHelper extends AppHelper {
 			$cancelUrl,
 			array('class' => 'btn btn-default btn-workflow', 'escape' => false)
 		);
+
+		if (isset($backUrl)) {
+			$output .= $this->Html->link(
+				'<span class="glyphicon glyphicon-chevron-left"></span> ' . __d('net_commons', 'BACK'),
+				$backUrl,
+				array('class' => 'btn btn-default btn-workflow', 'escape' => false)
+			);
+		}
 
 		if (Current::permission('content_publishable') && $status === WorkflowComponent::STATUS_APPROVED) {
 			$output .= $this->Form->button(
