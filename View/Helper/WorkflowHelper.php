@@ -234,6 +234,10 @@ class WorkflowHelper extends AppHelper {
 	public function publishLinkButton($title = '', $options = array()) {
 		$output = '';
 
+		//ボタンサイズ
+		$sizeAttr = Hash::get($options, 'iconSize', '');
+		$options = Hash::remove($options, 'iconSize');
+
 		//Linkオプションの設定
 		$inputOptions = Hash::merge(array(
 			'icon' => 'ok',
@@ -249,9 +253,6 @@ class WorkflowHelper extends AppHelper {
 		//iconの有無
 		$iconElement = '<span class="glyphicon glyphicon-' . h($inputOptions['icon']) . '"></span> ';
 		unset($options['icon']);
-		//ボタンサイズ
-		$sizeAttr = $inputOptions['iconSize'];
-		unset($inputOptions['iconSize']);
 
 		//span tooltipタグの出力
 		if (isset($options['tooltip']) && $options['tooltip']) {
