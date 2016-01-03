@@ -62,6 +62,28 @@ class WorkflowControllerDeleteTest extends NetCommonsControllerTestCase {
 	}
 
 /**
+ * deleteアクションのExceptionErrorテスト
+ *
+ * @param string $mockModel Mockのモデル
+ * @param string $mockMethod Mockのメソッド
+ * @param array $data POSTデータ
+ * @param array $urlOptions URLオプション
+ * @param string $exception Exception
+ * @param string $return testActionの実行後の結果
+ * @dataProvider dataProviderDeleteExceptionError
+ * @return void
+ */
+	public function testDeleteExceptionError($mockModel, $mockMethod, $data, $urlOptions, $exception = null, $return = 'view') {
+		list($mockPlugin, $mockModel) = pluginSplit($mockModel);
+		$Mock = $this->getMockForModel($mockPlugin . '.' . $mockModel, array($mockMethod));
+		$Mock->expects($this->once())
+			->method($mockMethod)
+			->will($this->returnValue(false));
+
+		$this->testDeletePost($data, Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR, $urlOptions, $exception, $return);
+	}
+
+/**
  * deleteアクションのPOSTテスト
  *
  * @param array $data POSTデータ
@@ -91,28 +113,6 @@ class WorkflowControllerDeleteTest extends NetCommonsControllerTestCase {
 		if (isset($role)) {
 			TestAuthGeneral::logout($this);
 		}
-	}
-
-/**
- * deleteアクションのExceptionErrorテスト
- *
- * @param string $mockModel Mockのモデル
- * @param string $mockMethod Mockのメソッド
- * @param array $data POSTデータ
- * @param array $urlOptions URLオプション
- * @param string $exception Exception
- * @param string $return testActionの実行後の結果
- * @dataProvider dataProviderDeleteExceptionError
- * @return void
- */
-	public function testDeleteExceptionError($mockModel, $mockMethod, $data, $urlOptions, $exception = null, $return = 'view') {
-		list($mockPlugin, $mockModel) = pluginSplit($mockModel);
-		$Mock = $this->getMockForModel($mockPlugin . '.' . $mockModel, array($mockMethod));
-		$Mock->expects($this->once())
-			->method($mockMethod)
-			->will($this->returnValue(false));
-
-		$this->testDeletePost($data, Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR, $urlOptions, $exception, $return);
 	}
 
 }
