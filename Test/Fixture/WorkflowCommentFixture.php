@@ -67,19 +67,19 @@ class WorkflowCommentFixture extends CakeTestFixture {
  * @codeCoverageIgnore
  */
 	public function init() {
-		$default = array(
-			'plugin_key' => 'comments',
-			'block_key' => 'block_1',
-			'content_key' => 'comment_content_2',
-			'comment' => 'WorkflowComment %s',
-			'created_user' => '1',
-			'created' => '2014-10-09 16:07:57',
-		);
-		for ($i = 0; $i <= 100; $i++) {
-			$comments = array_merge(array(), $default);
-			$comments['comment'] = sprintf($comments['comment'], $i);
-			$this->records[] = $comments;
-		}
+		//$default = array(
+		//	'plugin_key' => 'comments',
+		//	'block_key' => 'block_1',
+		//	'content_key' => 'comment_content_2',
+		//	'comment' => 'WorkflowComment %s',
+		//	'created_user' => '1',
+		//	'created' => '2014-10-09 16:07:57',
+		//);
+		//for ($i = 0; $i <= 100; $i++) {
+		//	$comments = array_merge(array(), $default);
+		//	$comments['comment'] = sprintf($comments['comment'], $i);
+		//	$this->records[] = $comments;
+		//}
 
 		if (class_exists('NetCommonsTestSuite') && NetCommonsTestSuite::$plugin) {
 			$records = array_keys($this->records);
