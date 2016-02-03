@@ -244,6 +244,50 @@ class WorkflowBehavior extends ModelBehavior {
 	}
 
 /**
+ * Get workflow conditions omit publish period
+ *
+ * @param Model $model Model using this behavior
+ * @param array $conditions Model::find conditions default value
+ * @return array Conditions data
+ */
+	public function getWorkflowConditionsOmitPublishPeriod(Model $model, $conditions = array()) {
+		if (Current::permission('content_editable')) {
+			$activeConditions = array();
+			$latestConditions = array(
+				$model->alias . '.is_latest' => true,
+			);
+		} elseif (Current::permission('content_creatable')) {
+			$activeConditions = array(
+				$model->alias . '.is_active' => true,
+				$model->alias . '.created_user !=' => Current::read('User.id'),
+			);
+			$latestConditions = array(
+				$model->alias . '.is_latest' => true,
+				$model->alias . '.created_user' => Current::read('User.id'),
+			);
+		} else {
+			// 時限公開条件追加
+			$activeConditions = array(
+				$model->alias . '.is_active' => true,
+			);
+			$latestConditions = array();
+		}
+
+		if ($model->hasField('language_id')) {
+			$langConditions = array(
+				$model->alias . '.language_id' => Current::read('Language.id'),
+			);
+		} else {
+			$langConditions = array();
+		}
+		$conditions = Hash::merge($langConditions, array(
+			'OR' => array($activeConditions, $latestConditions)
+		), $conditions);
+
+		return $conditions;
+	}
+
+/**
  * Get workflow contents
  *
  * @param Model $model Model using this behavior
