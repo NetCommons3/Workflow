@@ -274,7 +274,7 @@ class WorkflowBehavior extends ModelBehavior {
  * Check creatable permission
  *
  * @param Model $model Model using this behavior
- * @return array Conditions data
+ * @return bool true:作成可、false:作成不可
  */
 	public function canCreateWorkflowContent(Model $model) {
 		return Current::permission('content_creatable');
