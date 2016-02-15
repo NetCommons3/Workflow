@@ -24,8 +24,27 @@ class TestSuiteWorkflowControllerAddTestController extends AppController {
  *
  * @return void
  */
+	public function index() {
+		$this->autoRender = true;
+	}
+
+/**
+ * add
+ *
+ * @return void
+ */
 	public function add() {
 		$this->autoRender = true;
+	}
+
+/**
+ * add_post
+ *
+ * @return void
+ */
+	public function add_post() {
+		$this->autoRender = true;
+		$this->redirect('index');
 	}
 
 }
