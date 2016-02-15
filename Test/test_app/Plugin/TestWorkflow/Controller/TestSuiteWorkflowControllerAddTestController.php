@@ -47,4 +47,13 @@ class TestSuiteWorkflowControllerAddTestController extends AppController {
 		$this->redirect('index');
 	}
 
+/**
+ * add_validation_error
+ *
+ * @return void
+ */
+	public function add_validation_error() {
+		$this->autoRender = true;
+	}
+
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * WorkflowControllerAddTest::testAddGetByCreatable()のテスト
+ * WorkflowControllerAddTest::testAddValidationError()のテスト
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -12,12 +12,12 @@
 App::uses('NetCommonsControllerTestCase', 'NetCommons.TestSuite');
 
 /**
- * WorkflowControllerAddTest::testAddGetByCreatable()のテスト
+ * WorkflowControllerAddTest::testAddValidationError()のテスト
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Workflow\Test\Case\TestSuite\WorkflowControllerAddTest
  */
-class TestSuiteWorkflowControllerAddTestTestAddGetByCreatableTest extends NetCommonsControllerTestCase {
+class TestSuiteWorkflowControllerAddTestTestAddValidationErrorTest extends NetCommonsControllerTestCase {
 
 /**
  * Fixtures
@@ -48,22 +48,25 @@ class TestSuiteWorkflowControllerAddTestTestAddGetByCreatableTest extends NetCom
 	}
 
 /**
- * testAddGetByCreatable()のテスト
+ * testAddValidationError()のテスト
  *
  * @return void
  */
-	public function testTestAddGetByCreatable() {
+	public function testTestAddValidationError() {
 		//データ生成
-		$urlOptions = array();
-		$assert = array('method' => 'assertNotEmpty');
-		$exception = null;
-		$return = 'view';
+		$data = array();
+		$urlOptions = array('action' => 'add_validation_error');
+		$validationError = array(
+			'field' => 'validationField',
+			'value' => 'validationValue',
+			'message' => 'validationMessage',
+		);
 
 		//テスト実施
-		$result = $this->TestSuite->testAddGetByCreatable($urlOptions, $assert, $exception, $return);
+		$result = $this->TestSuite->testAddValidationError($data, $urlOptions, $validationError);
 
 		//チェック
-		$pattern = '/' . preg_quote('TestSuite/WorkflowControllerAddTest/add.ctp', '/') . '/';
+		$pattern = '/' . preg_quote('TestSuite/WorkflowControllerAddTest/add_validation_error.ctp', '/') . '/';
 		$this->assertRegExp($pattern, $result->view);
 	}
 

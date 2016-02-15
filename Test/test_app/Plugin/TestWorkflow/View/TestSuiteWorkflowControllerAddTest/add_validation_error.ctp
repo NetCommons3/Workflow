@@ -10,4 +10,6 @@
  */
 ?>
 
-TestSuite/WorkflowControllerAddTest/add.ctp
+TestSuite/WorkflowControllerAddTest/add_validation_error.ctp
+
+バリデーションエラー：validationMessage

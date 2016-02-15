@@ -63,7 +63,7 @@ class TestSuiteWorkflowControllerAddTestTestAddGetTest extends NetCommonsControl
 		$result = $this->TestSuite->testAddGet($urlOptions, $assert, $exception, $return);
 
 		//チェック
-		$pattern = '/' . preg_quote('TestSuite/WorkflowControllerAddTest', '/') . '/';
+		$pattern = '/' . preg_quote('TestSuite/WorkflowControllerAddTest/add.ctp', '/') . '/';
 		$this->assertRegExp($pattern, $result->view);
 	}
 
