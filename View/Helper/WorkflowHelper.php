@@ -10,6 +10,7 @@
  */
 
 App::uses('AppHelper', 'View/Helper');
+App::uses('WorkflowComponent', 'Workflow.Controller/Component');
 
 /**
  * Workflow Helper
@@ -46,11 +47,11 @@ class WorkflowHelper extends AppHelper {
 	}
 
 /**
- * Output status label url
+ * ステータスのラベル
  *
- * @param int $status Status value
+ * @param int $status スータス
  * @param array $labels Overwrite Status labels
- * @return string Cancel url
+ * @return string ラベルHTML
  */
 	public function label($status, $labels = array()) {
 		if (empty($labels)) {
