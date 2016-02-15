@@ -327,9 +327,7 @@ class WorkflowBehavior extends ModelBehavior {
 		$conditions = array(
 			'is_active' => true,
 		);
-		if ($model->hasField('origin_id') && isset($data[$model->alias]['origin_id'])) {
-			$conditions['origin_id'] = $data[$model->alias]['origin_id'];
-		} elseif ($model->hasField('key') && isset($data[$model->alias]['key'])) {
+		if ($model->hasField('key') && isset($data[$model->alias]['key'])) {
 			$conditions['key'] = $data[$model->alias]['key'];
 		} else {
 			return false;
