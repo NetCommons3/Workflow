@@ -20,16 +20,6 @@ App::uses('WorkflowComponent', 'Workflow.Controller/Component');
 class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
 
 /**
- * setUp method
- *
- * @return void
- */
-	public function setUp() {
-		parent::setUp();
-		$this->generateNc(Inflector::camelize($this->_controller));
-	}
-
-/**
  * editアクションのGETテスト
  *
  * @param array $urlOptions URLオプション
