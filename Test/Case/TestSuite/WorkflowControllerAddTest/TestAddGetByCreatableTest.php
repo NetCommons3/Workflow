@@ -54,8 +54,8 @@ class TestSuiteWorkflowControllerAddTestTestAddGetByCreatableTest extends NetCom
  */
 	public function testTestAddGetByCreatable() {
 		//データ生成
-		$urlOptions = null;
-		$assert = null;
+		$urlOptions = array();
+		$assert = array('method' => 'assertNotEmpty');
 		$exception = null;
 		$return = 'view';
 

@@ -54,8 +54,8 @@ class TestSuiteWorkflowControllerAddTestTestAddGetTest extends NetCommonsControl
  */
 	public function testTestAddGet() {
 		//データ生成
-		$urlOptions = null;
-		$assert = null;
+		$urlOptions = array();
+		$assert = array('method' => 'assertNotEmpty');
 		$exception = null;
 		$return = 'view';
 
