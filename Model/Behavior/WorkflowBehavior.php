@@ -261,17 +261,19 @@ class WorkflowBehavior extends ModelBehavior {
 	}
 
 /**
- * Check creatable permission
+ * コンテンツの閲覧権限があるかどうかのチェック
+ * - 閲覧権限あり(content_readable)
  *
  * @param Model $model Model using this behavior
- * @return array Conditions data
+ * @return bool true:閲覧可、false:閲覧不可
  */
 	public function canReadWorkflowContent(Model $model) {
 		return Current::permission('content_readable');
 	}
 
 /**
- * Check creatable permission
+ * コンテンツの作成権限があるかどうかのチェック
+ * - 作成権限あり(content_creatable)
  *
  * @param Model $model Model using this behavior
  * @return bool true:作成可、false:作成不可
@@ -281,11 +283,13 @@ class WorkflowBehavior extends ModelBehavior {
 	}
 
 /**
- * Check editable permission
+ * コンテンツの編集権限があるかどうかのチェック
+ * - 編集権限あり(content_editable)
+ * - 自分自身のコンテンツ
  *
  * @param Model $model Model using this behavior
- * @param array $data Check content data
- * @return array Conditions data
+ * @param array $data コンテンツデータ
+ * @return bool true:編集可、false:編集不可
  */
 	public function canEditWorkflowContent(Model $model, $data) {
 		if (Current::permission('content_editable')) {
@@ -301,11 +305,13 @@ class WorkflowBehavior extends ModelBehavior {
 	}
 
 /**
- * Check deletable permission
+ * コンテンツの公開権限があるかどうかのチェック
+ * - 公開権限あり(content_publishable) and 編集権限あり(content_editable)
+ * - 自分自身のコンテンツ＋一度も公開されていない
  *
  * @param Model $model Model using this behavior
- * @param array $data Check content data
- * @return array Conditions data
+ * @param array $data コンテンツデータ
+ * @return bool true:削除可、false:削除不可
  */
 	public function canDeleteWorkflowContent(Model $model, $data) {
 		if (Current::permission('content_publishable')) {
