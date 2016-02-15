@@ -1,6 +1,6 @@
 <?php
 /**
- * WorkflowBehavior::canCreateWorkflowContent()のテスト
+ * WorkflowBehavior::canReadWorkflowContent()のテスト
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -12,12 +12,12 @@
 App::uses('NetCommonsModelTestCase', 'NetCommons.TestSuite');
 
 /**
- * WorkflowBehavior::canCreateWorkflowContent()のテスト
+ * WorkflowBehavior::canReadWorkflowContent()のテスト
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Workflow\Test\Case\Model\Behavior\WorkflowBehavior
  */
-class WorkflowBehaviorCanCreateWorkflowContentTest extends NetCommonsModelTestCase {
+class WorkflowBehaviorCanReadWorkflowContentTest extends NetCommonsModelTestCase {
 
 /**
  * Fixtures
@@ -47,7 +47,7 @@ class WorkflowBehaviorCanCreateWorkflowContentTest extends NetCommonsModelTestCa
 	}
 
 /**
- * canCreateWorkflowContent()テストのDataProvider
+ * canReadWorkflowContent()テストのDataProvider
  *
  * ### 戻り値
  *  - permission パーミッションの値
@@ -63,17 +63,17 @@ class WorkflowBehaviorCanCreateWorkflowContentTest extends NetCommonsModelTestCa
 	}
 
 /**
- * canCreateWorkflowContent()のテスト
+ * canReadWorkflowContent()のテスト
  *
  * @param bool $permission パーミッションの値
  * @param bool $assert 期待値
  * @dataProvider dataProvider
  * @return void
  */
-	public function testCanCreateWorkflowContent($permission, $assert) {
+	public function testCanReadWorkflowContent($permission, $assert) {
 		//テスト実施
-		Current::$current['Permission']['content_creatable']['value'] = $permission;
-		$result = $this->TestModel->canCreateWorkflowContent();
+		Current::$current['Permission']['content_readable']['value'] = $permission;
+		$result = $this->TestModel->canReadWorkflowContent();
 
 		//チェック
 		$this->assertEquals($assert, $result);
