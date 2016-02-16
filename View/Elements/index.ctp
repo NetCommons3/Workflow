@@ -25,11 +25,13 @@
 				</div>
 			<?php endforeach ?>
 
-			<div class="form-group <?php echo $i < WorkflowComment::START_LIMIT ? 'hidden' : '' ?>" ng-hide="more">
-				<button type="button" class="btn btn-info btn-block" ng-click="more=true">
-					<?php echo h(__d('net_commons', 'More')); ?>
-				</button>
-			</div>
+			<?php if (count($comments) > WorkflowComment::START_LIMIT) : ?>
+				<div class="form-group" ng-hide="more">
+					<button type="button" class="btn btn-info btn-block" ng-click="more=true">
+						<?php echo __d('net_commons', 'More'); ?>
+					</button>
+				</div>
+			<?php endif; ?>
 		</div>
 	</div>
 <?php endif;
