@@ -20,7 +20,7 @@ App::uses('AppController', 'Controller');
 class TestSuiteWorkflowControllerAddTestController extends AppController {
 
 /**
- * add
+ * index
  *
  * @return void
  */

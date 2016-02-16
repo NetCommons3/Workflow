@@ -1,6 +1,6 @@
 <?php
 /**
- * WorkflowControllerAddTest::testAddPost()のテスト
+ * WorkflowControllerEditTest::testEditPost()のテスト
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -12,12 +12,12 @@
 App::uses('NetCommonsControllerTestCase', 'NetCommons.TestSuite');
 
 /**
- * WorkflowControllerAddTest::testAddPost()のテスト
+ * WorkflowControllerEditTest::testEditPost()のテスト
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
- * @package NetCommons\Workflow\Test\Case\TestSuite\WorkflowControllerAddTest
+ * @package NetCommons\Workflow\Test\Case\TestSuite\WorkflowControllerEditTest
  */
-class TestSuiteWorkflowControllerAddTestTestAddPostTest extends NetCommonsControllerTestCase {
+class TestSuiteWorkflowControllerEditTestTestEditPostTest extends NetCommonsControllerTestCase {
 
 /**
  * Fixtures
@@ -43,32 +43,32 @@ class TestSuiteWorkflowControllerAddTestTestAddPostTest extends NetCommonsContro
 
 		//テストプラグインのロード
 		NetCommonsCakeTestCase::loadTestPlugin($this, 'Workflow', 'TestWorkflow');
-		App::uses('TestSuiteWorkflowControllerAddTest', 'TestWorkflow.TestSuite');
-		$this->TestSuite = new TestSuiteWorkflowControllerAddTest();
+		App::uses('TestSuiteWorkflowControllerEditTest', 'TestWorkflow.TestSuite');
+		$this->TestSuite = new TestSuiteWorkflowControllerEditTest();
 	}
 
 /**
- * testAddPost()のテスト
+ * testEditPost()のテスト
  *
  * @return void
  */
-	public function testTestAddPost() {
+	public function testTestEditPost() {
 		//データ生成
 		$data = array();
 		$role = Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR;
-		$urlOptions = array('action' => 'add_post');
+		$urlOptions = array('action' => 'edit_post');
 		$exception = null;
 		$return = 'view';
 
 		//テスト実施
-		$result = $this->TestSuite->testAddPost($data, $role, $urlOptions, $exception, $return);
+		$result = $this->TestSuite->testEditPost($data, $role, $urlOptions, $exception, $return);
 
 		//チェック
-		$this->assertEquals('add_post', $result->controller->view);
-		$this->assertEquals('POST', $result->controller->request->method());
+		$this->assertEquals('edit_post', $result->controller->view);
+		$this->assertEquals('PUT', $result->controller->request->method());
 
 		$header = $result->controller->response->header();
-		$assertUrl = Inflector::underscore('TestWorkflow') . '/' . Inflector::underscore('TestSuiteWorkflowControllerAddTest') . '/index';
+		$assertUrl = Inflector::underscore('TestWorkflow') . '/' . Inflector::underscore('TestSuiteWorkflowControllerEditTest') . '/index';
 		$this->assertContains($assertUrl, $header['Location']);
 	}
 

@@ -20,6 +20,15 @@ App::uses('AppController', 'Controller');
 class TestSuiteWorkflowControllerEditTestController extends AppController {
 
 /**
+ * index
+ *
+ * @return void
+ */
+	public function index() {
+		$this->autoRender = true;
+	}
+
+/**
  * edit
  *
  * @return void
@@ -27,6 +36,25 @@ class TestSuiteWorkflowControllerEditTestController extends AppController {
 	public function edit() {
 		$this->autoRender = true;
 		$this->set('username', Current::read('User.username'));
+	}
+
+/**
+ * edit_post
+ *
+ * @return void
+ */
+	public function edit_post() {
+		$this->autoRender = true;
+		$this->redirect('index');
+	}
+
+/**
+ * edit_validation_error
+ *
+ * @return void
+ */
+	public function edit_validation_error() {
+		$this->autoRender = true;
 	}
 
 }
