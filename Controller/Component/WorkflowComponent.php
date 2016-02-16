@@ -59,6 +59,18 @@ class WorkflowComponent extends Component {
 	}
 
 /**
+ * Called after the Controller::beforeFilter() and before the controller action
+ *
+ * @param Controller $controller Controller with components to startup
+ * @return void
+ */
+	public function startup(Controller $controller) {
+		if (! in_array('Users.DisplayUser', $controller->helpers, true)) {
+			$controller->helpers[] = 'Users.DisplayUser';
+		}
+	}
+
+/**
  * Parse content status from request
  *
  * @return mixed status on success, false on error

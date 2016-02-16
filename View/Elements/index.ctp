@@ -16,9 +16,7 @@
 			<?php foreach ($comments as $i => $comment): ?>
 				<div class="comment form-group" ng-show="<?php echo $i >= WorkflowComment::START_LIMIT ? 'more' : 'true' ?>">
 					<div>
-						<a href="" ng-click="user.showUser(<?php echo $comment['TrackableCreator']['id']; ?>)">
-							<b><?php echo h($comment['TrackableCreator']['handlename']); ?></b>
-						</a>
+						<?php echo $this->DisplayUser->handleLink($comment, array('avatar' => true)); ?>
 						<small class="text-muted"><?php echo $comment['WorkflowComment']['created']; ?></small>
 					</div>
 					<div>
