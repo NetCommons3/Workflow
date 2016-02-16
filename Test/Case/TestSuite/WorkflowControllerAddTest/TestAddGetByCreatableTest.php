@@ -63,6 +63,8 @@ class TestSuiteWorkflowControllerAddTestTestAddGetByCreatableTest extends NetCom
 		$result = $this->TestSuite->testAddGetByCreatable($urlOptions, $assert, $exception, $return);
 
 		//チェック
+		$this->assertEquals('general_user', $result->controller->viewVars['username']);
+
 		$pattern = '/' . preg_quote('TestSuite/WorkflowControllerAddTest/add.ctp', '/') . '/';
 		$this->assertRegExp($pattern, $result->view);
 	}

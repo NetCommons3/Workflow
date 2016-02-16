@@ -35,6 +35,7 @@ class TestSuiteWorkflowControllerAddTestController extends AppController {
  */
 	public function add() {
 		$this->autoRender = true;
+		$this->set('username', Current::read('User.username'));
 	}
 
 /**
