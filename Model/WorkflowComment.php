@@ -44,20 +44,27 @@ class WorkflowComment extends WorkflowAppModel {
  */
 	public function beforeValidate($options = array()) {
 		$this->validate = array(
-			//'plugin_key' => array(
-			//	'notBlank' => array(
-			//		'rule' => array('notBlank'),
-			//		'message' => __d('net_commons', 'Invalid request.'),
-			//		'required' => true,
-			//	)
-			//),
-			//'content_key' => array(
-			//	'notBlank' => array(
-			//		'rule' => array('notBlank'),
-			//		'message' => __d('net_commons', 'Invalid request.'),
-			//		'required' => true,
-			//	)
-			//),
+			'plugin_key' => array(
+				'notBlank' => array(
+					'rule' => array('notBlank'),
+					'message' => __d('net_commons', 'Invalid request.'),
+					'required' => true,
+				)
+			),
+			'block_key' => array(
+				'notBlank' => array(
+					'rule' => array('notBlank'),
+					'message' => __d('net_commons', 'Invalid request.'),
+					'required' => true,
+				)
+			),
+			'content_key' => array(
+				'notBlank' => array(
+					'rule' => array('notBlank'),
+					'message' => __d('net_commons', 'Invalid request.'),
+					'required' => true,
+				)
+			),
 			'comment' => array(
 				'notBlank' => array(
 					'rule' => array('notBlank'),
