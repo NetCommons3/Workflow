@@ -15,7 +15,7 @@ App::uses('AppModel', 'Model');
  * WorkflowBehaviorテスト用Model
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
- * @package NetCommons\Workflow\Test\test_app\Plugin\Workflow\Model
+ * @package NetCommons\Workflow\Test\test_app\Plugin\TestWorkflow\Model
  */
 class TestWorkflowBehaviorTableModel extends AppModel {
 
