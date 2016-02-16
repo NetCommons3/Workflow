@@ -20,12 +20,53 @@ App::uses('AppController', 'Controller');
 class TestSuiteWorkflowControllerDeleteTestController extends AppController {
 
 /**
+ * use models
+ *
+ * @var array
+ */
+	public $uses = array(
+		'Workflow.WorkflowComment',
+	);
+
+/**
+ * index
+ *
+ * @return void
+ */
+	public function index() {
+		$this->autoRender = true;
+	}
+
+/**
  * delete
  *
  * @return void
  */
 	public function delete() {
 		$this->autoRender = true;
+		$this->set('workflowCommentCount', $this->WorkflowComment->find('count'));
+	}
+
+/**
+ * delete_post
+ *
+ * @return void
+ */
+	public function delete_post() {
+		$this->autoRender = true;
+		$this->set('workflowCommentCount', $this->WorkflowComment->find('count'));
+		$this->redirect('index');
+	}
+
+/**
+ * delete_exception_error
+ *
+ * @return void
+ */
+	public function delete_exception_error() {
+		$this->autoRender = true;
+		$this->set('workflowCommentCount', $this->WorkflowComment->find('count'));
+		$this->redirect('index');
 	}
 
 }

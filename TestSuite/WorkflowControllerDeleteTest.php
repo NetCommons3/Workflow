@@ -64,12 +64,7 @@ class WorkflowControllerDeleteTest extends NetCommonsControllerTestCase {
  * @return void
  */
 	public function testDeleteExceptionError($mockModel, $mockMethod, $data, $urlOptions, $exception = null, $return = 'view') {
-		list($mockPlugin, $mockModel) = pluginSplit($mockModel);
-		$Mock = $this->getMockForModel($mockPlugin . '.' . $mockModel, array($mockMethod));
-		$Mock->expects($this->once())
-			->method($mockMethod)
-			->will($this->returnValue(false));
-
+		$this->_mockForReturnFalse($mockModel, $mockMethod);
 		$this->testDeletePost($data, Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR, $urlOptions, $exception, $return);
 	}
 

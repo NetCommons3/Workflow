@@ -66,6 +66,8 @@ class TestSuiteWorkflowControllerAddTestTestAddValidationErrorTest extends NetCo
 		$result = $this->TestSuite->testAddValidationError($data, $urlOptions, $validationError);
 
 		//チェック
+		$this->assertEquals('add_validation_error', $result->controller->view);
+
 		$pattern = '/' . preg_quote('TestSuite/WorkflowControllerAddTest/add_validation_error.ctp', '/') . '/';
 		$this->assertRegExp($pattern, $result->view);
 	}

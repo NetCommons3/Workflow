@@ -1,6 +1,6 @@
 <?php
 /**
- * WorkflowControllerDeleteTest::testDeleteGet()のテスト
+ * WorkflowControllerDeleteTest::testDeleteExceptionError()のテスト
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -12,12 +12,12 @@
 App::uses('NetCommonsControllerTestCase', 'NetCommons.TestSuite');
 
 /**
- * WorkflowControllerDeleteTest::testDeleteGet()のテスト
+ * WorkflowControllerDeleteTest::testDeleteExceptionError()のテスト
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Workflow\Test\Case\TestSuite\WorkflowControllerDeleteTest
  */
-class TestSuiteWorkflowControllerDeleteTestTestDeleteGetTest extends NetCommonsControllerTestCase {
+class TestSuiteWorkflowControllerDeleteTestTestDeleteExceptionErrorTest extends NetCommonsControllerTestCase {
 
 /**
  * Fixtures
@@ -50,25 +50,28 @@ class TestSuiteWorkflowControllerDeleteTestTestDeleteGetTest extends NetCommonsC
 	}
 
 /**
- * testDeleteGet()のテスト
+ * testDeleteExceptionError()のテスト
  *
  * @return void
  */
-	public function testTestDeleteGet() {
+	public function testTestDeleteExceptionError() {
 		//データ生成
-		$role = Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR;
-		$urlOptions = array();
-		$assert = array('method' => 'assertNotEmpty');
+		$mockModel = 'Workflow.WorkflowComment';
+		$mockMethod = 'find';
+		$data = array();
+		$urlOptions = array('action' => 'delete_exception_error');
 		$exception = null;
 		$return = 'view';
 
 		//テスト実施
-		$result = $this->TestSuite->testDeleteGet($role, $urlOptions, $assert, $exception, $return);
+		$result = $this->TestSuite->testDeleteExceptionError($mockModel, $mockMethod, $data, $urlOptions, $exception, $return);
 
 		//チェック
-		$pattern = '/' . preg_quote('TestSuite/WorkflowControllerDeleteTest/delete.ctp', '/') . '/';
-		$this->assertRegExp($pattern, $result->view);
-		$this->assertEquals(1, $result->controller->viewVars['workflowCommentCount']);
+		$this->assertEquals('delete_exception_error', $result->controller->view);
+
+		$header = $result->controller->response->header();
+		$assertUrl = Inflector::underscore('TestWorkflow') . '/' . Inflector::underscore('TestSuiteWorkflowControllerDeleteTest') . '/index';
+		$this->assertContains($assertUrl, $header['Location']);
 	}
 
 }
