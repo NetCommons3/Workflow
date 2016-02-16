@@ -48,21 +48,21 @@ class WorkflowComment extends WorkflowAppModel {
 				'notBlank' => array(
 					'rule' => array('notBlank'),
 					'message' => __d('net_commons', 'Invalid request.'),
-					'required' => true,
+					//'required' => true,
 				)
 			),
 			'block_key' => array(
 				'notBlank' => array(
 					'rule' => array('notBlank'),
 					'message' => __d('net_commons', 'Invalid request.'),
-					'required' => true,
+					//'required' => true,
 				)
 			),
 			'content_key' => array(
 				'notBlank' => array(
 					'rule' => array('notBlank'),
 					'message' => __d('net_commons', 'Invalid request.'),
-					'required' => true,
+					//'required' => true,
 				)
 			),
 			'comment' => array(
