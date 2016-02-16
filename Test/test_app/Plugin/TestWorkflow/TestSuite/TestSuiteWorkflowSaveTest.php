@@ -77,6 +77,34 @@ class TestSuiteWorkflowSaveTest extends WorkflowSaveTest {
  * @return mixed テスト結果
  */
 	public function testCallWorkflowBehavior($data) {
+		$this->setUp();
+
+		$model = $this->_modelName;
+		$this->$model = ClassRegistry::init(Inflector::camelize($this->plugin) . '.' . $model);
+		return parent::testCallWorkflowBehavior($data);
+	}
+
+/**
+ * Test to call WorkflowBehavior::beforeSave
+ *
+ * WorkflowBehaviorをモックに置き換えて登録処理を呼び出します。<br>
+ * WorkflowBehavior::beforeSaveが1回呼び出されることをテストします。<br>
+ * ##### 参考URL
+ * http://stackoverflow.com/questions/19833495/how-to-mock-a-cakephp-behavior-for-unit-testing]
+ *
+ * @param array $data 登録データ
+ * @dataProvider dataProviderSave
+ * @return mixed テスト結果
+ */
+	public function testCallWorkflowBehaviorOnExceptionError($data) {
+		$this->setUp();
+
+		$model = $this->_modelName;
+		$this->$model = ClassRegistry::init(Inflector::camelize($this->plugin) . '.' . $model);
+
+		$this->$model->Behaviors->unload('Workflow.Workflow');
+		unset($this->$model->actsAs['Workflow.Workflow']);
+
 		return parent::testCallWorkflowBehavior($data);
 	}
 
