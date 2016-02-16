@@ -27,6 +27,20 @@ class TestSuiteWorkflowSaveTest extends WorkflowSaveTest {
 	public $plugin = 'test_workflow';
 
 /**
+ * Model name
+ *
+ * @var array
+ */
+	protected $_modelName = 'TestSuiteWorkflowSaveTestModel';
+
+/**
+ * Method name
+ *
+ * @var array
+ */
+	protected $_methodName = 'save';
+
+/**
  * setUp method
  *
  * @return mixed テスト結果
@@ -43,6 +57,10 @@ class TestSuiteWorkflowSaveTest extends WorkflowSaveTest {
  * @return mixed テスト結果
  */
 	public function testSave($data) {
+		$this->setUp();
+
+		$model = $this->_modelName;
+		$this->$model = ClassRegistry::init(Inflector::camelize($this->plugin) . '.' . $model);
 		return parent::testSave($data);
 	}
 
