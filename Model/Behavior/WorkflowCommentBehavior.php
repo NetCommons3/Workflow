@@ -95,7 +95,9 @@ class WorkflowCommentBehavior extends ModelBehavior {
  * @return array
  */
 	public function getCommentsByContentKey(Model $model, $contentKey) {
-		$model->WorkflowComment = ClassRegistry::init('Workflow.WorkflowComment');
+		$model->loadModels(array(
+			'WorkflowComment' => 'Workflow.WorkflowComment',
+		));
 
 		if (! $contentKey) {
 			return array();
