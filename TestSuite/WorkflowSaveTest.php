@@ -34,7 +34,7 @@ class WorkflowSaveTest extends NetCommonsSaveTest {
 	}
 
 /**
- * Saveのテスト
+ * Save(公開)のテスト
  *
  * @param array $data 登録データ
  * @dataProvider dataProviderSave
