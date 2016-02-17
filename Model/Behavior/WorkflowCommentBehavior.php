@@ -10,6 +10,7 @@
  */
 
 App::uses('ModelBehavior', 'Model');
+App::uses('WorkflowComponent', 'Workflow.Controller/Component');
 
 /**
  * WorkflowComment Behavior
@@ -39,11 +40,9 @@ class WorkflowCommentBehavior extends ModelBehavior {
 		));
 
 		//コメントの登録(ステータス 差し戻しのみコメント必須)
-		if (! isset($model->data[$model->alias]['status'])) {
-			$model->data[$model->alias]['status'] = null;
-		}
+		$model->data[$model->alias]['status'] = Hash::get($model->data, $model->alias . '.status');
 		if ($model->data[$model->alias]['status'] === WorkflowComponent::STATUS_DISAPPROVED ||
-				isset($model->data['WorkflowComment']['comment']) && $model->data['WorkflowComment']['comment'] !== '') {
+				Hash::get($model->data, 'WorkflowComment.comment', '') !== '') {
 
 			$model->WorkflowComment->set($model->data['WorkflowComment']);
 			$model->WorkflowComment->validates();
