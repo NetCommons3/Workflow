@@ -68,7 +68,7 @@ class TestSuiteWorkflowControllerDeleteTestTestDeleteGetTest extends NetCommonsC
 		//チェック
 		$pattern = '/' . preg_quote('TestSuite/WorkflowControllerDeleteTest/delete.ctp', '/') . '/';
 		$this->assertRegExp($pattern, $result->view);
-		$this->assertEquals(1, $result->controller->viewVars['workflowCommentCount']);
+		$this->assertEquals(2, $result->controller->viewVars['workflowCommentCount']);
 	}
 
 }
