@@ -78,7 +78,7 @@ class WorkflowComponentInitializeTest extends NetCommonsControllerTestCase {
 		));
 
 		//チェック
-		$pattern = '/' . preg_quote('Controller/Component/WorkflowComponent', '/') . '/';
+		$pattern = '/' . preg_quote('Controller/Component/TestWorkflowComponent', '/') . '/';
 		$this->assertRegExp($pattern, $this->view);
 		$this->assertNotEmpty(get_class($this->controller->Workflow->controller));
 	}

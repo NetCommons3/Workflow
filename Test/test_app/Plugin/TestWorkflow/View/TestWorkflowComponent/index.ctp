@@ -10,4 +10,4 @@
  */
 ?>
 
-Controller/Component/WorkflowComponent
+Controller/Component/TestWorkflowComponent
