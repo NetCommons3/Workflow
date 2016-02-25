@@ -237,17 +237,24 @@ class WorkflowHelper extends AppHelper {
 
 		//ボタンサイズ
 		$sizeAttr = Hash::get($options, 'iconSize', '');
+		if ($sizeAttr) {
+			$sizeAttr = ' ' . $sizeAttr;
+		}
 		$options = Hash::remove($options, 'iconSize');
 
 		//Linkオプションの設定
-		$inputOptions = Hash::merge(array(
-			'icon' => 'ok',
-			'iconSize' => '',
-			'name' => 'save_' . WorkflowComponent::STATUS_PUBLISHED,
-			'escapeTitle' => false,
-			'class' => 'btn btn-warning ' . $sizeAttr
-		), $options);
-		if (! $inputOptions['escapeTitle']) {
+		$inputOptions = Hash::merge(
+			array(
+				'icon' => 'ok',
+				'name' => 'save_' . WorkflowComponent::STATUS_PUBLISHED,
+				'class' => 'btn btn-warning' . $sizeAttr
+			),
+			$options,
+			array(
+				'escapeTitle' => false,
+			)
+		);
+		if (Hash::get($options, 'escapeTitle', true)) {
 			$title = h($title);
 		}
 
