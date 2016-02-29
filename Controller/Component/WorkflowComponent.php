@@ -77,14 +77,13 @@ class WorkflowComponent extends Component {
  * @throws BadRequestException
  */
 	public function parseStatus() {
-		if ($matches = preg_grep('/^save_\d/', array_keys($this->controller->data))) {
+		$matches = preg_grep('/^save_\d/', array_keys($this->controller->data));
+		if ($matches) {
 			list(, $status) = explode('_', array_shift($matches));
+			return $status;
 		} else {
-			$this->controller->setAction('throwBadRequest');
-			return false;
+			return $this->controller->setAction('throwBadRequest');
 		}
-
-		return $status;
 	}
 
 /**
