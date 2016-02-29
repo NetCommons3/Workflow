@@ -63,6 +63,7 @@ class WorkflowViewElementsIndexTest extends NetCommonsControllerTestCase {
 /**
  * viewのアサーション
  *
+ * @param string $assert assertメソッド名
  * @return void
  */
 	private function __assertIndex($assert) {

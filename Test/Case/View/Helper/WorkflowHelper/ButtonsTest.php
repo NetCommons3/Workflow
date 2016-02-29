@@ -128,9 +128,11 @@ class WorkflowHelperButtonsTest extends NetCommonsHelperTestCase {
  * @param bool $panel パネルのタグを有無
  * @param string $cancelUrl キャンセルURL
  * @param string $backUrl 戻るURL
+ * @param bool $disapproval 差し戻しかどうか
+ * @param bool $approval 決定かどうか
  * @return void
  */
-	public function __assertButtons($result, $panel, $cancelUrl, $backUrl, $disapproval, $approval) {
+	private function __assertButtons($result, $panel, $cancelUrl, $backUrl, $disapproval, $approval) {
 		//パネルのチェック
 		if ($panel) {
 			$this->assertTextContains('<div class="panel-footer text-center">', $result);

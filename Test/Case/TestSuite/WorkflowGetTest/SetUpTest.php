@@ -54,7 +54,7 @@ class TestSuiteWorkflowGetTestSetUpTest extends NetCommonsCakeTestCase {
  */
 	public function testSetUp() {
 		//テスト実施
-		$result = $this->TestSuite->setUp();
+		$this->TestSuite->setUp();
 
 		//チェック
 		$this->assertEquals('2', Current::read('Block.id'));

@@ -69,12 +69,12 @@ class WorkflowBehavior extends ModelBehavior {
 			return true;
 		}
 
-		if (! $this->__hasSaveField($model, array('status', 'is_active', 'is_latest'), false)) {
+		if (! $this->__hasSaveField($model, array('status', 'is_active', 'is_latest'))) {
 			return true;
 		}
-		if ($this->__hasSaveField($model, array('key', 'language_id'), true)) {
+		if ($this->__hasSaveField($model, array('key', 'language_id'))) {
 			$originalField = 'key';
-			if (! $model->data[$model->alias][$originalField]) {
+			if (! Hash::get($model->data[$model->alias], $originalField)) {
 				//OriginalKeyBehaviorでセットされるはずなので、falseで返却
 				return false;
 			}
@@ -173,17 +173,13 @@ class WorkflowBehavior extends ModelBehavior {
  *
  * @param Model $model instance of model
  * @param mixed $needle The searched value.
- * @param bool $required $model->dataにkeyを必須とするか
  * @return bool True if $model has the required fields
  */
-	private function __hasSaveField(Model $model, $needle, $required) {
+	private function __hasSaveField(Model $model, $needle) {
 		$fields = is_string($needle) ? array($needle) : $needle;
 
 		foreach ($fields as $key) {
 			if (! $model->hasField($key)) {
-				return false;
-			}
-			if ($required && ! array_key_exists($key, $model->data[$model->alias])) {
 				return false;
 			}
 		}

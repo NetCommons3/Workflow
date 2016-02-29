@@ -29,15 +29,6 @@ class TestSuiteWorkflowControllerDeleteTestController extends AppController {
 	);
 
 /**
- * index
- *
- * @return void
- */
-	public function index() {
-		$this->autoRender = true;
-	}
-
-/**
  * delete
  *
  * @return void

@@ -20,15 +20,6 @@ App::uses('AppController', 'Controller');
 class TestSuiteWorkflowControllerEditTestController extends AppController {
 
 /**
- * index
- *
- * @return void
- */
-	public function index() {
-		$this->autoRender = true;
-	}
-
-/**
  * edit
  *
  * @return void
