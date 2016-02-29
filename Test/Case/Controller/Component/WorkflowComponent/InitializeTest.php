@@ -73,7 +73,7 @@ class WorkflowComponentInitializeTest extends NetCommonsControllerTestCase {
 		$this->assertEmpty($this->controller->Workflow->controller);
 
 		//テスト実行
-		$this->_testNcAction('/test_workflow/test_workflow_component/index',
+		$this->_testGetAction('/test_workflow/test_workflow_component/index',
 				array('method' => 'assertNotEmpty'), null, 'view');
 
 		//チェック

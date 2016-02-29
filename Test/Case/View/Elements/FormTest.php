@@ -54,7 +54,7 @@ class WorkflowViewElementsFormTest extends NetCommonsControllerTestCase {
  */
 	public function testForm() {
 		//テスト実行
-		$this->_testNcAction('/test_workflow/test_view_elements_form/form',
+		$this->_testGetAction('/test_workflow/test_view_elements_form/form',
 				array('method' => 'assertNotEmpty'), null, 'view');
 
 		//チェック
@@ -73,7 +73,7 @@ class WorkflowViewElementsFormTest extends NetCommonsControllerTestCase {
  */
 	public function testContentPublishableAndApproval() {
 		//テスト実行
-		$this->_testNcAction('/test_workflow/test_view_elements_form/form_content_publishable',
+		$this->_testGetAction('/test_workflow/test_view_elements_form/form_content_publishable',
 				array('method' => 'assertNotEmpty'), null, 'view');
 
 		//チェック

@@ -55,7 +55,7 @@ class WorkflowHelperBeforeRenderTest extends NetCommonsControllerTestCase {
 		$this->generateNc('TestWorkflow.TestWorkflowHelperBeforeRender');
 
 		//テスト実行
-		$this->_testNcAction('/test_workflow/test_workflow_helper_before_render/index',
+		$this->_testGetAction('/test_workflow/test_workflow_helper_before_render/index',
 				array('method' => 'assertNotEmpty'), null, 'view');
 
 		//チェック

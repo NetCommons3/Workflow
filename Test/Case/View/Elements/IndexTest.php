@@ -90,7 +90,7 @@ class WorkflowViewElementsIndexTest extends NetCommonsControllerTestCase {
 		TestAuthGeneral::login($this);
 
 		//テスト実行
-		$this->_testNcAction('/test_workflow/test_view_elements_index/index',
+		$this->_testGetAction('/test_workflow/test_view_elements_index/index',
 				array('method' => 'assertNotEmpty'), null, 'view');
 
 		//チェック
@@ -110,7 +110,7 @@ class WorkflowViewElementsIndexTest extends NetCommonsControllerTestCase {
 		TestAuthGeneral::login($this);
 
 		//テスト実行
-		$this->_testNcAction('/test_workflow/test_view_elements_index/index_no_comment',
+		$this->_testGetAction('/test_workflow/test_view_elements_index/index_no_comment',
 				array('method' => 'assertNotEmpty'), null, 'view');
 
 		//チェック
@@ -129,7 +129,7 @@ class WorkflowViewElementsIndexTest extends NetCommonsControllerTestCase {
 		TestAuthGeneral::login($this);
 
 		//テスト実行
-		$this->_testNcAction('/test_workflow/test_view_elements_index/index_paginator',
+		$this->_testGetAction('/test_workflow/test_view_elements_index/index_paginator',
 				array('method' => 'assertNotEmpty'), null, 'view');
 
 		//チェック
