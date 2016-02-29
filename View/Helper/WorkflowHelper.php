@@ -28,7 +28,7 @@ class WorkflowHelper extends AppHelper {
 	public $helpers = array(
 		'Form',
 		'Html',
-		'NetCommons.Button',
+		'NetCommons.LinkButton',
 		'NetCommons.NetCommonsForm',
 		'NetCommons.NetCommonsHtml',
 	);
@@ -311,7 +311,7 @@ class WorkflowHelper extends AppHelper {
 		}
 		$url = Hash::merge($defaultUrl, $url);
 
-		$output = $this->Button->addLink($title, $url, $options);
+		$output = $this->LinkButton->add($title, $url, $options);
 		return $output;
 	}
 
