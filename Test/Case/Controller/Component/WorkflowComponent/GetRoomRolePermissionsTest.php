@@ -51,9 +51,8 @@ class WorkflowComponentGetRoomRolePermissionsTest extends NetCommonsControllerTe
 		TestAuthGeneral::login($this);
 
 		//テストアクション実行
-		$this->_testNcAction('/test_workflow/test_workflow_component/index', array(
-			'method' => 'get'
-		));
+		$this->_testNcAction('/test_workflow/test_workflow_component/index',
+				array('method' => 'assertNotEmpty'), null, 'view');
 		$pattern = '/' . preg_quote('Controller/Component/TestWorkflowComponent', '/') . '/';
 		$this->assertRegExp($pattern, $this->view);
 	}

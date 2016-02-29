@@ -70,9 +70,8 @@ class WorkflowComponentStartupTest extends NetCommonsControllerTestCase {
 		TestAuthGeneral::login($this);
 
 		//テスト実行
-		$this->_testNcAction('/test_workflow/test_workflow_component/index', array(
-			'method' => 'get'
-		));
+		$this->_testNcAction('/test_workflow/test_workflow_component/index',
+				array('method' => 'assertNotEmpty'), null, 'view');
 
 		//チェック
 		$pattern = '/' . preg_quote('Controller/Component/TestWorkflowComponent', '/') . '/';
