@@ -24,7 +24,9 @@ class TestSuiteWorkflowSaveTestSetUpTest extends NetCommonsCakeTestCase {
  *
  * @var array
  */
-	public $fixtures = array();
+	public $fixtures = array(
+		'plugin.workflow.test_suite_workflow_save_test_model',
+	);
 
 /**
  * Plugin name
