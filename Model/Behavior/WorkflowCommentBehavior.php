@@ -67,13 +67,13 @@ class WorkflowCommentBehavior extends ModelBehavior {
  * @see Model::save()
  */
 	public function afterSave(Model $model, $created, $options = array()) {
-		if (! isset($model->data['WorkflowComment']) || ! $model->data['WorkflowComment']['comment']) {
-			return true;
-		}
-
 		$model->loadModels([
 			'WorkflowComment' => 'Workflow.WorkflowComment',
 		]);
+
+		if (! Hash::get($model->data, 'WorkflowComment.comment')) {
+			return true;
+		}
 
 		$model->data['WorkflowComment']['plugin_key'] = Inflector::underscore($model->plugin);
 		$model->data['WorkflowComment']['block_key'] = $model->data['Block']['key'];
