@@ -72,12 +72,11 @@ class WorkflowBehavior extends ModelBehavior {
 		if (! $this->__hasSaveField($model, array('status', 'is_active', 'is_latest'), false)) {
 			return true;
 		}
-		if ($this->__hasSaveField($model, array('origin_id', 'language_id'), true)) {
-			$originalField = 'origin_id';
-		} elseif ($this->__hasSaveField($model, array('key', 'language_id'), true)) {
+		if ($this->__hasSaveField($model, array('key', 'language_id'), true)) {
 			$originalField = 'key';
 			if (! $model->data[$model->alias][$originalField]) {
-				return true;
+				//OriginalKeyBehaviorでセットされるはずなので、falseで返却
+				return false;
 			}
 		} else {
 			return true;
@@ -174,17 +173,17 @@ class WorkflowBehavior extends ModelBehavior {
  *
  * @param Model $model instance of model
  * @param mixed $needle The searched value.
- * @param bool $validateData True on validate data.
+ * @param bool $required $model->dataにkeyを必須とするか
  * @return bool True if $model has the required fields
  */
-	private function __hasSaveField(Model $model, $needle, $validateData) {
+	private function __hasSaveField(Model $model, $needle, $required) {
 		$fields = is_string($needle) ? array($needle) : $needle;
 
 		foreach ($fields as $key) {
 			if (! $model->hasField($key)) {
 				return false;
 			}
-			if ($validateData && ! array_key_exists($key, $model->data[$model->alias])) {
+			if ($required && ! array_key_exists($key, $model->data[$model->alias])) {
 				return false;
 			}
 		}
