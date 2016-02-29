@@ -59,35 +59,47 @@ class WorkflowComponent extends Component {
 	}
 
 /**
+ * Called after the Controller::beforeFilter() and before the controller action
+ *
+ * @param Controller $controller Controller with components to startup
+ * @return void
+ */
+	public function startup(Controller $controller) {
+		if (! in_array('Users.DisplayUser', $controller->helpers, true)) {
+			$controller->helpers[] = 'Users.DisplayUser';
+		}
+	}
+
+/**
  * Parse content status from request
  *
  * @return mixed status on success, false on error
  * @throws BadRequestException
  */
 	public function parseStatus() {
-		if ($matches = preg_grep('/^save_\d/', array_keys($this->controller->data))) {
+		$matches = preg_grep('/^save_\d/', array_keys($this->controller->data));
+		if ($matches) {
 			list(, $status) = explode('_', array_shift($matches));
+			return $status;
 		} else {
-			$this->controller->setAction('throwBadRequest');
-			return false;
+			return $this->controller->setAction('throwBadRequest');
 		}
-
-		return $status;
 	}
 
 /**
  * Return all statuses
+ * 後で削除予定
  *
  * @return array status on success, false on error
  */
-	public static function getStatuses() {
-		return array(
-			self::STATUS_PUBLISHED => __d('net_commons', 'Published'),
-			self::STATUS_APPROVED => __d('net_commons', 'Approving'),
-			self::STATUS_IN_DRAFT => __d('net_commons', 'Temporary'),
-			self::STATUS_DISAPPROVED => __d('net_commons', 'Disapproving'),
-		);
-	}
+	//public static function getStatuses() {
+	//	return array(
+	//		self::STATUS_PUBLISHED => __d('net_commons', 'Published'),
+	//		self::STATUS_APPROVED => __d('net_commons', 'Approving'),
+	//		self::STATUS_IN_DRAFT => __d('net_commons', 'Temporary'),
+	//		self::STATUS_DISAPPROVED => __d('net_commons', 'Disapproving'),
+	//	);
+	//}
 
 /**
  * Function to get the data of BlockRolePermmissions.

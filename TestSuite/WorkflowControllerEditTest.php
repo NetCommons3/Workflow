@@ -20,16 +20,6 @@ App::uses('WorkflowComponent', 'Workflow.Controller/Component');
 class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
 
 /**
- * setUp method
- *
- * @return void
- */
-	public function setUp() {
-		parent::setUp();
-		$this->generateNc(Inflector::camelize($this->_controller));
-	}
-
-/**
  * editアクションのGETテスト
  *
  * @param array $urlOptions URLオプション
@@ -102,7 +92,7 @@ class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
  */
 	public function testEditGetByPublishable($urlOptions, $assert, $exception = null, $return = 'view') {
 		//ログイン
-		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR);
+		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_CHIEF_EDITOR);
 
 		$this->testEditGet($urlOptions, $assert, $exception, $return);
 

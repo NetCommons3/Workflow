@@ -45,18 +45,27 @@ class WorkflowCommentFixture extends CakeTestFixture {
  */
 	public $records = array(
 		array(
-			'id' => 1,
+			'id' => '1',
 			'plugin_key' => 'comments',
 			'block_key' => 'block_1',
 			'content_key' => 'comment_content_1',
-			'comment' => 'WorkflowComment data',
-			'created_user' => 1,
+			'comment' => 'WorkflowComment data 1',
+			'created_user' => '1',
 			'created' => '2014-11-19 07:17:01',
-			'modified_user' => 1,
+			'modified_user' => '1',
 			'modified' => '2014-11-19 07:17:01'
 		),
-
-		//2-102は、ページ遷移のため
+		array(
+			'id' => '2',
+			'plugin_key' => 'comments',
+			'block_key' => 'block_1',
+			'content_key' => 'comment_content_1',
+			'comment' => 'WorkflowComment data 2',
+			'created_user' => '1',
+			'created' => '2014-11-19 07:17:01',
+			'modified_user' => '1',
+			'modified' => '2014-11-19 07:17:01'
+		),
 	);
 
 /**
@@ -67,20 +76,6 @@ class WorkflowCommentFixture extends CakeTestFixture {
  * @codeCoverageIgnore
  */
 	public function init() {
-		//$default = array(
-		//	'plugin_key' => 'comments',
-		//	'block_key' => 'block_1',
-		//	'content_key' => 'comment_content_2',
-		//	'comment' => 'WorkflowComment %s',
-		//	'created_user' => '1',
-		//	'created' => '2014-10-09 16:07:57',
-		//);
-		//for ($i = 0; $i <= 100; $i++) {
-		//	$comments = array_merge(array(), $default);
-		//	$comments['comment'] = sprintf($comments['comment'], $i);
-		//	$this->records[] = $comments;
-		//}
-
 		if (class_exists('NetCommonsTestSuite') && NetCommonsTestSuite::$plugin) {
 			$records = array_keys($this->records);
 			foreach ($records as $i) {

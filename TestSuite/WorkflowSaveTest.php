@@ -34,7 +34,7 @@ class WorkflowSaveTest extends NetCommonsSaveTest {
 	}
 
 /**
- * Saveのテスト
+ * Save(公開)のテスト
  *
  * @param array $data 登録データ
  * @dataProvider dataProviderSave
@@ -119,10 +119,16 @@ class WorkflowSaveTest extends NetCommonsSaveTest {
  * @param array $data 登録データ
  * @dataProvider dataProviderSave
  * @return void
+ * @throws CakeException Workflow.Workflowがロードされていないとエラー
  */
 	public function testCallWorkflowBehavior($data) {
 		$model = $this->_modelName;
 		$method = $this->_methodName;
+
+		if (! $this->$model->Behaviors->loaded('Workflow.Workflow')) {
+			$error = '"Workflow.Workflow" not loaded in ' . $this->$model->alias . '.';
+			throw new CakeException($error);
+		};
 
 		ClassRegistry::removeObject('WorkflowBehavior');
 		$workflowBehaviorMock = $this->getMock('WorkflowBehavior', ['beforeSave']);

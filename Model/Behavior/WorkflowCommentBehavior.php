@@ -10,6 +10,7 @@
  */
 
 App::uses('ModelBehavior', 'Model');
+App::uses('WorkflowComponent', 'Workflow.Controller/Component');
 
 /**
  * WorkflowComment Behavior
@@ -39,11 +40,9 @@ class WorkflowCommentBehavior extends ModelBehavior {
 		));
 
 		//コメントの登録(ステータス 差し戻しのみコメント必須)
-		if (! isset($model->data[$model->alias]['status'])) {
-			$model->data[$model->alias]['status'] = null;
-		}
+		$model->data[$model->alias]['status'] = Hash::get($model->data, $model->alias . '.status');
 		if ($model->data[$model->alias]['status'] === WorkflowComponent::STATUS_DISAPPROVED ||
-				isset($model->data['WorkflowComment']['comment']) && $model->data['WorkflowComment']['comment'] !== '') {
+				Hash::get($model->data, 'WorkflowComment.comment', '') !== '') {
 
 			$model->WorkflowComment->set($model->data['WorkflowComment']);
 			$model->WorkflowComment->validates();
@@ -68,13 +67,13 @@ class WorkflowCommentBehavior extends ModelBehavior {
  * @see Model::save()
  */
 	public function afterSave(Model $model, $created, $options = array()) {
-		if (! isset($model->data['WorkflowComment']) || ! $model->data['WorkflowComment']['comment']) {
-			return true;
-		}
-
 		$model->loadModels([
 			'WorkflowComment' => 'Workflow.WorkflowComment',
 		]);
+
+		if (! Hash::get($model->data, 'WorkflowComment.comment')) {
+			return true;
+		}
 
 		$model->data['WorkflowComment']['plugin_key'] = Inflector::underscore($model->plugin);
 		$model->data['WorkflowComment']['block_key'] = $model->data['Block']['key'];
@@ -95,7 +94,9 @@ class WorkflowCommentBehavior extends ModelBehavior {
  * @return array
  */
 	public function getCommentsByContentKey(Model $model, $contentKey) {
-		$model->WorkflowComment = ClassRegistry::init('Workflow.WorkflowComment');
+		$model->loadModels(array(
+			'WorkflowComment' => 'Workflow.WorkflowComment',
+		));
 
 		if (! $contentKey) {
 			return array();

@@ -11,6 +11,7 @@
 
 App::uses('ModelBehavior', 'Model');
 App::uses('WorkflowComponent', 'Workflow.Controller/Component');
+App::uses('NetCommonsTime', 'NetCommons.Utility');
 
 /**
  * Workflow Behavior
@@ -68,15 +69,14 @@ class WorkflowBehavior extends ModelBehavior {
 			return true;
 		}
 
-		if (! $this->__hasSaveField($model, array('status', 'is_active', 'is_latest'), false)) {
+		if (! $this->__hasSaveField($model, array('status', 'is_active', 'is_latest'))) {
 			return true;
 		}
-		if ($this->__hasSaveField($model, array('origin_id', 'language_id'), true)) {
-			$originalField = 'origin_id';
-		} elseif ($this->__hasSaveField($model, array('key', 'language_id'), true)) {
+		if ($this->__hasSaveField($model, array('key', 'language_id'))) {
 			$originalField = 'key';
-			if (! $model->data[$model->alias][$originalField]) {
-				return true;
+			if (! Hash::get($model->data[$model->alias], $originalField)) {
+				//OriginalKeyBehaviorでセットされるはずなので、falseで返却
+				return false;
 			}
 		} else {
 			return true;
@@ -173,17 +173,13 @@ class WorkflowBehavior extends ModelBehavior {
  *
  * @param Model $model instance of model
  * @param mixed $needle The searched value.
- * @param bool $validateData True on validate data.
  * @return bool True if $model has the required fields
  */
-	private function __hasSaveField(Model $model, $needle, $validateData) {
+	private function __hasSaveField(Model $model, $needle) {
 		$fields = is_string($needle) ? array($needle) : $needle;
 
 		foreach ($fields as $key) {
 			if (! $model->hasField($key)) {
-				return false;
-			}
-			if ($validateData && ! array_key_exists($key, $model->data[$model->alias])) {
 				return false;
 			}
 		}
@@ -261,31 +257,35 @@ class WorkflowBehavior extends ModelBehavior {
 	}
 
 /**
- * Check creatable permission
+ * コンテンツの閲覧権限があるかどうかのチェック
+ * - 閲覧権限あり(content_readable)
  *
  * @param Model $model Model using this behavior
- * @return array Conditions data
+ * @return bool true:閲覧可、false:閲覧不可
  */
 	public function canReadWorkflowContent(Model $model) {
 		return Current::permission('content_readable');
 	}
 
 /**
- * Check creatable permission
+ * コンテンツの作成権限があるかどうかのチェック
+ * - 作成権限あり(content_creatable)
  *
  * @param Model $model Model using this behavior
- * @return array Conditions data
+ * @return bool true:作成可、false:作成不可
  */
 	public function canCreateWorkflowContent(Model $model) {
 		return Current::permission('content_creatable');
 	}
 
 /**
- * Check editable permission
+ * コンテンツの編集権限があるかどうかのチェック
+ * - 編集権限あり(content_editable)
+ * - 自分自身のコンテンツ
  *
  * @param Model $model Model using this behavior
- * @param array $data Check content data
- * @return array Conditions data
+ * @param array $data コンテンツデータ
+ * @return bool true:編集可、false:編集不可
  */
 	public function canEditWorkflowContent(Model $model, $data) {
 		if (Current::permission('content_editable')) {
@@ -301,11 +301,13 @@ class WorkflowBehavior extends ModelBehavior {
 	}
 
 /**
- * Check deletable permission
+ * コンテンツの公開権限があるかどうかのチェック
+ * - 公開権限あり(content_publishable) and 編集権限あり(content_editable)
+ * - 自分自身のコンテンツ＋一度も公開されていない
  *
  * @param Model $model Model using this behavior
- * @param array $data Check content data
- * @return array Conditions data
+ * @param array $data コンテンツデータ
+ * @return bool true:削除可、false:削除不可
  */
 	public function canDeleteWorkflowContent(Model $model, $data) {
 		if (Current::permission('content_publishable')) {
@@ -321,9 +323,7 @@ class WorkflowBehavior extends ModelBehavior {
 		$conditions = array(
 			'is_active' => true,
 		);
-		if ($model->hasField('origin_id') && isset($data[$model->alias]['origin_id'])) {
-			$conditions['origin_id'] = $data[$model->alias]['origin_id'];
-		} elseif ($model->hasField('key') && isset($data[$model->alias]['key'])) {
+		if ($model->hasField('key') && isset($data[$model->alias]['key'])) {
 			$conditions['key'] = $data[$model->alias]['key'];
 		} else {
 			return false;

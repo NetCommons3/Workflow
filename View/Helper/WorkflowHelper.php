@@ -10,6 +10,7 @@
  */
 
 App::uses('AppHelper', 'View/Helper');
+App::uses('WorkflowComponent', 'Workflow.Controller/Component');
 
 /**
  * Workflow Helper
@@ -27,7 +28,7 @@ class WorkflowHelper extends AppHelper {
 	public $helpers = array(
 		'Form',
 		'Html',
-		'NetCommons.Button',
+		'NetCommons.LinkButton',
 		'NetCommons.NetCommonsForm',
 		'NetCommons.NetCommonsHtml',
 	);
@@ -46,11 +47,11 @@ class WorkflowHelper extends AppHelper {
 	}
 
 /**
- * Output status label url
+ * ステータスのラベル
  *
- * @param int $status Status value
+ * @param int $status スータス
  * @param array $labels Overwrite Status labels
- * @return string Cancel url
+ * @return string ラベルHTML
  */
 	public function label($status, $labels = array()) {
 		if (empty($labels)) {
@@ -88,7 +89,7 @@ class WorkflowHelper extends AppHelper {
  * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
 	public function buttons($statusFieldName, $cancelUrl = null, $panel = true, $backUrl = null) {
-		$status = Hash::get($this->data, $statusFieldName);
+		$status = Hash::get($this->_View->data, $statusFieldName);
 
 		$output = '';
 		if ($panel) {
@@ -192,12 +193,12 @@ class WorkflowHelper extends AppHelper {
 /**
  * Check editable permission
  *
- * @param string $name This should be "Pluginname.Modelname"
+ * @param string $model This should be "Pluginname.Modelname"
  * @param array $data Model data
  * @return bool True is editable data
  */
-	public function canEdit($name, $data) {
-		list($plugin, $model) = pluginSplit($name);
+	public function canEdit($model, $data) {
+		list($plugin, $model) = pluginSplit($model);
 		if (! $plugin) {
 			$plugin = Inflector::pluralize(Inflector::classify($this->request->params['plugin']));
 		}
@@ -209,12 +210,12 @@ class WorkflowHelper extends AppHelper {
 /**
  * Check deletable permission
  *
- * @param string $name This should be "Pluginname.Modelname"
+ * @param string $model This should be "Pluginname.Modelname"
  * @param array $data Model data
  * @return bool True is editable data
  */
-	public function canDelete($name, $data) {
-		list($plugin, $model) = pluginSplit($name);
+	public function canDelete($model, $data) {
+		list($plugin, $model) = pluginSplit($model);
 		if (! $plugin) {
 			$plugin = Inflector::pluralize(Inflector::classify($this->request->params['plugin']));
 		}
@@ -236,17 +237,24 @@ class WorkflowHelper extends AppHelper {
 
 		//ボタンサイズ
 		$sizeAttr = Hash::get($options, 'iconSize', '');
+		if ($sizeAttr) {
+			$sizeAttr = ' ' . $sizeAttr;
+		}
 		$options = Hash::remove($options, 'iconSize');
 
 		//Linkオプションの設定
-		$inputOptions = Hash::merge(array(
-			'icon' => 'ok',
-			'iconSize' => '',
-			'name' => 'save_' . WorkflowComponent::STATUS_PUBLISHED,
-			'escapeTitle' => false,
-			'class' => 'btn btn-warning ' . $sizeAttr
-		), $options);
-		if (! $inputOptions['escapeTitle']) {
+		$inputOptions = Hash::merge(
+			array(
+				'icon' => 'ok',
+				'name' => 'save_' . WorkflowComponent::STATUS_PUBLISHED,
+				'class' => 'btn btn-warning' . $sizeAttr
+			),
+			$options,
+			array(
+				'escapeTitle' => false,
+			)
+		);
+		if (Hash::get($options, 'escapeTitle', true)) {
 			$title = h($title);
 		}
 
@@ -303,7 +311,7 @@ class WorkflowHelper extends AppHelper {
 		}
 		$url = Hash::merge($defaultUrl, $url);
 
-		$output = $this->Button->addLink($title, $url, $options);
+		$output = $this->LinkButton->add($title, $url, $options);
 		return $output;
 	}
 
