@@ -11,6 +11,7 @@
 
 App::uses('ModelBehavior', 'Model');
 App::uses('WorkflowComponent', 'Workflow.Controller/Component');
+App::uses('NetCommonsTime', 'NetCommons.Utility');
 
 /**
  * Workflow Behavior
