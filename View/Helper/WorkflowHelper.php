@@ -89,7 +89,7 @@ class WorkflowHelper extends AppHelper {
  * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
 	public function buttons($statusFieldName, $cancelUrl = null, $panel = true, $backUrl = null) {
-		$status = Hash::get($this->data, $statusFieldName);
+		$status = Hash::get($this->_View->data, $statusFieldName);
 
 		$output = '';
 		if ($panel) {
