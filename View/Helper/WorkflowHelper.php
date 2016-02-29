@@ -193,12 +193,12 @@ class WorkflowHelper extends AppHelper {
 /**
  * Check editable permission
  *
- * @param string $name This should be "Pluginname.Modelname"
+ * @param string $model This should be "Pluginname.Modelname"
  * @param array $data Model data
  * @return bool True is editable data
  */
-	public function canEdit($name, $data) {
-		list($plugin, $model) = pluginSplit($name);
+	public function canEdit($model, $data) {
+		list($plugin, $model) = pluginSplit($model);
 		if (! $plugin) {
 			$plugin = Inflector::pluralize(Inflector::classify($this->request->params['plugin']));
 		}
@@ -210,12 +210,12 @@ class WorkflowHelper extends AppHelper {
 /**
  * Check deletable permission
  *
- * @param string $name This should be "Pluginname.Modelname"
+ * @param string $model This should be "Pluginname.Modelname"
  * @param array $data Model data
  * @return bool True is editable data
  */
-	public function canDelete($name, $data) {
-		list($plugin, $model) = pluginSplit($name);
+	public function canDelete($model, $data) {
+		list($plugin, $model) = pluginSplit($model);
 		if (! $plugin) {
 			$plugin = Inflector::pluralize(Inflector::classify($this->request->params['plugin']));
 		}
