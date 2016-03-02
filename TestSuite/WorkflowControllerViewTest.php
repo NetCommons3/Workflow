@@ -54,7 +54,14 @@ class WorkflowControllerViewTest extends NetCommonsControllerTestCase {
 		//ログイン
 		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_GENERAL_USER);
 
-		$this->testView($urlOptions, $assert, $exception, $return);
+		//テスト実施
+		$url = Hash::merge(array(
+			'plugin' => $this->plugin,
+			'controller' => $this->_controller,
+			'action' => 'view',
+		), $urlOptions);
+
+		$this->_testGetAction($url, $assert, $exception, $return);
 
 		//ログアウト
 		TestAuthGeneral::logout($this);
@@ -74,7 +81,14 @@ class WorkflowControllerViewTest extends NetCommonsControllerTestCase {
 		//ログイン
 		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_EDITOR);
 
-		$this->testView($urlOptions, $assert, $exception, $return);
+		//テスト実施
+		$url = Hash::merge(array(
+			'plugin' => $this->plugin,
+			'controller' => $this->_controller,
+			'action' => 'view',
+		), $urlOptions);
+
+		$this->_testGetAction($url, $assert, $exception, $return);
 
 		//ログアウト
 		TestAuthGeneral::logout($this);

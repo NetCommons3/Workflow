@@ -54,7 +54,14 @@ class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
 		//ログイン
 		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_GENERAL_USER);
 
-		$this->testEditGet($urlOptions, $assert, $exception, $return);
+		//テスト実施
+		$url = Hash::merge(array(
+			'plugin' => $this->plugin,
+			'controller' => $this->_controller,
+			'action' => 'edit',
+		), $urlOptions);
+
+		$this->_testGetAction($url, $assert, $exception, $return);
 
 		//ログアウト
 		TestAuthGeneral::logout($this);
@@ -74,7 +81,14 @@ class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
 		//ログイン
 		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_EDITOR);
 
-		$this->testEditGet($urlOptions, $assert, $exception, $return);
+		//テスト実施
+		$url = Hash::merge(array(
+			'plugin' => $this->plugin,
+			'controller' => $this->_controller,
+			'action' => 'edit',
+		), $urlOptions);
+
+		$this->_testGetAction($url, $assert, $exception, $return);
 
 		//ログアウト
 		TestAuthGeneral::logout($this);
@@ -94,7 +108,14 @@ class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
 		//ログイン
 		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_CHIEF_EDITOR);
 
-		$this->testEditGet($urlOptions, $assert, $exception, $return);
+		//テスト実施
+		$url = Hash::merge(array(
+			'plugin' => $this->plugin,
+			'controller' => $this->_controller,
+			'action' => 'edit',
+		), $urlOptions);
+
+		$this->_testGetAction($url, $assert, $exception, $return);
 
 		//ログアウト
 		TestAuthGeneral::logout($this);
