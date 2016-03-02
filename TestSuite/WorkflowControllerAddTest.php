@@ -54,7 +54,14 @@ class WorkflowControllerAddTest extends NetCommonsControllerTestCase {
 		//ログイン
 		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_GENERAL_USER);
 
-		$this->testAddGet($urlOptions, $assert, $exception, $return);
+		//テスト実施
+		$url = Hash::merge(array(
+			'plugin' => $this->plugin,
+			'controller' => $this->_controller,
+			'action' => 'add',
+		), $urlOptions);
+
+		$this->_testGetAction($url, $assert, $exception, $return);
 
 		//ログアウト
 		TestAuthGeneral::logout($this);
