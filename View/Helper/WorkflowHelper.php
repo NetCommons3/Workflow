@@ -28,6 +28,7 @@ class WorkflowHelper extends AppHelper {
 	public $helpers = array(
 		'Form',
 		'Html',
+		'NetCommons.Button',
 		'NetCommons.LinkButton',
 		'NetCommons.NetCommonsForm',
 		'NetCommons.NetCommonsHtml',
@@ -100,51 +101,35 @@ class WorkflowHelper extends AppHelper {
 			$cancelUrl = NetCommonsUrl::backToIndexUrl();
 		}
 
-		$output .= $this->Html->link(
-			'<span class="glyphicon glyphicon-remove"></span> ' . __d('net_commons', 'Cancel'),
-			$cancelUrl,
-			array('class' => 'btn btn-default btn-workflow', 'escape' => false)
-		);
-
-		if (isset($backUrl)) {
-			$output .= $this->Html->link(
-				'<span class="glyphicon glyphicon-chevron-left"></span> ' . __d('net_commons', 'BACK'),
-				$backUrl,
-				array('class' => 'btn btn-default btn-workflow', 'escape' => false)
+		if (Current::permission('content_publishable') && $status === WorkflowComponent::STATUS_APPROVED) {
+			$saveTempOptions = array(
+				'label' => __d('net_commons', 'Disapproval'),
+				'class' => 'btn btn-warning btn-workflow',
+				'name' => 'save_' . WorkflowComponent::STATUS_DISAPPROVED,
+			);
+		} else {
+			$saveTempOptions = array(
+				'label' => __d('net_commons', 'Save temporally'),
+				'class' => 'btn btn-info btn-workflow',
+				'name' => 'save_' . WorkflowComponent::STATUS_IN_DRAFT,
 			);
 		}
 
-		if (Current::permission('content_publishable') && $status === WorkflowComponent::STATUS_APPROVED) {
-			$output .= $this->Form->button(
-				__d('net_commons', 'Disapproval'),
-				array(
-					'class' => 'btn btn-warning btn-workflow',
-					'name' => 'save_' . WorkflowComponent::STATUS_DISAPPROVED,
-				));
+		if (Current::permission('content_publishable')) {
+			$saveOptions = array(
+				'label' => __d('net_commons', 'OK'),
+				'class' => 'btn btn-primary btn-workflow',
+				'name' => 'save_' . WorkflowComponent::STATUS_PUBLISHED,
+			);
 		} else {
-			$output .= $this->Form->button(
-				__d('net_commons', 'Save temporally'),
-				array(
-					'class' => 'btn btn-info btn-workflow',
-					'name' => 'save_' . WorkflowComponent::STATUS_IN_DRAFT,
-				));
+			$saveOptions = array(
+				'label' => __d('net_commons', 'OK'),
+				'class' => 'btn btn-primary btn-workflow',
+				'name' => 'save_' . WorkflowComponent::STATUS_APPROVED,
+			);
 		}
 
-		if (Current::permission('content_publishable')) {
-			$output .= $this->Form->button(
-				__d('net_commons', 'OK'),
-				array(
-					'class' => 'btn btn-primary btn-workflow',
-					'name' => 'save_' . WorkflowComponent::STATUS_PUBLISHED,
-				));
-		} else {
-			$output .= $this->Form->button(
-				__d('net_commons', 'OK'),
-				array(
-					'class' => 'btn btn-primary btn-workflow',
-					'name' => 'save_' . WorkflowComponent::STATUS_APPROVED,
-				));
-		}
+		$output .= $this->Button->cancelAndSaveAndSaveTemp($cancelUrl, array(), $saveTempOptions, $saveOptions, $backUrl);
 
 		if ($panel) {
 			$output .= '</div>';
