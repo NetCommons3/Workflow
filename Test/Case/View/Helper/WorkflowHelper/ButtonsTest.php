@@ -141,7 +141,8 @@ class WorkflowHelperButtonsTest extends NetCommonsHelperTestCase {
 		}
 
 		//キャンセルのチェック
-		$expected = '<a href="' . $cancelUrl . '" class="btn btn-default btn-workflow">' .
+		$expected = '<a href="' . $cancelUrl . '" class="btn btn-default btn-workflow" ' .
+							'ng-class="{disabled: sending}" ng-click="sending=true">' .
 						'<span class="glyphicon glyphicon-remove"></span> ' . __d('net_commons', 'Cancel') .
 					'</a>';
 		$this->assertTextContains($expected, $result);
@@ -158,7 +159,7 @@ class WorkflowHelperButtonsTest extends NetCommonsHelperTestCase {
 		}
 
 		//一時保存のチェック
-		$expected = '<button class="btn btn-info btn-workflow" name="save_3" type="submit">' .
+		$expected = '<button class="btn btn-info btn-workflow" name="save_3" ng-class="{disabled: sending}" type="submit">' .
 						__d('net_commons', 'Save temporally') .
 					'</button>';
 		if ($disapproval) {
@@ -168,7 +169,7 @@ class WorkflowHelperButtonsTest extends NetCommonsHelperTestCase {
 		}
 
 		//差し戻しのチェック
-		$expected = '<button class="btn btn-warning btn-workflow" name="save_4" type="submit">' .
+		$expected = '<button class="btn btn-warning btn-workflow" name="save_4" ng-class="{disabled: sending}" type="submit">' .
 						__d('net_commons', 'Disapproval') .
 					'</button>';
 		if ($disapproval) {
@@ -178,7 +179,7 @@ class WorkflowHelperButtonsTest extends NetCommonsHelperTestCase {
 		}
 
 		//公開のチェック
-		$expected = '<button class="btn btn-primary btn-workflow" name="save_1" type="submit">' .
+		$expected = '<button class="btn btn-primary btn-workflow" name="save_1" ng-class="{disabled: sending}" type="submit">' .
 						__d('net_commons', 'OK') .
 					'</button>';
 		if ($approval) {
@@ -188,7 +189,7 @@ class WorkflowHelperButtonsTest extends NetCommonsHelperTestCase {
 		}
 
 		//申請のチェック
-		$expected = '<button class="btn btn-primary btn-workflow" name="save_2" type="submit">' .
+		$expected = '<button class="btn btn-primary btn-workflow" name="save_2" ng-class="{disabled: sending}" type="submit">' .
 						__d('net_commons', 'OK') .
 					'</button>';
 		if ($approval) {
