@@ -142,7 +142,7 @@ class WorkflowComponent extends Component {
 		$blockPermissions = $this->BlockRolePermission->find('all', array(
 			'recursive' => 0,
 			'conditions' => array(
-				'BlockRolePermission.roles_room_id' => $rolesRooms,
+				'BlockRolePermission.roles_room_id' => array_values($rolesRooms),
 				'BlockRolePermission.block_key' => $blockKey,
 				'BlockRolePermission.permission' => $permissions,
 			),
@@ -162,7 +162,9 @@ class WorkflowComponent extends Component {
 
 		//block_keyのセット
 		$results['BlockRolePermissions'] = Hash::insert($results['BlockRolePermissions'], '{s}.{s}.block_key', $blockKey);
-
+		foreach ($rolesRooms as $roleKey => $rolesRoomId) {
+			$results['BlockRolePermissions'] = Hash::insert($results['BlockRolePermissions'], '{s}.' . $roleKey . '.roles_room_id', $rolesRoomId);
+		}
 		return $results;
 	}
 
@@ -245,6 +247,7 @@ class WorkflowComponent extends Component {
 		//RolesRoomのIDリストを取得
 		$results['RolesRoom'] = $this->RolesRoom->find('list', array(
 			'recursive' => -1,
+			'fields' => array('role_key', 'id'),
 			'conditions' => array(
 				'RolesRoom.room_id' => $roomId,
 			),
