@@ -221,6 +221,7 @@ class WorkflowComponent extends Component {
 		//DefaultRolePermission取得
 		$defaultPermissions = $this->DefaultRolePermission->find('all', array(
 			'recursive' => -1,
+			'fields' => array('DefaultRolePermission.*', 'DefaultRolePermission.value AS default'),
 			'conditions' => array(
 				'DefaultRolePermission.type' => $type,
 				'DefaultRolePermission.permission' => $permissions,
