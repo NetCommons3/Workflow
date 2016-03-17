@@ -92,21 +92,22 @@ class WorkflowComponentGetBlockRolePermissionsTest extends NetCommonsControllerT
 
 		//チェック
 		$this->__assertGetBlockRolePermissions($result, $permissions[0]);
-		$this->__assertBlockRolePermission($result, array(
-			'id' => '1', 'roles_room_id' => '1', 'role_key' => 'room_administrator', 'value' => true, 'fixed' => true
-		), $permissions[0]);
-		$this->__assertBlockRolePermission($result, array(
-			'id' => '2', 'roles_room_id' => '2', 'role_key' => 'chief_editor', 'value' => false, 'fixed' => false
-		), $permissions[0]);
-		$this->__assertBlockRolePermission($result, array(
-			'id' => null, 'roles_room_id' => '3', 'role_key' => 'editor', 'value' => false, 'fixed' => false
-		), $permissions[0]);
-		$this->__assertBlockRolePermission($result, array(
-			'id' => null, 'roles_room_id' => '4', 'role_key' => 'general_user', 'value' => false, 'fixed' => true
-		), $permissions[0]);
-		$this->__assertBlockRolePermission($result, array(
-			'id' => null, 'roles_room_id' => '5', 'role_key' => 'visitor', 'value' => false, 'fixed' => true
-		), $permissions[0]);
+	}
+
+/**
+ * getBlockRolePermissions()のテスト
+ *
+ * @return void
+ */
+	public function testGetBlockRolePermissionsByArgument() {
+		//テストデータ
+		$permissions = array('content_publishable');
+
+		//テスト実行
+		$result = $this->controller->Workflow->getBlockRolePermissions($permissions, '1', 'block_1');
+
+		//チェック
+		$this->__assertGetBlockRolePermissions($result, $permissions[0]);
 	}
 
 /**
@@ -125,21 +126,6 @@ class WorkflowComponentGetBlockRolePermissionsTest extends NetCommonsControllerT
 
 		//チェック
 		$this->__assertGetBlockRolePermissions($result, $permissions[0]);
-		$this->__assertBlockRolePermission($result, array(
-			'id' => null, 'roles_room_id' => '1', 'role_key' => 'room_administrator', 'value' => true, 'fixed' => true
-		), $permissions[0]);
-		$this->__assertBlockRolePermission($result, array(
-			'id' => null, 'roles_room_id' => '2', 'role_key' => 'chief_editor', 'value' => true, 'fixed' => false
-		), $permissions[0]);
-		$this->__assertBlockRolePermission($result, array(
-			'id' => null, 'roles_room_id' => '3', 'role_key' => 'editor', 'value' => false, 'fixed' => false
-		), $permissions[0]);
-		$this->__assertBlockRolePermission($result, array(
-			'id' => null, 'roles_room_id' => '4', 'role_key' => 'general_user', 'value' => false, 'fixed' => true
-		), $permissions[0]);
-		$this->__assertBlockRolePermission($result, array(
-			'id' => null, 'roles_room_id' => '5', 'role_key' => 'visitor', 'value' => false, 'fixed' => true
-		), $permissions[0]);
 	}
 
 /**
@@ -157,6 +143,31 @@ class WorkflowComponentGetBlockRolePermissionsTest extends NetCommonsControllerT
 		);
 		$this->assertEquals($roles, array_keys($result['BlockRolePermissions'][$permission]));
 		$this->assertEquals($roles, array_keys($result['Roles']));
+		if ($permission === 'content_publishable') {
+			$this->__assertBlockRolePermission($result, array(
+				'id' => '1', 'roles_room_id' => '1', 'role_key' => 'room_administrator', 'value' => true, 'fixed' => true
+			), $permission);
+			$this->__assertBlockRolePermission($result, array(
+				'id' => '2', 'roles_room_id' => '2', 'role_key' => 'chief_editor', 'value' => false, 'fixed' => false
+			), $permission);
+		} else {
+			$this->__assertBlockRolePermission($result, array(
+				'id' => null, 'roles_room_id' => '1', 'role_key' => 'room_administrator', 'value' => true, 'fixed' => true
+			), $permission);
+			$this->__assertBlockRolePermission($result, array(
+				'id' => null, 'roles_room_id' => '2', 'role_key' => 'chief_editor', 'value' => true, 'fixed' => false
+			), $permission);
+		}
+
+		$this->__assertBlockRolePermission($result, array(
+			'id' => null, 'roles_room_id' => '3', 'role_key' => 'editor', 'value' => false, 'fixed' => false
+		), $permission);
+		$this->__assertBlockRolePermission($result, array(
+			'id' => null, 'roles_room_id' => '4', 'role_key' => 'general_user', 'value' => false, 'fixed' => true
+		), $permission);
+		$this->__assertBlockRolePermission($result, array(
+			'id' => null, 'roles_room_id' => '5', 'role_key' => 'visitor', 'value' => false, 'fixed' => true
+		), $permission);
 	}
 
 /**
@@ -164,6 +175,7 @@ class WorkflowComponentGetBlockRolePermissionsTest extends NetCommonsControllerT
  *
  * @param array $result 結果配列
  * @param array $excepted 期待値
+ * @param array string パーミッション
  * @return void
  */
 	private function __assertBlockRolePermission($result, $excepted, $permission) {
