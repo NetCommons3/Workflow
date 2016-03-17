@@ -100,18 +100,24 @@ class WorkflowHelper extends AppHelper {
 		if (! isset($cancelUrl)) {
 			$cancelUrl = NetCommonsUrl::backToIndexUrl();
 		}
+		$cancelOptions = array(
+			'ng-class' => '{disabled: sending}',
+			'ng-click' => 'sending=true',
+		);
 
 		if (Current::permission('content_publishable') && $status === WorkflowComponent::STATUS_APPROVED) {
 			$saveTempOptions = array(
 				'label' => __d('net_commons', 'Disapproval'),
 				'class' => 'btn btn-warning btn-workflow',
 				'name' => 'save_' . WorkflowComponent::STATUS_DISAPPROVED,
+				'ng-class' => '{disabled: sending}'
 			);
 		} else {
 			$saveTempOptions = array(
 				'label' => __d('net_commons', 'Save temporally'),
 				'class' => 'btn btn-info btn-workflow',
 				'name' => 'save_' . WorkflowComponent::STATUS_IN_DRAFT,
+				'ng-class' => '{disabled: sending}'
 			);
 		}
 
@@ -120,16 +126,18 @@ class WorkflowHelper extends AppHelper {
 				'label' => __d('net_commons', 'OK'),
 				'class' => 'btn btn-primary btn-workflow',
 				'name' => 'save_' . WorkflowComponent::STATUS_PUBLISHED,
+				'ng-class' => '{disabled: sending}'
 			);
 		} else {
 			$saveOptions = array(
 				'label' => __d('net_commons', 'OK'),
 				'class' => 'btn btn-primary btn-workflow',
 				'name' => 'save_' . WorkflowComponent::STATUS_APPROVED,
+				'ng-class' => '{disabled: sending}'
 			);
 		}
 
-		$output .= $this->Button->cancelAndSaveAndSaveTemp($cancelUrl, array(), $saveTempOptions, $saveOptions, $backUrl);
+		$output .= $this->Button->cancelAndSaveAndSaveTemp($cancelUrl, $cancelOptions, $saveTempOptions, $saveOptions, $backUrl);
 
 		if ($panel) {
 			$output .= '</div>';

@@ -105,12 +105,14 @@ class WorkflowComponent extends Component {
  * Function to get the data of BlockRolePermmissions.
  *    e.g.) BlockRolePermmissions controller
  *
- * @param array $permissions permissions
+ * @param array $permissions パーミッションリスト
+ * @param int $roomId ルームID
+ * @param string $blockKey ブロックKey
  * @return array Role and Permissions data
  *   - The `Role` merged of Role and RoomRole
  *   - The `Permission` sets in priority of BlockRolePermission and RoomRolePermission and DefaultRolePermission.
  */
-	public function getBlockRolePermissions($permissions) {
+	public function getBlockRolePermissions($permissions, $roomId = null, $blockKey = null) {
 		//modelのロード
 		$models = array(
 			'BlockRolePermission' => 'Blocks.BlockRolePermission',
@@ -124,10 +126,12 @@ class WorkflowComponent extends Component {
 			$this->$model = ClassRegistry::init($class, true);
 		}
 
-		$blockKey = Current::read('Block.key');
+		if (! isset($blockKey)) {
+			$blockKey = Current::read('Block.key');
+		}
 
 		//RoomRolePermissions取得
-		$results = $this->getRoomRolePermissions($permissions, DefaultRolePermission::TYPE_ROOM_ROLE);
+		$results = $this->getRoomRolePermissions($permissions, DefaultRolePermission::TYPE_ROOM_ROLE, $roomId);
 		$defaultPermissions = Hash::remove($results['DefaultRolePermission'], '{s}.{s}.id');
 		$roles = $results['Role'];
 		$rolesRooms = $results['RolesRoom'];
@@ -138,7 +142,7 @@ class WorkflowComponent extends Component {
 		$blockPermissions = $this->BlockRolePermission->find('all', array(
 			'recursive' => 0,
 			'conditions' => array(
-				'BlockRolePermission.roles_room_id' => $rolesRooms,
+				'BlockRolePermission.roles_room_id' => array_values($rolesRooms),
 				'BlockRolePermission.block_key' => $blockKey,
 				'BlockRolePermission.permission' => $permissions,
 			),
@@ -158,7 +162,9 @@ class WorkflowComponent extends Component {
 
 		//block_keyのセット
 		$results['BlockRolePermissions'] = Hash::insert($results['BlockRolePermissions'], '{s}.{s}.block_key', $blockKey);
-
+		foreach ($rolesRooms as $roleKey => $rolesRoomId) {
+			$results['BlockRolePermissions'] = Hash::insert($results['BlockRolePermissions'], '{s}.' . $roleKey . '.roles_room_id', $rolesRoomId);
+		}
 		return $results;
 	}
 
@@ -168,7 +174,7 @@ class WorkflowComponent extends Component {
  *
  * @param array $permissions パーミッションリスト
  * @param string $type タイプ(DefaultRolePermissions.type)
- * @param string $roomId ルームID
+ * @param int $roomId ルームID
  * @return array Role and Permissions and Rooms data
  *   - The `DefaultPermissions` data.
  *   - The `Roles` data.
@@ -221,6 +227,7 @@ class WorkflowComponent extends Component {
 		//DefaultRolePermission取得
 		$defaultPermissions = $this->DefaultRolePermission->find('all', array(
 			'recursive' => -1,
+			'fields' => array('DefaultRolePermission.*', 'DefaultRolePermission.value AS default'),
 			'conditions' => array(
 				'DefaultRolePermission.type' => $type,
 				'DefaultRolePermission.permission' => $permissions,
@@ -240,6 +247,7 @@ class WorkflowComponent extends Component {
 		//RolesRoomのIDリストを取得
 		$results['RolesRoom'] = $this->RolesRoom->find('list', array(
 			'recursive' => -1,
+			'fields' => array('role_key', 'id'),
 			'conditions' => array(
 				'RolesRoom.room_id' => $roomId,
 			),

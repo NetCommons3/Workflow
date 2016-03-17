@@ -148,7 +148,9 @@ class WorkflowComponentGetRoomRolePermissionsTest extends NetCommonsControllerTe
 
 		if ($roomId) {
 			$this->assertEquals(
-				array(1 => '1', 2 => '2', 3 => '3', 4 => '4', 5 => '5'), $result['RolesRoom']
+				array(
+					'room_administrator' => '1', 'chief_editor' => '2', 'editor' => '3', 'general_user' => '4', 'visitor' => '5'),
+				$result['RolesRoom']
 			);
 
 			$this->assertEquals($roles, array_keys($result['RoomRolePermission']['content_publishable']));
