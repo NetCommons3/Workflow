@@ -90,12 +90,17 @@ class WorkflowHelper extends AppHelper {
  * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
 	public function buttons($statusFieldName, $cancelUrl = null, $panel = true, $backUrl = null) {
-		$status = Hash::get($this->_View->data, $statusFieldName);
-
 		$output = '';
 		if ($panel) {
 			$output .= '<div class="panel-footer text-center">';
 		}
+
+		$status = Hash::get($this->_View->request->data, $statusFieldName . '_');
+		if (! $status) {
+			$status = Hash::get($this->_View->request->data, $statusFieldName);
+		}
+		//変更前のstatusを保持する
+		$output .= $this->NetCommonsForm->hidden('status_', array('value' => $status));
 
 		if ($this->_View->request->isMobile()) {
 			$btnSize = ' btn-sm';
