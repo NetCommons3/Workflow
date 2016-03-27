@@ -97,6 +97,12 @@ class WorkflowHelper extends AppHelper {
 			$output .= '<div class="panel-footer text-center">';
 		}
 
+		if ($this->_View->request->isMobile()) {
+			$btnSize = ' btn-sm';
+		} else {
+			$btnSize = '';
+		}
+
 		if (! isset($cancelUrl)) {
 			$cancelUrl = NetCommonsUrl::backToIndexUrl();
 		}
@@ -108,14 +114,14 @@ class WorkflowHelper extends AppHelper {
 		if (Current::permission('content_publishable') && $status === WorkflowComponent::STATUS_APPROVED) {
 			$saveTempOptions = array(
 				'label' => __d('net_commons', 'Disapproval'),
-				'class' => 'btn btn-warning btn-workflow',
+				'class' => 'btn btn-warning' . $btnSize . ' btn-workflow',
 				'name' => 'save_' . WorkflowComponent::STATUS_DISAPPROVED,
 				'ng-class' => '{disabled: sending}'
 			);
 		} else {
 			$saveTempOptions = array(
 				'label' => __d('net_commons', 'Save temporally'),
-				'class' => 'btn btn-info btn-workflow',
+				'class' => 'btn btn-info' . $btnSize . ' btn-workflow',
 				'name' => 'save_' . WorkflowComponent::STATUS_IN_DRAFT,
 				'ng-class' => '{disabled: sending}'
 			);
@@ -124,14 +130,14 @@ class WorkflowHelper extends AppHelper {
 		if (Current::permission('content_publishable')) {
 			$saveOptions = array(
 				'label' => __d('net_commons', 'OK'),
-				'class' => 'btn btn-primary btn-workflow',
+				'class' => 'btn btn-primary' . $btnSize . ' btn-workflow',
 				'name' => 'save_' . WorkflowComponent::STATUS_PUBLISHED,
 				'ng-class' => '{disabled: sending}'
 			);
 		} else {
 			$saveOptions = array(
 				'label' => __d('net_commons', 'OK'),
-				'class' => 'btn btn-primary btn-workflow',
+				'class' => 'btn btn-primary' . $btnSize . ' btn-workflow',
 				'name' => 'save_' . WorkflowComponent::STATUS_APPROVED,
 				'ng-class' => '{disabled: sending}'
 			);
