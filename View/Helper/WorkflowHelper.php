@@ -90,11 +90,22 @@ class WorkflowHelper extends AppHelper {
  * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
 	public function buttons($statusFieldName, $cancelUrl = null, $panel = true, $backUrl = null) {
-		$status = Hash::get($this->_View->data, $statusFieldName);
-
 		$output = '';
 		if ($panel) {
 			$output .= '<div class="panel-footer text-center">';
+		}
+
+		$status = Hash::get($this->_View->request->data, $statusFieldName . '_');
+		if (! $status) {
+			$status = Hash::get($this->_View->request->data, $statusFieldName);
+		}
+		//変更前のstatusを保持する
+		$output .= $this->NetCommonsForm->hidden('status_', array('value' => $status));
+
+		if ($this->_View->request->isMobile()) {
+			$btnSize = ' btn-sm';
+		} else {
+			$btnSize = '';
 		}
 
 		if (! isset($cancelUrl)) {
@@ -108,14 +119,14 @@ class WorkflowHelper extends AppHelper {
 		if (Current::permission('content_publishable') && $status === WorkflowComponent::STATUS_APPROVED) {
 			$saveTempOptions = array(
 				'label' => __d('net_commons', 'Disapproval'),
-				'class' => 'btn btn-warning btn-workflow',
+				'class' => 'btn btn-warning' . $btnSize . ' btn-workflow',
 				'name' => 'save_' . WorkflowComponent::STATUS_DISAPPROVED,
 				'ng-class' => '{disabled: sending}'
 			);
 		} else {
 			$saveTempOptions = array(
 				'label' => __d('net_commons', 'Save temporally'),
-				'class' => 'btn btn-info btn-workflow',
+				'class' => 'btn btn-info' . $btnSize . ' btn-workflow',
 				'name' => 'save_' . WorkflowComponent::STATUS_IN_DRAFT,
 				'ng-class' => '{disabled: sending}'
 			);
@@ -124,14 +135,14 @@ class WorkflowHelper extends AppHelper {
 		if (Current::permission('content_publishable')) {
 			$saveOptions = array(
 				'label' => __d('net_commons', 'OK'),
-				'class' => 'btn btn-primary btn-workflow',
+				'class' => 'btn btn-primary' . $btnSize . ' btn-workflow',
 				'name' => 'save_' . WorkflowComponent::STATUS_PUBLISHED,
 				'ng-class' => '{disabled: sending}'
 			);
 		} else {
 			$saveOptions = array(
 				'label' => __d('net_commons', 'OK'),
-				'class' => 'btn btn-primary btn-workflow',
+				'class' => 'btn btn-primary' . $btnSize . ' btn-workflow',
 				'name' => 'save_' . WorkflowComponent::STATUS_APPROVED,
 				'ng-class' => '{disabled: sending}'
 			);
