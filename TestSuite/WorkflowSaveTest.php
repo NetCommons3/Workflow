@@ -87,7 +87,8 @@ class WorkflowSaveTest extends NetCommonsSaveTest {
 			$actual[$this->$model->alias] = Hash::remove($actual[$this->$model->alias], 'modified');
 			$actual[$this->$model->alias] = Hash::remove($actual[$this->$model->alias], 'modified_user');
 
-			$data[$this->$model->alias]['key'] = OriginalKeyBehavior::generateKey($this->$model->name, $this->$model->useDbConfig);
+			$data[$this->$model->alias]['key'] =
+					OriginalKeyBehavior::generateKey($this->$model->name, $this->$model->useDbConfig);
 			$before[$this->$model->alias] = array();
 		}
 

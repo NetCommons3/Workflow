@@ -48,7 +48,10 @@ class WorkflowCommentBehavior extends ModelBehavior {
 			$model->WorkflowComment->validates();
 
 			if ($model->WorkflowComment->validationErrors) {
-				$model->validationErrors = Hash::merge($model->validationErrors, $model->WorkflowComment->validationErrors);
+				$model->validationErrors = Hash::merge(
+					$model->validationErrors,
+					$model->WorkflowComment->validationErrors
+				);
 				return false;
 			}
 		}
@@ -127,7 +130,8 @@ class WorkflowCommentBehavior extends ModelBehavior {
 			'WorkflowComment' => 'Workflow.WorkflowComment',
 		));
 
-		if (! $model->WorkflowComment->deleteAll(array($model->WorkflowComment->alias . '.content_key' => $contentKey), false)) {
+		$conditions = array($model->WorkflowComment->alias . '.content_key' => $contentKey);
+		if (! $model->WorkflowComment->deleteAll($conditions, false)) {
 			throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 		}
 

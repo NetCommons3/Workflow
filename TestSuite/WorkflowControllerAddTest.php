@@ -85,7 +85,9 @@ class WorkflowControllerAddTest extends NetCommonsControllerTestCase {
 		}
 
 		//テスト実施
-		$this->_testPostAction('post', $data, Hash::merge(array('action' => 'add'), $urlOptions), $exception, $return);
+		$this->_testPostAction(
+			'post', $data, Hash::merge(array('action' => 'add'), $urlOptions), $exception, $return
+		);
 
 		//正常の場合、リダイレクト
 		if (! $exception) {
@@ -113,7 +115,9 @@ class WorkflowControllerAddTest extends NetCommonsControllerTestCase {
 		TestAuthGeneral::login($this);
 
 		//テスト実施
-		$this->_testActionOnValidationError('post', $data, Hash::merge(array('action' => 'add'), $urlOptions), $validationError);
+		$this->_testActionOnValidationError(
+			'post', $data, Hash::merge(array('action' => 'add'), $urlOptions), $validationError
+		);
 
 		//ログアウト
 		TestAuthGeneral::logout($this);

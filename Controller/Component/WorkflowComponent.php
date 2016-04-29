@@ -131,7 +131,9 @@ class WorkflowComponent extends Component {
 		}
 
 		//RoomRolePermissions取得
-		$results = $this->getRoomRolePermissions($permissions, DefaultRolePermission::TYPE_ROOM_ROLE, $roomId);
+		$results = $this->getRoomRolePermissions(
+			$permissions, DefaultRolePermission::TYPE_ROOM_ROLE, $roomId
+		);
 		$defaultPermissions = Hash::remove($results['DefaultRolePermission'], '{s}.{s}.id');
 		$roles = $results['Role'];
 		$rolesRooms = $results['RolesRoom'];
@@ -156,14 +158,22 @@ class WorkflowComponent extends Component {
 
 		//戻り値の設定
 		$results = array(
-			'BlockRolePermissions' => Hash::merge($defaultPermissions, $roomRolePermissions, $blockPermissions),
+			'BlockRolePermissions' => Hash::merge(
+				$defaultPermissions, $roomRolePermissions, $blockPermissions
+			),
 			'Roles' => Hash::merge($roomRoles, $roles)
 		);
 
 		//block_keyのセット
-		$results['BlockRolePermissions'] = Hash::insert($results['BlockRolePermissions'], '{s}.{s}.block_key', $blockKey);
+		$results['BlockRolePermissions'] = Hash::insert(
+			$results['BlockRolePermissions'], '{s}.{s}.block_key', $blockKey
+		);
 		foreach ($rolesRooms as $roleKey => $rolesRoomId) {
-			$results['BlockRolePermissions'] = Hash::insert($results['BlockRolePermissions'], '{s}.' . $roleKey . '.roles_room_id', $rolesRoomId);
+			$results['BlockRolePermissions'] = Hash::insert(
+				$results['BlockRolePermissions'],
+				'{s}.' . $roleKey . '.roles_room_id',
+				$rolesRoomId
+			);
 		}
 		return $results;
 	}
