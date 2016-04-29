@@ -63,9 +63,12 @@ class WorkflowControllerDeleteTest extends NetCommonsControllerTestCase {
  * @dataProvider dataProviderDeleteExceptionError
  * @return void
  */
-	public function testDeleteExceptionError($mockModel, $mockMethod, $data, $urlOptions, $exception = null, $return = 'view') {
+	public function testDeleteExceptionError($mockModel, $mockMethod, $data, $urlOptions,
+												$exception = null, $return = 'view') {
 		$this->_mockForReturnFalse($mockModel, $mockMethod);
-		$this->testDeletePost($data, Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR, $urlOptions, $exception, $return);
+		$this->testDeletePost(
+			$data, Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR, $urlOptions, $exception, $return
+		);
 	}
 
 /**
@@ -86,7 +89,9 @@ class WorkflowControllerDeleteTest extends NetCommonsControllerTestCase {
 		}
 
 		//テスト実施
-		$this->_testPostAction('delete', $data, Hash::merge(array('action' => 'delete'), $urlOptions), $exception, $return);
+		$this->_testPostAction(
+			'delete', $data, Hash::merge(array('action' => 'delete'), $urlOptions), $exception, $return
+		);
 
 		//正常の場合、リダイレクト
 		if (! $exception) {

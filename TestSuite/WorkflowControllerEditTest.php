@@ -104,7 +104,8 @@ class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
  * @dataProvider dataProviderEditGetByPublishable
  * @return void
  */
-	public function testEditGetByPublishable($urlOptions, $assert, $exception = null, $return = 'view') {
+	public function testEditGetByPublishable($urlOptions, $assert,
+												$exception = null, $return = 'view') {
 		//ログイン
 		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_CHIEF_EDITOR);
 
@@ -139,7 +140,9 @@ class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
 		}
 
 		//テスト実施
-		$this->_testPostAction('put', $data, Hash::merge(array('action' => 'edit'), $urlOptions), $exception, $return);
+		$this->_testPostAction(
+			'put', $data, Hash::merge(array('action' => 'edit'), $urlOptions), $exception, $return
+		);
 
 		//正常の場合、リダイレクト
 		if (! $exception) {
@@ -167,7 +170,9 @@ class WorkflowControllerEditTest extends NetCommonsControllerTestCase {
 		TestAuthGeneral::login($this);
 
 		//テスト実施
-		$this->_testActionOnValidationError('put', $data, Hash::merge(array('action' => 'edit'), $urlOptions), $validationError);
+		$this->_testActionOnValidationError(
+			'put', $data, Hash::merge(array('action' => 'edit'), $urlOptions), $validationError
+		);
 
 		//ログアウト
 		TestAuthGeneral::logout($this);

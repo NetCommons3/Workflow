@@ -74,7 +74,9 @@ class WorkflowHelper extends AppHelper {
 
 		$output = '';
 		if (isset($labels[$status])) {
-			$output .= '<span class="label ' . $labels[$status]['class'] . '">' . $labels[$status]['message'] . '</span>';
+			$output .= '<span class="label ' . $labels[$status]['class'] . '">' .
+							$labels[$status]['message'] .
+						'</span>';
 		}
 		return $output;
 	}
@@ -110,7 +112,8 @@ class WorkflowHelper extends AppHelper {
 			'ng-click' => 'sending=true',
 		);
 
-		if (Current::permission('content_publishable') && $status === WorkflowComponent::STATUS_APPROVED) {
+		if (Current::permission('content_publishable') &&
+				$status === WorkflowComponent::STATUS_APPROVED) {
 			$saveTempOptions = array(
 				'label' => __d('net_commons', 'Disapproval'),
 				'class' => 'btn btn-warning' . $this->Button->getButtonSize() . ' btn-workflow',
@@ -142,7 +145,9 @@ class WorkflowHelper extends AppHelper {
 			);
 		}
 
-		$output .= $this->Button->cancelAndSaveAndSaveTemp($cancelUrl, $cancelOptions, $saveTempOptions, $saveOptions, $backUrl);
+		$output .= $this->Button->cancelAndSaveAndSaveTemp(
+			$cancelUrl, $cancelOptions, $saveTempOptions, $saveOptions, $backUrl
+		);
 
 		if ($panel) {
 			$output .= '</div>';
@@ -168,7 +173,7 @@ class WorkflowHelper extends AppHelper {
 		));
 
 		if ($displayBlockKey) {
-			$output .= $this->NetCommonsForm->hidden('Block.key', array('value' => Current::read('Block.key')));
+			$output .= $this->NetCommonsForm->hidden('Block.key', ['value' => Current::read('Block.key')]);
 		}
 		return $output;
 	}
