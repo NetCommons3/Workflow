@@ -55,7 +55,7 @@ class DefaultRolePermission4testFixture extends DefaultRolePermissionFixture {
 			//回答をメール通知する権限
 			array('role_key' => 'room_administrator', 'type' => 'room_role', 'permission' => 'mail_answer_receivable', 'value' => '1', 'fixed' => '1', ),
 			array('role_key' => 'chief_editor', 'type' => 'room_role', 'permission' => 'mail_answer_receivable', 'value' => '1', 'fixed' => '0', ),
-			array('role_key' => 'editor', 'type' => 'room_role', 'permission' => 'mail_answer_receivable', 'value' => '0', 'fixed' => '0', ),
+			array('role_key' => 'editor', 'type' => 'room_role', 'permission' => 'mail_answer_receivable', 'value' => '0', 'fixed' => '1', ),
 			array('role_key' => 'general_user', 'type' => 'room_role', 'permission' => 'mail_answer_receivable', 'value' => '0', 'fixed' => '1', ),
 			array('role_key' => 'visitor', 'type' => 'room_role', 'permission' => 'mail_answer_receivable', 'value' => '0', 'fixed' => '1', ),
 			//独自パーミッション
