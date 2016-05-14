@@ -65,7 +65,7 @@ class WorkflowHelperAddLinkButtonTest extends NetCommonsHelperTestCase {
 		$result = $this->Workflow->addLinkButton($title, $url, $options);
 
 		//チェック
-		$expected = '<a href="/workflow_plugin/workflow_controller/' . $url['action'] . '" class="btn btn-success">' .
+		$expected = '<a href="/workflow_plugin/workflow_controller/' . $url['action'] . '" class="btn btn-success nc-btn-style">' .
 						'<span class="glyphicon glyphicon-plus"></span> ' . $title .
 					'</a>';
 		$this->assertEquals($expected, $result);
@@ -91,7 +91,7 @@ class WorkflowHelperAddLinkButtonTest extends NetCommonsHelperTestCase {
 		$result = $this->Workflow->addLinkButton($title, $url, $options);
 
 		//チェック
-		$expected = '<a href="/workflow_plugin/workflow_controller/add/1?frame_id=2" class="btn btn-success">' .
+		$expected = '<a href="/workflow_plugin/workflow_controller/add/1?frame_id=2" class="btn btn-success nc-btn-style">' .
 						'<span class="glyphicon glyphicon-plus"></span> ' . $title .
 					'</a>';
 		$this->assertEquals($expected, $result);
@@ -142,7 +142,7 @@ class WorkflowHelperAddLinkButtonTest extends NetCommonsHelperTestCase {
 		$result = $this->Workflow->addLinkButton($title, $url, $options);
 
 		//チェック
-		$expected = '<a href="/workflow_plugin/add_workflow_controller/add/1?frame_id=2" class="btn btn-success">' .
+		$expected = '<a href="/workflow_plugin/add_workflow_controller/add/1?frame_id=2" class="btn btn-success nc-btn-style">' .
 						'<span class="glyphicon glyphicon-plus"></span> ' . $title .
 					'</a>';
 		$this->assertEquals($expected, $result);

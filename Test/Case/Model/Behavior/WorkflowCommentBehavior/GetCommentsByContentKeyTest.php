@@ -72,10 +72,10 @@ class WorkflowCommentBehaviorGetCommentsByContentKeyTest extends NetCommonsModel
 		$this->assertEquals('comment_content_1', Hash::get($result, $index . '.WorkflowComment.content_key'));
 		$this->assertEquals('WorkflowComment data 2', Hash::get($result, $index . '.WorkflowComment.comment'));
 		$this->assertEquals(
-			array('id', 'username', 'handlename'), array_keys($result[$index]['TrackableCreator'])
+			array('id', 'handlename'), array_keys($result[$index]['TrackableCreator'])
 		);
 		$this->assertEquals(
-			array('id', 'username', 'handlename'), array_keys($result[$index]['TrackableUpdater'])
+			array('id', 'handlename'), array_keys($result[$index]['TrackableUpdater'])
 		);
 
 		$index = 1;
@@ -88,10 +88,10 @@ class WorkflowCommentBehaviorGetCommentsByContentKeyTest extends NetCommonsModel
 		$this->assertEquals('comment_content_1', Hash::get($result, $index . '.WorkflowComment.content_key'));
 		$this->assertEquals('WorkflowComment data 1', Hash::get($result, $index . '.WorkflowComment.comment'));
 		$this->assertEquals(
-			array('id', 'username', 'handlename'), array_keys($result[$index]['TrackableCreator'])
+			array('id', 'handlename'), array_keys($result[$index]['TrackableCreator'])
 		);
 		$this->assertEquals(
-			array('id', 'username', 'handlename'), array_keys($result[$index]['TrackableUpdater'])
+			array('id', 'handlename'), array_keys($result[$index]['TrackableUpdater'])
 		);
 	}
 
