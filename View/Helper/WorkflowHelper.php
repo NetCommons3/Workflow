@@ -82,13 +82,13 @@ class WorkflowHelper extends AppHelper {
 	}
 
 /**
- * Output workflow buttons
+ * ワークフローのボタン表示
  *
- * @param string $statusFieldName This should be "Modelname.fieldname"
- * @param string|null $cancelUrl Cancel url
- * @param bool $panel If true is add to panel footer div, then false is not div.
- * @param string|null $backUrl Back url
- * @return string Cancel url
+ * @param string $statusFieldName ステータスのフィールド名("Modelname.fieldname")
+ * @param string|null $cancelUrl キャンセルURL
+ * @param bool $panel panel-footerを表示するかどうか
+ * @param string|null $backUrl 前へのURL
+ * @return string ボタンHTML
  * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
 	public function buttons($statusFieldName, $cancelUrl = null, $panel = true, $backUrl = null) {
