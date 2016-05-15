@@ -111,7 +111,7 @@ class WorkflowCommentBehavior extends ModelBehavior {
 		]);
 
 		//idからkey取得
-		if (! $model->contentKey && $model->hasField('key')) {
+		if (! $model->blockKey && ! $model->contentKey && $model->hasField('key')) {
 			$content = $model->find('first', array(
 				'recursive' => -1,
 				'conditions' => array('id' => $model->id)
