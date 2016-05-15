@@ -21,6 +21,13 @@ App::uses('WorkflowComponent', 'Workflow.Controller/Component');
 class WorkflowCommentBehavior extends ModelBehavior {
 
 /**
+ * 削除するデータ保持用配列
+ *
+ * @var array
+ */
+	protected $_deletedRow = array();
+
+/**
  * beforeValidate is called before a model is validated, you can use this callback to
  * add behavior validation rules into a models validate array. Returning false
  * will allow you to make the validation fail.
@@ -90,6 +97,58 @@ class WorkflowCommentBehavior extends ModelBehavior {
 	}
 
 /**
+ * Before delete is called before any delete occurs on the attached model, but after the model's
+ * beforeDelete is called. Returning false from a beforeDelete will abort the delete.
+ *
+ * @param Model $model Model using this behavior
+ * @param bool $cascade If true records that depend on this record will also be deleted
+ * @return mixed False if the operation should abort. Any other result will continue.
+ * @throws InternalErrorException
+ * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+ */
+	public function beforeDelete(Model $model, $cascade = true) {
+		$model->loadModels([
+			'WorkflowComment' => 'Workflow.WorkflowComment',
+		]);
+
+		//idからkey取得
+		if (! $model->blockKey && ! $model->contentKey && $model->hasField('key')) {
+			$content = $model->find('first', array(
+				'recursive' => -1,
+				'conditions' => array('id' => $model->id)
+			));
+			$model->contentKey = Hash::get($content, $model->alias . '.key');
+		}
+
+		return true;
+	}
+
+/**
+ * After delete is called after any delete occurs on the attached model.
+ *
+ * @param Model $model Model using this behavior
+ * @return void
+ * @throws InternalErrorException
+ */
+	public function afterDelete(Model $model) {
+		$model->loadModels([
+			'WorkflowComment' => 'Workflow.WorkflowComment',
+		]);
+
+		if ($model->blockKey) {
+			$conditions = array($model->WorkflowComment->alias . '.block_key' => $model->blockKey);
+			if (! $model->WorkflowComment->deleteAll($conditions, false, false)) {
+				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+			}
+		} elseif ($model->contentKey) {
+			$conditions = array($model->WorkflowComment->alias . '.content_key' => $model->contentKey);
+			if (! $model->WorkflowComment->deleteAll($conditions, false, false)) {
+				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
+			}
+		}
+	}
+
+/**
  * Get WorkflowComment data
  *
  * @param Model $model Model using this behavior
@@ -131,7 +190,7 @@ class WorkflowCommentBehavior extends ModelBehavior {
 		));
 
 		$conditions = array($model->WorkflowComment->alias . '.content_key' => $contentKey);
-		if (! $model->WorkflowComment->deleteAll($conditions, false)) {
+		if (! $model->WorkflowComment->deleteAll($conditions, false, false)) {
 			throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 		}
 
