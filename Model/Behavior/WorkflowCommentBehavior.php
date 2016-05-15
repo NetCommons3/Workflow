@@ -118,6 +118,8 @@ class WorkflowCommentBehavior extends ModelBehavior {
 			));
 			$model->contentKey = Hash::get($content, $model->alias . '.key');
 		}
+CakeLog::debug(var_export($model->blockKey, true));
+CakeLog::debug(var_export($model->contentKey, true));
 
 		return true;
 	}
@@ -135,7 +137,7 @@ class WorkflowCommentBehavior extends ModelBehavior {
 		]);
 
 		if ($model->blockKey) {
-			$conditions = array($model->WorkflowComment->alias . '.content_key' => $model->blockKey);
+			$conditions = array($model->WorkflowComment->alias . '.block_key' => $model->blockKey);
 			if (! $model->WorkflowComment->deleteAll($conditions, false, false)) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
