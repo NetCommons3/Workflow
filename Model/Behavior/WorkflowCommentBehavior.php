@@ -104,6 +104,7 @@ class WorkflowCommentBehavior extends ModelBehavior {
  * @param bool $cascade If true records that depend on this record will also be deleted
  * @return mixed False if the operation should abort. Any other result will continue.
  * @throws InternalErrorException
+ * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
 	public function beforeDelete(Model $model, $cascade = true) {
 		$model->loadModels([
@@ -118,8 +119,6 @@ class WorkflowCommentBehavior extends ModelBehavior {
 			));
 			$model->contentKey = Hash::get($content, $model->alias . '.key');
 		}
-CakeLog::debug(var_export($model->blockKey, true));
-CakeLog::debug(var_export($model->contentKey, true));
 
 		return true;
 	}
