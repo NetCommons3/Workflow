@@ -108,16 +108,26 @@ class WorkflowCommentBehavior extends ModelBehavior {
  */
 	public function beforeDelete(Model $model, $cascade = true) {
 		$model->loadModels([
+			'Block' => 'Blocks.Block',
 			'WorkflowComment' => 'Workflow.WorkflowComment',
 		]);
 
 		//idからkey取得
-		if (! $model->blockKey && ! $model->contentKey && $model->hasField('key')) {
+		if (! $model->blockId && ! $model->blockKey && ! $model->contentKey && $model->hasField('key')) {
 			$content = $model->find('first', array(
 				'recursive' => -1,
+				'fields' => array('id', 'key'),
 				'conditions' => array('id' => $model->id)
 			));
 			$model->contentKey = Hash::get($content, $model->alias . '.key');
+
+		} elseif ($model->blockId && ! $model->blockKey) {
+			$block = $model->Block->find('first', array(
+				'recursive' => -1,
+				'fields' => array('id', 'key'),
+				'conditions' => array('id' => $model->blockId)
+			));
+			$model->blockKey = Hash::get($block, $model->Block->alias . '.key');
 		}
 
 		return true;
