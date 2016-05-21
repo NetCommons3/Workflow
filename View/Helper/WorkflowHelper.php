@@ -74,7 +74,7 @@ class WorkflowHelper extends AppHelper {
 
 		$output = '';
 		if (isset($labels[$status])) {
-			$output .= '<span class="label ' . $labels[$status]['class'] . '">' .
+			$output .= '<span class="workflow-label label ' . $labels[$status]['class'] . '">' .
 							$labels[$status]['message'] .
 						'</span>';
 		}
