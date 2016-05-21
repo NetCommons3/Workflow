@@ -67,16 +67,16 @@ class WorkflowHelperLabelTest extends NetCommonsHelperTestCase {
 				'assert' => ''),
 			// * 申請中
 			array('status' => '2', 'labels' => null,
-				'assert' => '<span class="label label-warning">' . __d('net_commons', 'Approving') . '</span>'),
+				'assert' => '<span class="workflow-label label label-warning">' . __d('net_commons', 'Approving') . '</span>'),
 			// * 一時保存
 			array('status' => '3', 'labels' => null,
-				'assert' => '<span class="label label-info">' . __d('net_commons', 'Temporary') . '</span>'),
+				'assert' => '<span class="workflow-label label label-info">' . __d('net_commons', 'Temporary') . '</span>'),
 			// * 差し戻し
 			array('status' => '4', 'labels' => null,
-				'assert' => '<span class="label label-warning">' . __d('net_commons', 'Disapproving') . '</span>'),
+				'assert' => '<span class="workflow-label label label-warning">' . __d('net_commons', 'Disapproving') . '</span>'),
 			// * カスタム
 			array('status' => '5', 'labels' => array('5' => array('class' => 'label-danger', 'message' => 'Custom')),
-				'assert' => '<span class="label label-danger">Custom</span>'),
+				'assert' => '<span class="workflow-label label label-danger">Custom</span>'),
 		);
 	}
 

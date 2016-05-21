@@ -14,3 +14,13 @@
 .workflow-comments > .comment:first-child {
 	border: 0;
 }
+
+small .workflow-label {
+	font-size: 10px;
+	font-weight: 400;
+}
+.workflow-label {
+	font-size: 12px;
+	font-weight: 700;
+	vertical-align: middle;
+}
