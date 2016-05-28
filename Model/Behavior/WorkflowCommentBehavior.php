@@ -81,6 +81,8 @@ class WorkflowCommentBehavior extends ModelBehavior {
 			'WorkflowComment' => 'Workflow.WorkflowComment',
 		]);
 
+		$model->WorkflowComment->create();
+
 		if (! Hash::get($model->data, 'WorkflowComment.comment')) {
 			return true;
 		}
