@@ -80,7 +80,7 @@ class WorkflowHelperPublishLinkButtonTest extends NetCommonsHelperTestCase {
 
 		//チェック
 		$expected = '<button icon="ok" name="save_1" class="btn btn-warning" type="submit">' .
-						'<span class="glyphicon glyphicon-ok"></span> ' . $title .
+						'<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> ' . $title .
 					'</button>';
 		$this->assertEqual($expected, $result);
 	}
@@ -124,7 +124,7 @@ class WorkflowHelperPublishLinkButtonTest extends NetCommonsHelperTestCase {
 			$expectedIconSize = '';
 		}
 		$expected = '<button icon="ok" name="save_1" class="btn btn-warning' . $expectedIconSize . '" type="submit">' .
-						'<span class="glyphicon glyphicon-ok"></span> ' .
+						'<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> ' .
 					'</button>';
 		$this->assertEqual($expected, $result);
 	}
@@ -164,7 +164,7 @@ class WorkflowHelperPublishLinkButtonTest extends NetCommonsHelperTestCase {
 
 		//チェック
 		$expected = '<button icon="ok" name="save_1" class="btn btn-warning" type="submit">' .
-						'<span class="glyphicon glyphicon-ok"></span> ' . $expectedTitle .
+						'<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> ' . $expectedTitle .
 					'</button>';
 		$this->assertEqual($expected, $result);
 	}
@@ -204,7 +204,7 @@ class WorkflowHelperPublishLinkButtonTest extends NetCommonsHelperTestCase {
 		}
 		$expected = '<span class="nc-tooltip" tooltip="' . $tooltip . '">' .
 				'<button icon="ok" name="save_1" class="btn btn-warning" type="submit">' .
-					'<span class="glyphicon glyphicon-ok"></span> ' .
+					'<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> ' .
 				'</button>' . '</span>';
 		$this->assertEqual($expected, $result);
 	}

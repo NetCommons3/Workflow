@@ -262,7 +262,8 @@ class WorkflowHelper extends AppHelper {
 		}
 
 		//iconの有無
-		$iconElement = '<span class="glyphicon glyphicon-' . h($inputOptions['icon']) . '"></span> ';
+		$icon = '<span class="glyphicon glyphicon-' . h($inputOptions['icon']) . '" aria-hidden="true">' .
+				'</span> ';
 		unset($options['icon']);
 
 		//span tooltipタグの出力
@@ -275,7 +276,7 @@ class WorkflowHelper extends AppHelper {
 			$output .= '<span class="nc-tooltip" tooltip="' . $tooltip . '">';
 			unset($inputOptions['tooltip']);
 		}
-		$output .= $this->Form->button($iconElement . $title, $inputOptions);
+		$output .= $this->Form->button($icon . $title, $inputOptions);
 		if (isset($options['tooltip']) && $options['tooltip']) {
 			$output .= '</span>';
 		}

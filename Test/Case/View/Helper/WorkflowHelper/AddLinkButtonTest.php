@@ -66,7 +66,7 @@ class WorkflowHelperAddLinkButtonTest extends NetCommonsHelperTestCase {
 
 		//チェック
 		$expected = '<a href="/workflow_plugin/workflow_controller/' . $url['action'] . '" class="btn btn-success nc-btn-style">' .
-						'<span class="glyphicon glyphicon-plus"></span> ' . $title .
+						'<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> <span class="hidden-xs">' . $title . '</span>' .
 					'</a>';
 		$this->assertEquals($expected, $result);
 	}
@@ -92,7 +92,7 @@ class WorkflowHelperAddLinkButtonTest extends NetCommonsHelperTestCase {
 
 		//チェック
 		$expected = '<a href="/workflow_plugin/workflow_controller/add/1?frame_id=2" class="btn btn-success nc-btn-style">' .
-						'<span class="glyphicon glyphicon-plus"></span> ' . $title .
+						'<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> <span class="hidden-xs">' . $title . '</span>' .
 					'</a>';
 		$this->assertEquals($expected, $result);
 	}
@@ -143,7 +143,7 @@ class WorkflowHelperAddLinkButtonTest extends NetCommonsHelperTestCase {
 
 		//チェック
 		$expected = '<a href="/workflow_plugin/add_workflow_controller/add/1?frame_id=2" class="btn btn-success nc-btn-style">' .
-						'<span class="glyphicon glyphicon-plus"></span> ' . $title .
+						'<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> <span class="hidden-xs">' . $title . '</span>' .
 					'</a>';
 		$this->assertEquals($expected, $result);
 	}
