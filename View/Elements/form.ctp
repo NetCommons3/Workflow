@@ -21,7 +21,7 @@ if ($contentPublishable && $contentStatus === WorkflowComponent::STATUS_APPROVED
 		<?php echo $this->NetCommonsForm->input('WorkflowComment.comment', array(
 				'type' => 'textarea',
 				'class' => 'form-control nc-noresize',
-				'label' => '<span class="glyphicon glyphicon-comment"> </span> ' .
+				'label' => '<span class="glyphicon glyphicon-comment" aria-hidden="true"> </span> ' .
 							__d('net_commons', 'Comments to the person in charge.'),
 				'placeholder' => $placeholder,
 				'rows' => 2,

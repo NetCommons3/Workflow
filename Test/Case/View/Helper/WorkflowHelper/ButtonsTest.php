@@ -143,18 +143,18 @@ class WorkflowHelperButtonsTest extends NetCommonsHelperTestCase {
 		//キャンセルのチェック
 		$expected = '<a href="' . $cancelUrl . '" class="btn btn-default btn-workflow" ' .
 							'ng-class="{disabled: sending}" ng-click="sending=true">' .
-						'<span class="glyphicon glyphicon-remove"></span> ' . __d('net_commons', 'Cancel') .
+						'<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> ' . __d('net_commons', 'Cancel') .
 					'</a>';
 		$this->assertTextContains($expected, $result);
 
 		//戻るのチェック
 		if ($backUrl) {
 			$expected = '<a href="' . $backUrl . '" class="btn btn-default btn-workflow" ng-class="{disabled: sending}">' .
-							'<span class="glyphicon glyphicon-chevron-left"></span> ' . __d('net_commons', 'BACK') .
+							'<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> ' . __d('net_commons', 'BACK') .
 						'</a>';
 			$this->assertTextContains($expected, $result);
 		} else {
-			$expected = '<span class="glyphicon glyphicon-chevron-left"></span>';
+			$expected = '<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>';
 			$this->assertTextNotContains($expected, $result);
 		}
 

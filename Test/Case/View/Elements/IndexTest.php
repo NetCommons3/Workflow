@@ -67,9 +67,9 @@ class WorkflowViewElementsIndexTest extends NetCommonsControllerTestCase {
  * @return void
  */
 	private function __assertIndex($assert) {
-		$this->$assert('ng-click="showUser(\'0\')"', $this->view);
-		$this->$assert('ng-click="showUser(\'1\')"', $this->view);
-		$this->$assert('ng-click="showUser(\'2\')"', $this->view);
+		$this->$assert('ng-click="showUser($event, \'0\')"', $this->view);
+		$this->$assert('ng-click="showUser($event, \'1\')"', $this->view);
+		$this->$assert('ng-click="showUser($event, \'2\')"', $this->view);
 		$this->$assert('Handle name0', $this->view);
 		$this->$assert('Handle name1', $this->view);
 		$this->$assert('Handle name2', $this->view);
