@@ -25,8 +25,6 @@ class WorkflowSaveTest extends NetCommonsSaveTest {
  * @return void
  */
 	public function setUp() {
-		Current::$current['Permission']['html_not_limited']['value'] = true;
-
 		parent::setUp();
 
 		Current::$current['Block']['id'] = '2';
