@@ -20,6 +20,21 @@ App::uses('AppModel', 'Model');
 class TestWorkflowBehaviorGetWorkflowConditionsModel extends AppModel {
 
 /**
+ * Full Table Name
+ *
+ * @var string
+ */
+	public $table = 'test_get_workflow_conditions_models';
+
+/**
+ * Custom database table name, or null/false if no table association is desired.
+ *
+ * @var string
+ * @link http://book.cakephp.org/2.0/ja/models/model-attributes.html#usetable
+ */
+	public $useTable = 'test_get_workflow_conditions_models';
+
+/**
  * 使用ビヘイビア
  *
  * @var array
