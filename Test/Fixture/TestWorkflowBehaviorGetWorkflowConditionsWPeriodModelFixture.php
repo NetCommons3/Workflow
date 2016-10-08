@@ -18,6 +18,13 @@
 class TestWorkflowBehaviorGetWorkflowConditionsWPeriodModelFixture extends CakeTestFixture {
 
 /**
+ * Full Table Name
+ *
+ * @var string
+ */
+	public $table = 'test_get_workflow_conditions_w_period_models';
+
+/**
  * Fields
  *
  * @var array
