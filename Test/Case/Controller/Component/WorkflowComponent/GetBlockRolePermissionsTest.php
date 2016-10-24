@@ -85,7 +85,7 @@ class WorkflowComponentGetBlockRolePermissionsTest extends NetCommonsControllerT
 		//テストデータ
 		$permissions = array('content_publishable');
 		Current::$current = Hash::insert(Current::$current, 'Block.key', 'block_1');
-		Current::$current = Hash::insert(Current::$current, 'Room.id', '1');
+		Current::$current = Hash::insert(Current::$current, 'Room.id', '2');
 
 		//テスト実行
 		$result = $this->controller->Workflow->getBlockRolePermissions($permissions);
@@ -104,7 +104,7 @@ class WorkflowComponentGetBlockRolePermissionsTest extends NetCommonsControllerT
 		$permissions = array('content_publishable');
 
 		//テスト実行
-		$result = $this->controller->Workflow->getBlockRolePermissions($permissions, '1', 'block_1');
+		$result = $this->controller->Workflow->getBlockRolePermissions($permissions, '2', 'block_1');
 
 		//チェック
 		$this->__assertGetBlockRolePermissions($result, $permissions[0]);
@@ -119,7 +119,7 @@ class WorkflowComponentGetBlockRolePermissionsTest extends NetCommonsControllerT
 		//テストデータ
 		$permissions = array('original_permission');
 		Current::$current = Hash::insert(Current::$current, 'Block.key', 'block_1');
-		Current::$current = Hash::insert(Current::$current, 'Room.id', '1');
+		Current::$current = Hash::insert(Current::$current, 'Room.id', '2');
 
 		//テスト実行
 		$result = $this->controller->Workflow->getBlockRolePermissions($permissions);

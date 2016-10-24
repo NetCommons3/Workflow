@@ -60,7 +60,7 @@ class TestSuiteWorkflowSaveTestSetUpTest extends NetCommonsCakeTestCase {
 
 		//チェック
 		$this->assertEquals('2', Current::read('Block.id'));
-		$this->assertEquals('1', Current::read('Room.id'));
+		$this->assertEquals('2', Current::read('Room.id'));
 		$this->assertTrue(Current::permission('content_editable'));
 		$this->assertTrue(Current::permission('content_publishable'));
 	}

@@ -28,7 +28,7 @@ class WorkflowGetTest extends NetCommonsGetTest {
 		parent::setUp();
 
 		Current::$current['Block']['id'] = '2';
-		Current::$current['Room']['id'] = '1';
+		Current::$current['Room']['id'] = '2';
 		Current::$current['Permission']['content_editable']['value'] = true;
 		Current::$current['Permission']['content_publishable']['value'] = true;
 	}

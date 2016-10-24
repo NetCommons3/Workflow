@@ -80,15 +80,15 @@ class WorkflowComponentGetRoomRolePermissionsTest extends NetCommonsControllerTe
 		//テストデータ生成
 		$permissions = array('content_publishable');
 		$type = 'room_role';
-		$roomId = '1';
+		$roomId = '2';
 
 		//テスト実行
 		$result = $this->controller->Workflow->getRoomRolePermissions($permissions, $type, $roomId);
-		$this->__assertGetRoomRolePermissions($result, '1');
+		$this->__assertGetRoomRolePermissions($result, '2');
 	}
 
 /**
- * $roomIdの省略テスト(Current::$current['Room']['id'] = '1')
+ * $roomIdの省略テスト(Current::$current['Room']['id'] = '2')
  *
  * @return void
  */
@@ -96,11 +96,11 @@ class WorkflowComponentGetRoomRolePermissionsTest extends NetCommonsControllerTe
 		//テストデータ生成
 		$permissions = array('content_publishable');
 		$type = 'room_role';
-		Current::$current['Room']['id'] = '1';
+		Current::$current['Room']['id'] = '2';
 
 		//テスト実行
 		$result = $this->controller->Workflow->getRoomRolePermissions($permissions, $type);
-		$this->__assertGetRoomRolePermissions($result, '1');
+		$this->__assertGetRoomRolePermissions($result, '2');
 	}
 
 /**
