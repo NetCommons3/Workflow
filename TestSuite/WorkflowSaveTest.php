@@ -97,6 +97,11 @@ class WorkflowSaveTest extends NetCommonsSaveTest {
 		$model = $this->_modelName;
 
 		$expected = parent::_getExpected($id, $data, $before, $created);
+		if ($created) {
+			$expected[$this->$model->alias]['key'] = OriginalKeyBehavior::generateKey(
+				$this->$model->name, $this->$model->useDbConfig
+			);
+		}
 		$expected[$this->$model->alias]['is_active'] = true;
 		$expected[$this->$model->alias]['is_latest'] = true;
 
