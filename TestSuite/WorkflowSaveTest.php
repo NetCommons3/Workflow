@@ -44,8 +44,10 @@ class WorkflowSaveTest extends NetCommonsSaveTest {
 		$model = $this->_modelName;
 		$method = $this->_methodName;
 
+		$created = !isset($data[$this->$model->alias]['id']);
+
 		//チェック用データ取得
-		if (isset($data[$this->$model->alias]['id'])) {
+		if (! $created) {
 			$before = $this->$model->find('first', array(
 				'recursive' => -1,
 				'conditions' => array('id' => $data[$this->$model->alias]['id']),
@@ -53,23 +55,16 @@ class WorkflowSaveTest extends NetCommonsSaveTest {
 			$saveData = Hash::remove($data, $this->$model->alias . '.id');
 		} else {
 			$saveData = $data;
+			$before[$this->$model->alias] = array();
 		}
 
 		//テスト実行
 		$result = $this->$model->$method($saveData);
 		$this->assertNotEmpty($result);
-		$lastInsertId = $this->$model->getLastInsertID();
-
-		//登録データ取得
-		$latest = $this->$model->find('first', array(
-			'recursive' => -1,
-			'conditions' => array('id' => $lastInsertId),
-		));
-
-		$actual = $latest;
+		$id = $this->$model->getLastInsertID();
 
 		//is_latestのチェック
-		if (isset($before)) {
+		if (! $created) {
 			$after = $this->$model->find('first', array(
 				'recursive' => -1,
 				'conditions' => array('id' => $data[$this->$model->alias]['id']),
@@ -79,34 +74,38 @@ class WorkflowSaveTest extends NetCommonsSaveTest {
 					$this->$model->alias => array('is_latest' => false)
 				)
 			));
-			$actual[$this->$model->alias] = Hash::remove($actual[$this->$model->alias], 'modified');
-			$actual[$this->$model->alias] = Hash::remove($actual[$this->$model->alias], 'modified_user');
-		} else {
-			$actual[$this->$model->alias] = Hash::remove($actual[$this->$model->alias], 'created');
-			$actual[$this->$model->alias] = Hash::remove($actual[$this->$model->alias], 'created_user');
-			$actual[$this->$model->alias] = Hash::remove($actual[$this->$model->alias], 'modified');
-			$actual[$this->$model->alias] = Hash::remove($actual[$this->$model->alias], 'modified_user');
-
-			$data[$this->$model->alias]['key'] =
-					OriginalKeyBehavior::generateKey($this->$model->name, $this->$model->useDbConfig);
-			$before[$this->$model->alias] = array();
 		}
 
-		$expected[$this->$model->alias] = Hash::merge(
-			$before[$this->$model->alias],
-			$data[$this->$model->alias],
-			array(
-				'id' => $lastInsertId,
-				'is_active' => true,
-				'is_latest' => true
-			)
-		);
-		$expected[$this->$model->alias] = Hash::remove($expected[$this->$model->alias], 'modified');
-		$expected[$this->$model->alias] = Hash::remove($expected[$this->$model->alias], 'modified_user');
-
+		//更新のチェック
+		$actual = $this->_getActual($id, $created);
+		$expected = $this->_getExpected($id, $data, $before, $created);
 		$this->assertEquals($expected, $actual);
 
-		return $latest;
+		return $actual;
+	}
+
+/**
+ * 期待値の取得
+ *
+ * @param int $id ID
+ * @param array $data 登録データ
+ * @param array $before 登録前データ
+ * @param bool $created 作成かどうか
+ * @return array
+ */
+	protected function _getExpected($id, $data, $before, $created) {
+		$model = $this->_modelName;
+
+		$expected = parent::_getExpected($id, $data, $before, $created);
+		if ($created) {
+			$expected[$this->$model->alias]['key'] = OriginalKeyBehavior::generateKey(
+				$this->$model->name, $this->$model->useDbConfig
+			);
+		}
+		$expected[$this->$model->alias]['is_active'] = true;
+		$expected[$this->$model->alias]['is_latest'] = true;
+
+		return $expected;
 	}
 
 /**
