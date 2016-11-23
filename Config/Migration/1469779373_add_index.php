@@ -32,7 +32,7 @@ class AddIndex extends CakeMigration {
 		'up' => array(
 			'alter_field' => array(
 				'workflow_comments' => array(
-					'content_key' => array('type' => 'string', 'null' => false, 'default' => null, 'key' => 'index', 'collate' => 'utf8_general_ci', 'comment' => 'content key | 各プラグインのコンテンツKey | | ', 'charset' => 'utf8'),
+					'content_key' => array('type' => 'string', 'null' => false, 'default' => null, 'key' => 'index', 'collate' => 'utf8_general_ci', 'comment' => '各プラグインのコンテンツKey', 'charset' => 'utf8'),
 				),
 			),
 			'create_field' => array(
@@ -46,7 +46,7 @@ class AddIndex extends CakeMigration {
 		'down' => array(
 			'alter_field' => array(
 				'workflow_comments' => array(
-					'content_key' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => 'content key | 各プラグインのコンテンツKey | | ', 'charset' => 'utf8'),
+					'content_key' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '各プラグインのコンテンツKey', 'charset' => 'utf8'),
 				),
 			),
 			'drop_field' => array(
