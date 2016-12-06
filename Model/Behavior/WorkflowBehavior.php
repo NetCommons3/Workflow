@@ -241,15 +241,29 @@ class WorkflowBehavior extends ModelBehavior {
 		}
 
 		if ($model->hasField('language_id')) {
-			$langConditions = array(
-				$model->alias . '.language_id' => Current::read('Language.id'),
-			);
+			if ($model->hasField('is_translation')) {
+				$langConditions = array(
+					'OR' => array(
+						$model->alias . '.language_id' => Current::read('Language.id'),
+						$model->alias . '.is_translation' => false,
+					)
+				);
+			} else {
+				$langConditions = array(
+					$model->alias . '.language_id' => Current::read('Language.id'),
+				);
+			}
 		} else {
 			$langConditions = array();
 		}
-		$conditions = Hash::merge($langConditions, array(
-			'OR' => array($activeConditions, $latestConditons)
-		), $conditions);
+
+		$conditions = Hash::merge(
+			array(
+				array($langConditions),
+				array('OR' => array($activeConditions, $latestConditons))
+			),
+			$conditions
+		);
 
 		return $conditions;
 	}
