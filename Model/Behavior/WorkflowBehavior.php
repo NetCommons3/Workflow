@@ -54,6 +54,21 @@ class WorkflowBehavior extends ModelBehavior {
 	);
 
 /**
+ * Setup this behavior with the specified configuration settings.
+ *
+ * @param Model $model Model using this behavior
+ * @param array $config Configuration settings for $model
+ * @return void
+ */
+	public function setup(Model $model, $config = array()) {
+		parent::setup($model, $config);
+		$this->settings[$model->name]['key_field'] = Hash::get($config, 'key_field', 'key');
+
+		//ビヘイビアの優先順位
+		$this->settings['priority'] = 9;
+	}
+
+/**
  * beforeSave is called before a model is saved. Returning false from a beforeSave callback
  * will abort the save operation.
  *
@@ -106,7 +121,7 @@ class WorkflowBehavior extends ModelBehavior {
 				array($model->alias . '.is_active' => false),
 				array(
 					$model->alias . '.' . $originalField => $model->data[$model->alias][$originalField],
-					$model->alias . '.language_id' => (int)$model->data[$model->alias]['language_id'],
+					$model->alias . '.language_id' => Current::read('Language.id'),
 					$model->alias . '.is_active' => true,
 				)
 			);
@@ -120,7 +135,7 @@ class WorkflowBehavior extends ModelBehavior {
 			array($model->alias . '.is_latest' => false),
 			array(
 				$model->alias . '.' . $originalField => $model->data[$model->alias][$originalField],
-				$model->alias . '.language_id' => (int)$model->data[$model->alias]['language_id'],
+				$model->alias . '.language_id' => Current::read('Language.id'),
 				$model->alias . '.is_latest' => true,
 			)
 		);
