@@ -62,7 +62,6 @@ class WorkflowBehavior extends ModelBehavior {
  */
 	public function setup(Model $model, $config = array()) {
 		parent::setup($model, $config);
-		$this->settings[$model->name]['key_field'] = Hash::get($config, 'key_field', 'key');
 
 		//ビヘイビアの優先順位
 		$this->settings['priority'] = 9;
