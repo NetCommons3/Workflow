@@ -258,7 +258,7 @@ class WorkflowBehavior extends ModelBehavior {
 
 		$conditions = Hash::merge(
 			array(
-				array($langConditions),
+				$langConditions,
 				array('OR' => array($activeConditions, $latestConditons))
 			),
 			$conditions
