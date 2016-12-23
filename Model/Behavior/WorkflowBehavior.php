@@ -54,6 +54,20 @@ class WorkflowBehavior extends ModelBehavior {
 	);
 
 /**
+ * Setup this behavior with the specified configuration settings.
+ *
+ * @param Model $model Model using this behavior
+ * @param array $config Configuration settings for $model
+ * @return void
+ */
+	public function setup(Model $model, $config = array()) {
+		parent::setup($model, $config);
+
+		//ビヘイビアの優先順位
+		$this->settings['priority'] = 9;
+	}
+
+/**
  * beforeSave is called before a model is saved. Returning false from a beforeSave callback
  * will abort the save operation.
  *
@@ -72,12 +86,24 @@ class WorkflowBehavior extends ModelBehavior {
 		if (! $this->__hasSaveField($model, array('status', 'is_active', 'is_latest'))) {
 			return true;
 		}
-		if ($this->__hasSaveField($model, array('key', 'language_id'))) {
+		if ($this->__hasSaveField($model, array('key'))) {
 			$originalField = 'key';
 			if (! Hash::get($model->data[$model->alias], $originalField)) {
 				//OriginalKeyBehaviorでセットされるはずなので、falseで返却
 				return false;
 			}
+
+			if ($this->__hasSaveField($model, array('language_id'))) {
+				$commonConditions = array(
+					$model->alias . '.' . $originalField => $model->data[$model->alias][$originalField],
+					$model->alias . '.language_id' => Current::read('Language.id'),
+				);
+			} else {
+				$commonConditions = array(
+					$model->alias . '.' . $originalField => $model->data[$model->alias][$originalField],
+				);
+			}
+
 		} else {
 			return true;
 		}
@@ -89,6 +115,7 @@ class WorkflowBehavior extends ModelBehavior {
 			'conditions' => array(
 				$originalField => $model->data[$model->alias][$originalField]
 			),
+			'callbacks' => false,
 		));
 		if ($created) {
 			$model->data[$model->alias]['created'] = $created[$model->alias]['created'];
@@ -104,11 +131,9 @@ class WorkflowBehavior extends ModelBehavior {
 			//現状のis_activeを外す
 			$model->updateAll(
 				array($model->alias . '.is_active' => false),
-				array(
-					$model->alias . '.' . $originalField => $model->data[$model->alias][$originalField],
-					$model->alias . '.language_id' => (int)$model->data[$model->alias]['language_id'],
+				Hash::merge($commonConditions, array(
 					$model->alias . '.is_active' => true,
-				)
+				))
 			);
 		}
 
@@ -118,11 +143,9 @@ class WorkflowBehavior extends ModelBehavior {
 		//現状のis_latestを外す
 		$model->updateAll(
 			array($model->alias . '.is_latest' => false),
-			array(
-				$model->alias . '.' . $originalField => $model->data[$model->alias][$originalField],
-				$model->alias . '.language_id' => (int)$model->data[$model->alias]['language_id'],
+			Hash::merge($commonConditions, array(
 				$model->alias . '.is_latest' => true,
-			)
+			))
 		);
 
 		return true;
@@ -226,15 +249,29 @@ class WorkflowBehavior extends ModelBehavior {
 		}
 
 		if ($model->hasField('language_id')) {
-			$langConditions = array(
-				$model->alias . '.language_id' => Current::read('Language.id'),
-			);
+			if ($model->hasField('is_translation')) {
+				$langConditions = array(
+					'OR' => array(
+						$model->alias . '.language_id' => Current::read('Language.id'),
+						$model->alias . '.is_translation' => false,
+					)
+				);
+			} else {
+				$langConditions = array(
+					$model->alias . '.language_id' => Current::read('Language.id'),
+				);
+			}
 		} else {
 			$langConditions = array();
 		}
-		$conditions = Hash::merge($langConditions, array(
-			'OR' => array($activeConditions, $latestConditons)
-		), $conditions);
+
+		$conditions = Hash::merge(
+			array(
+				$langConditions,
+				array('OR' => array($activeConditions, $latestConditons))
+			),
+			$conditions
+		);
 
 		return $conditions;
 	}

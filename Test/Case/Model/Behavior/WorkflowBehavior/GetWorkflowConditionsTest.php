@@ -65,10 +65,17 @@ class WorkflowBehaviorGetWorkflowConditionsTest extends NetCommonsModelTestCase 
 		//テスト実施
 		$conditions = $this->TestModel->getWorkflowConditions($conditions);
 		$expected = array(
-			$this->TestModel->alias . '.language_id' => '2',
-			'OR' => array(
-				array($this->TestModel->alias . '.is_active' => true),
-				array()
+			array(
+				'OR' => array(
+					$this->TestModel->alias . '.language_id' => '2',
+					$this->TestModel->alias . '.is_translation' => false,
+				),
+			),
+			array(
+				'OR' => array(
+					array($this->TestModel->alias . '.is_active' => true),
+					array()
+				),
 			),
 		);
 		$this->assertEquals($expected, $conditions);
@@ -123,9 +130,12 @@ class WorkflowBehaviorGetWorkflowConditionsTest extends NetCommonsModelTestCase 
 		//テスト実施
 		$conditions = $this->TestWOLangModel->getWorkflowConditions($conditions);
 		$expected = array(
-			'OR' => array(
-				array($this->TestWOLangModel->alias . '.is_active' => true),
-				array()
+			array(),
+			array(
+				'OR' => array(
+					array($this->TestWOLangModel->alias . '.is_active' => true),
+					array()
+				),
 			),
 		);
 		$this->assertEquals($expected, $conditions);
