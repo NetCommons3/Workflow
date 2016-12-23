@@ -86,12 +86,24 @@ class WorkflowBehavior extends ModelBehavior {
 		if (! $this->__hasSaveField($model, array('status', 'is_active', 'is_latest'))) {
 			return true;
 		}
-		if ($this->__hasSaveField($model, array('key', 'language_id'))) {
+		if ($this->__hasSaveField($model, array('key'))) {
 			$originalField = 'key';
 			if (! Hash::get($model->data[$model->alias], $originalField)) {
 				//OriginalKeyBehaviorでセットされるはずなので、falseで返却
 				return false;
 			}
+
+			if ($this->__hasSaveField($model, array('language_id'))) {
+				$commonConditions = array(
+					$model->alias . '.' . $originalField => $model->data[$model->alias][$originalField],
+					$model->alias . '.language_id' => Current::read('Language.id'),
+				);
+			} else {
+				$commonConditions = array(
+					$model->alias . '.' . $originalField => $model->data[$model->alias][$originalField],
+				);
+			}
+
 		} else {
 			return true;
 		}
@@ -103,6 +115,7 @@ class WorkflowBehavior extends ModelBehavior {
 			'conditions' => array(
 				$originalField => $model->data[$model->alias][$originalField]
 			),
+			'callbacks' => false,
 		));
 		if ($created) {
 			$model->data[$model->alias]['created'] = $created[$model->alias]['created'];
@@ -118,11 +131,9 @@ class WorkflowBehavior extends ModelBehavior {
 			//現状のis_activeを外す
 			$model->updateAll(
 				array($model->alias . '.is_active' => false),
-				array(
-					$model->alias . '.' . $originalField => $model->data[$model->alias][$originalField],
-					$model->alias . '.language_id' => Current::read('Language.id'),
+				Hash::merge($commonConditions, array(
 					$model->alias . '.is_active' => true,
-				)
+				))
 			);
 		}
 
@@ -132,11 +143,9 @@ class WorkflowBehavior extends ModelBehavior {
 		//現状のis_latestを外す
 		$model->updateAll(
 			array($model->alias . '.is_latest' => false),
-			array(
-				$model->alias . '.' . $originalField => $model->data[$model->alias][$originalField],
-				$model->alias . '.language_id' => Current::read('Language.id'),
+			Hash::merge($commonConditions, array(
 				$model->alias . '.is_latest' => true,
-			)
+			))
 		);
 
 		return true;
