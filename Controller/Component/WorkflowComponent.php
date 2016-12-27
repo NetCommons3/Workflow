@@ -87,21 +87,6 @@ class WorkflowComponent extends Component {
 	}
 
 /**
- * Return all statuses
- * 後で削除予定
- *
- * @return array status on success, false on error
- */
-	//public static function getStatuses() {
-	//	return array(
-	//		self::STATUS_PUBLISHED => __d('net_commons', 'Published'),
-	//		self::STATUS_APPROVED => __d('net_commons', 'Approving'),
-	//		self::STATUS_IN_DRAFT => __d('net_commons', 'Temporary'),
-	//		self::STATUS_DISAPPROVED => __d('net_commons', 'Disapproving'),
-	//	);
-	//}
-
-/**
  * Function to get the data of BlockRolePermmissions.
  *    e.g.) BlockRolePermmissions controller
  *
