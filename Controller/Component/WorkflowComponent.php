@@ -28,10 +28,18 @@ class WorkflowComponent extends Component {
 
 /**
  * status approved
+ * 後で削除
  *
  * @var string
  */
 	const STATUS_APPROVED = '2';
+
+/**
+ * status approved
+ *
+ * @var string
+ */
+	const STATUS_APPROVAL_WAITING = '2';
 
 /**
  * in draft status
@@ -85,21 +93,6 @@ class WorkflowComponent extends Component {
 			return $this->controller->setAction('throwBadRequest');
 		}
 	}
-
-/**
- * Return all statuses
- * 後で削除予定
- *
- * @return array status on success, false on error
- */
-	//public static function getStatuses() {
-	//	return array(
-	//		self::STATUS_PUBLISHED => __d('net_commons', 'Published'),
-	//		self::STATUS_APPROVED => __d('net_commons', 'Approving'),
-	//		self::STATUS_IN_DRAFT => __d('net_commons', 'Temporary'),
-	//		self::STATUS_DISAPPROVED => __d('net_commons', 'Disapproving'),
-	//	);
-	//}
 
 /**
  * Function to get the data of BlockRolePermmissions.
