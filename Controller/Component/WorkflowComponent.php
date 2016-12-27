@@ -28,10 +28,18 @@ class WorkflowComponent extends Component {
 
 /**
  * status approved
+ * 後で削除
  *
  * @var string
  */
 	const STATUS_APPROVED = '2';
+
+/**
+ * status approved
+ *
+ * @var string
+ */
+	const STATUS_APPROVAL_WAITING = '2';
 
 /**
  * in draft status
