@@ -37,7 +37,7 @@ class WorkflowBehavior extends ModelBehavior {
  * @var array
  */
 	static public $statusesForEditor = array(
-		WorkflowComponent::STATUS_APPROVED,
+		WorkflowComponent::STATUS_APPROVAL_WAITING,
 		WorkflowComponent::STATUS_IN_DRAFT
 	);
 
@@ -48,7 +48,7 @@ class WorkflowBehavior extends ModelBehavior {
  */
 	static public $statuses = array(
 		WorkflowComponent::STATUS_PUBLISHED,
-		//WorkflowComponent::STATUS_APPROVED,
+		//WorkflowComponent::STATUS_APPROVAL_WAITING,
 		WorkflowComponent::STATUS_IN_DRAFT,
 		WorkflowComponent::STATUS_DISAPPROVED
 	);

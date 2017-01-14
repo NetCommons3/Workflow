@@ -61,7 +61,7 @@ class WorkflowHelper extends AppHelper {
 					'class' => 'label-info',
 					'message' => __d('net_commons', 'Temporary'),
 				),
-				WorkflowComponent::STATUS_APPROVED => array(
+				WorkflowComponent::STATUS_APPROVAL_WAITING => array(
 					'class' => 'label-warning',
 					'message' => __d('net_commons', 'Approving'),
 				),
@@ -113,7 +113,7 @@ class WorkflowHelper extends AppHelper {
 		);
 
 		if (Current::permission('content_publishable') &&
-				$status === WorkflowComponent::STATUS_APPROVED) {
+				$status === WorkflowComponent::STATUS_APPROVAL_WAITING) {
 			$saveTempOptions = array(
 				'label' => __d('net_commons', 'Disapproval'),
 				'class' => 'btn btn-warning' . $this->Button->getButtonSize() . ' btn-workflow',
@@ -140,7 +140,7 @@ class WorkflowHelper extends AppHelper {
 			$saveOptions = array(
 				'label' => __d('net_commons', 'OK'),
 				'class' => 'btn btn-primary' . $this->Button->getButtonSize() . ' btn-workflow',
-				'name' => 'save_' . WorkflowComponent::STATUS_APPROVED,
+				'name' => 'save_' . WorkflowComponent::STATUS_APPROVAL_WAITING,
 				'ng-class' => '{disabled: sending}'
 			);
 		}

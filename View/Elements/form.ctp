@@ -9,7 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-if ($contentPublishable && $contentStatus === WorkflowComponent::STATUS_APPROVED) {
+if ($contentPublishable && $contentStatus === WorkflowComponent::STATUS_APPROVAL_WAITING) {
 	$placeholder = __d('net_commons', 'If it is not approved, comment is a required input.');
 } else {
 	$placeholder = __d('net_commons', 'Please enter comments to the person in charge.');
