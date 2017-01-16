@@ -96,7 +96,9 @@ class WorkflowBehavior extends ModelBehavior {
 			if ($this->__hasSaveField($model, array('language_id'))) {
 				$commonConditions = array(
 					$model->alias . '.' . $originalField => $model->data[$model->alias][$originalField],
-					$model->alias . '.language_id' => Current::read('Language.id'),
+					$model->alias . '.language_id' => Hash::get(
+						$model->data[$model->alias], 'language_id', Current::read('Language.id')
+					),
 				);
 			} else {
 				$commonConditions = array(
@@ -206,6 +208,16 @@ class WorkflowBehavior extends ModelBehavior {
 				return false;
 			}
 		}
+
+		if (in_array('language_id', $fields)) {
+			if (! $model->Behaviors->loaded('M17n.M17n')) {
+				$model->Behaviors->load('M17n.M17n');
+			}
+			if (! $model->isM7nGeneralPlugin()) {
+				return false;
+			}
+		}
+
 		return true;
 	}
 
