@@ -261,7 +261,11 @@ class WorkflowBehavior extends ModelBehavior {
 		}
 
 		if ($model->hasField('language_id')) {
-			if ($model->hasField('is_translation')) {
+			if (Current::read('Plugin.is_m17n') === false && $model->hasField('is_origin')) {
+				$langConditions = array(
+					$model->alias . '.is_origin' => true,
+				);
+			} elseif ($model->hasField('is_translation')) {
 				$langConditions = array(
 					'OR' => array(
 						$model->alias . '.language_id' => Current::read('Language.id'),
