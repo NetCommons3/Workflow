@@ -213,7 +213,7 @@ class WorkflowBehavior extends ModelBehavior {
 			if (! $model->Behaviors->loaded('M17n.M17n')) {
 				$model->Behaviors->load('M17n.M17n');
 			}
-			if (! $model->isM7nGeneralPlugin()) {
+			if (! $model->isM17nGeneralPlugin()) {
 				return false;
 			}
 		}
