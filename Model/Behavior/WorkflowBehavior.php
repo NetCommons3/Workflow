@@ -363,11 +363,11 @@ class WorkflowBehavior extends ModelBehavior {
  * @return bool true:削除可、false:削除不可
  */
 	public function canDeleteWorkflowContent(Model $model, $data) {
-		if (Current::permission('content_publishable')) {
-			return true;
-		}
 		if (! $this->canEditWorkflowContent($model, $data)) {
 			return false;
+		}
+		if (Current::permission('content_publishable')) {
+			return true;
 		}
 		if (! isset($data[$model->alias])) {
 			$data[$model->alias] = $data;
