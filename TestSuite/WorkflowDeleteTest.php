@@ -17,7 +17,7 @@ App::uses('NetCommonsDeleteTest', 'NetCommons.TestSuite');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Workflow\TestSuite
  */
-class WorkflowDeleteTest extends NetCommonsDeleteTest {
+abstract class WorkflowDeleteTest extends NetCommonsDeleteTest {
 
 /**
  * setUp method

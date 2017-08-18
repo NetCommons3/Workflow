@@ -17,7 +17,7 @@ App::uses('NetCommonsGetTest', 'NetCommons.TestSuite');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Workflow\TestSuite
  */
-class WorkflowGetTest extends NetCommonsGetTest {
+abstract class WorkflowGetTest extends NetCommonsGetTest {
 
 /**
  * setUp method
