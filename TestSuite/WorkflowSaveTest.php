@@ -17,7 +17,7 @@ App::uses('NetCommonsSaveTest', 'NetCommons.TestSuite');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Workflow\TestSuite
  */
-class WorkflowSaveTest extends NetCommonsSaveTest {
+abstract class WorkflowSaveTest extends NetCommonsSaveTest {
 
 /**
  * setUp method

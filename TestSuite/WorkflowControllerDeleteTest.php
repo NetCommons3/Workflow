@@ -17,7 +17,7 @@ App::uses('WorkflowComponent', 'Workflow.Controller/Component');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Workflow\TestSuite
  */
-class WorkflowControllerDeleteTest extends NetCommonsControllerTestCase {
+abstract class WorkflowControllerDeleteTest extends NetCommonsControllerTestCase {
 
 /**
  * deleteアクションのGETテスト

@@ -67,7 +67,7 @@ class TestSuiteWorkflowControllerDeleteTestTestDeletePostTest extends NetCommons
 
 		//チェック
 		$this->assertEquals('delete_post', $result->controller->view);
-		$this->assertEquals('DELETE', $result->controller->request->method());
+		$this->assertEquals('DELETE', env('REQUEST_METHOD'));
 
 		$header = $result->controller->response->header();
 		$assertUrl = Inflector::underscore('TestWorkflow') . '/' . Inflector::underscore('TestSuiteWorkflowControllerDeleteTest') . '/index';

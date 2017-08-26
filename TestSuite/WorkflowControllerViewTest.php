@@ -17,7 +17,7 @@ App::uses('WorkflowComponent', 'Workflow.Controller/Component');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\Workflow\TestSuite
  */
-class WorkflowControllerViewTest extends NetCommonsControllerTestCase {
+abstract class WorkflowControllerViewTest extends NetCommonsControllerTestCase {
 
 /**
  * viewアクションのテスト

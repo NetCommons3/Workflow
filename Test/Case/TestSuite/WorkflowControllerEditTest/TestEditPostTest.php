@@ -65,7 +65,7 @@ class TestSuiteWorkflowControllerEditTestTestEditPostTest extends NetCommonsCont
 
 		//チェック
 		$this->assertEquals('edit_post', $result->controller->view);
-		$this->assertEquals('PUT', $result->controller->request->method());
+		$this->assertEquals('PUT', env('REQUEST_METHOD'));
 
 		$header = $result->controller->response->header();
 		$assertUrl = Inflector::underscore('TestWorkflow') . '/' . Inflector::underscore('TestSuiteWorkflowControllerEditTest') . '/index';
