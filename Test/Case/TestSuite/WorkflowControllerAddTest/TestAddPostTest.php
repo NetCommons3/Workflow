@@ -65,7 +65,7 @@ class TestSuiteWorkflowControllerAddTestTestAddPostTest extends NetCommonsContro
 
 		//チェック
 		$this->assertEquals('add_post', $result->controller->view);
-		$this->assertEquals('POST', $result->controller->request->method());
+		$this->assertEquals('POST', env('REQUEST_METHOD'));
 
 		$header = $result->controller->response->header();
 		$assertUrl = Inflector::underscore('TestWorkflow') . '/' . Inflector::underscore('TestSuiteWorkflowControllerAddTest') . '/index';
