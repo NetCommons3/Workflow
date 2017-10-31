@@ -76,6 +76,18 @@ class WorkflowComponent extends Component {
 		if (! in_array('Users.DisplayUser', $controller->helpers, true)) {
 			$controller->helpers[] = 'Users.DisplayUser';
 		}
+		//modelのロード
+		$models = array(
+			'BlockRolePermission' => 'Blocks.BlockRolePermission',
+			'DefaultRolePermission' => 'Roles.DefaultRolePermission',
+			'Role' => 'Roles.Role',
+			'RolesRoom' => 'Rooms.RolesRoom',
+			'RoomRole' => 'Rooms.RoomRole',
+			'RoomRolePermission' => 'Rooms.RoomRolePermission',
+		);
+		foreach ($models as $model => $class) {
+			$this->$model = ClassRegistry::init($class, true);
+		}
 	}
 
 /**
@@ -106,19 +118,6 @@ class WorkflowComponent extends Component {
  *   - The `Permission` sets in priority of BlockRolePermission and RoomRolePermission and DefaultRolePermission.
  */
 	public function getBlockRolePermissions($permissions, $roomId = null, $blockKey = null) {
-		//modelのロード
-		$models = array(
-			'BlockRolePermission' => 'Blocks.BlockRolePermission',
-			'DefaultRolePermission' => 'Roles.DefaultRolePermission',
-			'Role' => 'Roles.Role',
-			'RolesRoom' => 'Rooms.RolesRoom',
-			'RoomRole' => 'Rooms.RoomRole',
-			'RoomRolePermission' => 'Rooms.RoomRolePermission',
-		);
-		foreach ($models as $model => $class) {
-			$this->$model = ClassRegistry::init($class, true);
-		}
-
 		if (! isset($blockKey)) {
 			$blockKey = Current::read('Block.key');
 		}
@@ -194,18 +193,6 @@ class WorkflowComponent extends Component {
 			'RoomRolePermission' => null,
 			'RoomRole' => null,
 		);
-
-		//modelのロード
-		$models = array(
-			'DefaultRolePermission' => 'Roles.DefaultRolePermission',
-			'Role' => 'Roles.Role',
-			'RolesRoom' => 'Rooms.RolesRoom',
-			'RoomRole' => 'Rooms.RoomRole',
-			'RoomRolePermission' => 'Rooms.RoomRolePermission',
-		);
-		foreach ($models as $model => $class) {
-			$this->$model = ClassRegistry::init($class, true);
-		}
 
 		if (! $roomId) {
 			$roomId = Current::read('Room.id');
