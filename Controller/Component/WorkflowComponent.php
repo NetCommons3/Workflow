@@ -56,6 +56,25 @@ class WorkflowComponent extends Component {
 	const STATUS_DISAPPROVED = '4';
 
 /**
+ * RoomRoles Data
+ *
+ * @var
+ */
+	protected $_roomRoles = null;
+
+/**
+ * Roles data
+ * @var
+ */
+	protected $_roles = null;
+
+/**
+ * DefaultPermission data
+ * @var
+ */
+	protected $_defaultPermissions = null;
+
+/**
  * Called before the Controller::beforeFilter().
  *
  * @param Controller $controller Controller with components to initialize
@@ -64,17 +83,60 @@ class WorkflowComponent extends Component {
  */
 	public function initialize(Controller $controller) {
 		$this->controller = $controller;
-		//modelのロード
-		$models = array(
-			'BlockRolePermission' => 'Blocks.BlockRolePermission',
-			'DefaultRolePermission' => 'Roles.DefaultRolePermission',
-			'Role' => 'Roles.Role',
-			'RolesRoom' => 'Rooms.RolesRoom',
-			'RoomRole' => 'Rooms.RoomRole',
-			'RoomRolePermission' => 'Rooms.RoomRolePermission',
-		);
-		foreach ($models as $model => $class) {
-			$this->$model = ClassRegistry::init($class, true);
+	}
+
+/**
+ * 固定的データが準備できているかチェックする
+ *
+ * @param array $permissions default permissionの情報抽出のpermissions
+ * @param int $type default permissionの情報抽出のtype
+ * @return bool
+ */
+	private function __isNotPrepareInitialData($permissions, $type) {
+		static $mementoPermissions = array();
+		static $mementoType = null;
+		$isDiff = false;
+		if (implode(',', $mementoPermissions) != implode(',', $permissions) || $mementoType != $type) {
+			$isDiff = true;
+			$mementoPermissions = $permissions;
+			$mementoType = $type;
+		}
+		return is_null($this->_roomRoles) ||
+			is_null($this->_roles) ||
+			is_null($this->_defaultPermissions) || $isDiff;
+	}
+
+/**
+ * 固定的なデータを確保する
+ *
+ * @param array $permissions default permissionの情報抽出のpermissions
+ * @param int $type default permissionの情報抽出のtype
+ * @return bool
+ */
+	private function __prepareInitialData($permissions, $type) {
+		if ($this->__isNotPrepareInitialData($permissions, $type)) {
+			// 固定的なデータなので最初に保持しておくようにする
+			$roomRoles = $this->RoomRole->find('all', array(
+				'recursive' => -1,
+			));
+			$this->_roomRoles = Hash::combine($roomRoles, '{n}.RoomRole.role_key', '{n}.RoomRole');
+			$roles = $this->Role->find('all', array(
+				'recursive' => -1,
+				'conditions' => array(
+					'Role.type' => Role::ROLE_TYPE_ROOM,
+					'Role.language_id' => Current::read('Language.id'),
+				),
+			));
+			$this->_roles = Hash::combine($roles, '{n}.Role.key', '{n}.Role');
+
+			$this->_defaultPermissions = $this->DefaultRolePermission->find('all', array(
+				'recursive' => -1,
+				'fields' => array('DefaultRolePermission.*', 'DefaultRolePermission.value AS default'),
+				'conditions' => array(
+					'DefaultRolePermission.type' => $type,
+					'DefaultRolePermission.permission' => $permissions,
+				),
+			));
 		}
 	}
 
@@ -118,6 +180,19 @@ class WorkflowComponent extends Component {
  *   - The `Permission` sets in priority of BlockRolePermission and RoomRolePermission and DefaultRolePermission.
  */
 	public function getBlockRolePermissions($permissions, $roomId = null, $blockKey = null) {
+		//modelのロード
+		$models = array(
+			'BlockRolePermission' => 'Blocks.BlockRolePermission',
+			'DefaultRolePermission' => 'Roles.DefaultRolePermission',
+			'Role' => 'Roles.Role',
+			'RolesRoom' => 'Rooms.RolesRoom',
+			'RoomRole' => 'Rooms.RoomRole',
+			'RoomRolePermission' => 'Rooms.RoomRolePermission',
+		);
+		foreach ($models as $model => $class) {
+			$this->$model = ClassRegistry::init($class, true);
+		}
+
 		if (! isset($blockKey)) {
 			$blockKey = Current::read('Block.key');
 		}
@@ -194,37 +269,33 @@ class WorkflowComponent extends Component {
 			'RoomRole' => null,
 		);
 
+		//modelのロード
+		$models = array(
+			'DefaultRolePermission' => 'Roles.DefaultRolePermission',
+			'Role' => 'Roles.Role',
+			'RolesRoom' => 'Rooms.RolesRoom',
+			'RoomRole' => 'Rooms.RoomRole',
+			'RoomRolePermission' => 'Rooms.RoomRolePermission',
+		);
+		foreach ($models as $model => $class) {
+			$this->$model = ClassRegistry::init($class, true);
+		}
+
 		if (! $roomId) {
 			$roomId = Current::read('Room.id');
 		}
 
+		$this->__prepareInitialData($permissions, $type);
+
 		//RoomRole取得
-		$roomRoles = $this->RoomRole->find('all', array(
-			'recursive' => -1,
-		));
-		$results['RoomRole'] = Hash::combine($roomRoles, '{n}.RoomRole.role_key', '{n}.RoomRole');
+		$results['RoomRole'] = $this->_roomRoles;
 
 		//Role取得
-		$roles = $this->Role->find('all', array(
-			'recursive' => -1,
-			'conditions' => array(
-				'Role.type' => Role::ROLE_TYPE_ROOM,
-				'Role.language_id' => Current::read('Language.id'),
-			),
-		));
-		$results['Role'] = Hash::combine($roles, '{n}.Role.key', '{n}.Role');
+		$results['Role'] = $this->_roles;
 
 		//DefaultRolePermission取得
-		$defaultPermissions = $this->DefaultRolePermission->find('all', array(
-			'recursive' => -1,
-			'fields' => array('DefaultRolePermission.*', 'DefaultRolePermission.value AS default'),
-			'conditions' => array(
-				'DefaultRolePermission.type' => $type,
-				'DefaultRolePermission.permission' => $permissions,
-			),
-		));
 		$results['DefaultRolePermission'] = Hash::combine(
-			$defaultPermissions,
+			$this->_defaultPermissions,
 			'{n}.DefaultRolePermission.role_key',
 			'{n}.DefaultRolePermission',
 			'{n}.DefaultRolePermission.permission'
@@ -234,7 +305,7 @@ class WorkflowComponent extends Component {
 			return $results;
 		}
 
-		$roleKeys = Hash::combine($defaultPermissions, '{n}.DefaultRolePermission.role_key');
+		$roleKeys = Hash::combine($this->_defaultPermissions, '{n}.DefaultRolePermission.role_key');
 
 		//RolesRoomのIDリストを取得
 		$results['RolesRoom'] = $this->RolesRoom->find('list', array(
