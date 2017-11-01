@@ -64,18 +64,6 @@ class WorkflowComponent extends Component {
  */
 	public function initialize(Controller $controller) {
 		$this->controller = $controller;
-	}
-
-/**
- * Called after the Controller::beforeFilter() and before the controller action
- *
- * @param Controller $controller Controller with components to startup
- * @return void
- */
-	public function startup(Controller $controller) {
-		if (! in_array('Users.DisplayUser', $controller->helpers, true)) {
-			$controller->helpers[] = 'Users.DisplayUser';
-		}
 		//modelのロード
 		$models = array(
 			'BlockRolePermission' => 'Blocks.BlockRolePermission',
@@ -87,6 +75,18 @@ class WorkflowComponent extends Component {
 		);
 		foreach ($models as $model => $class) {
 			$this->$model = ClassRegistry::init($class, true);
+		}
+	}
+
+/**
+ * Called after the Controller::beforeFilter() and before the controller action
+ *
+ * @param Controller $controller Controller with components to startup
+ * @return void
+ */
+	public function startup(Controller $controller) {
+		if (! in_array('Users.DisplayUser', $controller->helpers, true)) {
+			$controller->helpers[] = 'Users.DisplayUser';
 		}
 	}
 
