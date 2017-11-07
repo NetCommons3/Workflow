@@ -247,12 +247,15 @@ class WorkflowComponent extends Component {
 			return $results;
 		}
 
+		$roleKeys = Hash::combine($defaultPermissions, '{n}.DefaultRolePermission.role_key');
+
 		//RolesRoomのIDリストを取得
 		$results['RolesRoom'] = $this->RolesRoom->find('list', array(
 			'recursive' => -1,
 			'fields' => array('role_key', 'id'),
 			'conditions' => array(
 				'RolesRoom.room_id' => $roomId,
+				'RolesRoom.role_key' => array_keys($roleKeys),
 			),
 		));
 
