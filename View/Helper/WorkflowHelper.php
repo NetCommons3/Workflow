@@ -165,7 +165,8 @@ class WorkflowHelper extends AppHelper {
  * @return string Html
  * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
-	public function inputComment($statusFieldName, $displayBlockKey = true, $useWorkflowFieldName = null) {
+	public function inputComment($statusFieldName, $displayBlockKey = true,
+								$useWorkflowFieldName = null) {
 		$status = Hash::get($this->_View->data, $statusFieldName);
 
 		// {プラグイン名}Setting.use_workflowから承認フラグを取得する.
