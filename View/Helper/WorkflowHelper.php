@@ -161,16 +161,27 @@ class WorkflowHelper extends AppHelper {
  *
  * @param string $statusFieldName ステータスのフィールド名
  * @param bool $displayBlockKey block_keyを含めるかどうか
+ * @param string $useWorkflowFieldName useWorkflowのフィールド名
  * @return string Html
  * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
-	public function inputComment($statusFieldName, $displayBlockKey = true) {
+	public function inputComment($statusFieldName, $displayBlockKey = true,
+								$useWorkflowFieldName = null) {
 		$status = Hash::get($this->_View->data, $statusFieldName);
 
-		$output = $this->_View->element('Workflow.form', array(
-			'contentPublishable' => Current::permission('content_publishable'),
-			'contentStatus' => $status,
-		));
+		// {プラグイン名}Setting.use_workflowから承認フラグを取得する.
+		// とれなかったら、今までと同じ承認コメントを表示する
+		// {プラグイン名}Settingは、頭大文字と小文字がある。登録・編集時に{プラグイン名}Settingがないプラグインもある。
+		// 例）AnnouncementSetting.use_workflow、bbsSetting.use_workflow, blogSetting.use_workflow
+		$useWorkflow = Hash::get($this->_View->data, $useWorkflowFieldName, 1);
+
+		$output = '';
+		if ($useWorkflow) {
+			$output = $this->_View->element('Workflow.form', array(
+				'contentPublishable' => Current::permission('content_publishable'),
+				'contentStatus' => $status,
+			));
+		}
 
 		if ($displayBlockKey) {
 			$output .= $this->NetCommonsForm->hidden('Block.key', ['value' => Current::read('Block.key')]);
