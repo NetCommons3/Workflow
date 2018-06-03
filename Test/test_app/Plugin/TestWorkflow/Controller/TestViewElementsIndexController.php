@@ -39,7 +39,7 @@ class TestViewElementsIndexController extends AppController {
 		$this->view = 'index';
 
 		$comments = array();
-		for ($i = 0; $i < 3; $i++) {
+		for ($i = 1; $i <= 3; $i++) {
 			$comments[$i] = array(
 				'WorkflowComment' => array(
 					'comment' => 'Workflow Comment' . $i,
@@ -76,7 +76,7 @@ class TestViewElementsIndexController extends AppController {
 		$this->view = 'index';
 
 		$comments = array();
-		for ($i = 0; $i < 10; $i++) {
+		for ($i = 1; $i <= 10; $i++) {
 			$comments[$i] = array(
 				'WorkflowComment' => array(
 					'comment' => 'Workflow Comment' . $i,

@@ -227,6 +227,7 @@ class WorkflowBehavior extends ModelBehavior {
  * @param Model $model Model using this behavior
  * @param array $conditions Model::find conditions default value
  * @return array Conditions data
+ * @SuppressWarnings(PHPMD.CyclomaticComplexity)
  */
 	public function getWorkflowConditions(Model $model, $conditions = array()) {
 		if (Current::permission('content_editable')) {
