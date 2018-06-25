@@ -227,6 +227,7 @@ class WorkflowBehavior extends ModelBehavior {
  * @param Model $model Model using this behavior
  * @param array $conditions Model::find conditions default value
  * @return array Conditions data
+ * @SuppressWarnings(PHPMD.CyclomaticComplexity)
  */
 	public function getWorkflowConditions(Model $model, $conditions = array()) {
 		if (Current::permission('content_editable')) {
@@ -261,17 +262,27 @@ class WorkflowBehavior extends ModelBehavior {
 		}
 
 		if ($model->hasField('language_id')) {
+			$model->loadModels(array(
+				'Language' => 'M17n.Language',
+			));
 			if (Current::read('Plugin.is_m17n') === false && $model->hasField('is_origin')) {
 				$langConditions = array(
 					$model->alias . '.is_origin' => true,
 				);
 			} elseif ($model->hasField('is_translation')) {
-				$langConditions = array(
-					'OR' => array(
+				$langs = $model->Language->getLanguage();
+				if (count($langs) > 1) {
+					$langConditions = array(
+						'OR' => array(
+							$model->alias . '.language_id' => Current::read('Language.id'),
+							$model->alias . '.is_translation' => false,
+						)
+					);
+				} else {
+					$langConditions = array(
 						$model->alias . '.language_id' => Current::read('Language.id'),
-						$model->alias . '.is_translation' => false,
-					)
-				);
+					);
+				}
 			} else {
 				$langConditions = array(
 					$model->alias . '.language_id' => Current::read('Language.id'),
