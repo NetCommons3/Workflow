@@ -270,8 +270,7 @@ class WorkflowBehavior extends ModelBehavior {
 					$model->alias . '.is_origin' => true,
 				);
 			} elseif ($model->hasField('is_translation')) {
-				$langs = $model->Language->getLanguage();
-				if (count($langs) > 1) {
+				if ($model->Language->isMultipleLang()) {
 					$langConditions = array(
 						'OR' => array(
 							$model->alias . '.language_id' => Current::read('Language.id'),
