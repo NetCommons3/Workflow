@@ -126,7 +126,8 @@ class WorkflowBehavior extends ModelBehavior {
 
 		//is_activeのセット
 		$model->data[$model->alias]['is_active'] = false;
-		if ($model->data[$model->alias]['status'] === WorkflowComponent::STATUS_PUBLISHED) {
+		// 各プラグインで直にフラグをセットする場合 1 or '1'もありえるため、stringにキャストする
+		if ((string)$model->data[$model->alias]['status'] === WorkflowComponent::STATUS_PUBLISHED) {
 			//statusが公開ならis_activeを付け替える
 			$model->data[$model->alias]['is_active'] = true;
 
