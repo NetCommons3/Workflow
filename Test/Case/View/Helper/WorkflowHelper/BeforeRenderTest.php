@@ -61,10 +61,6 @@ class WorkflowHelperBeforeRenderTest extends NetCommonsControllerTestCase {
 		//チェック
 		$pattern = '/' . preg_quote('View/Helper/TestWorkflowHelperBeforeRender', '/') . '/';
 		$this->assertRegExp($pattern, $this->view);
-
-		//cssのURLチェック
-		$pattern = '/<link.*?' . preg_quote('/workflow/css/style.css', '/') . '.*?>/';
-		$this->assertRegExp($pattern, $this->contents);
 	}
 
 }

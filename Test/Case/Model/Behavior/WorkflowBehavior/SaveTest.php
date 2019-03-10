@@ -48,7 +48,8 @@ class WorkflowBehaviorSaveTest extends NetCommonsModelTestCase {
 
 		//テストプラグインのロード
 		NetCommonsCakeTestCase::loadTestPlugin($this, 'Workflow', 'TestWorkflow');
-		Current::$current = Hash::insert(Current::$current, 'Permission.content_publishable.value', true);
+		Current::write('Room.id', '2');
+		Current::writePermission('2', 'content_publishable', true);
 	}
 
 /**

@@ -72,7 +72,8 @@ class WorkflowBehaviorCanCreateWorkflowContentTest extends NetCommonsModelTestCa
  */
 	public function testCanCreateWorkflowContent($permission, $assert) {
 		//テスト実施
-		Current::$current['Permission']['content_creatable']['value'] = $permission;
+		Current::write('Room.id', '2');
+		Current::writePermission('2', 'content_creatable', $permission);
 		$result = $this->TestModel->canCreateWorkflowContent();
 
 		//チェック
