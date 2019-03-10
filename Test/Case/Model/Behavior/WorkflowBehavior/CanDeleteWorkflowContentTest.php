@@ -97,8 +97,9 @@ class WorkflowBehaviorCanDeleteWorkflowContentTest extends NetCommonsModelTestCa
 	public function testCanDeleteWorkflowContent($publishPermission, $editPermission, $assert, $userId, $data) {
 		//テスト実施
 		Current::$current['User']['id'] = $userId;
-		Current::$current['Permission']['content_editable']['value'] = $editPermission;
-		Current::$current['Permission']['content_publishable']['value'] = $publishPermission;
+		Current::write('Room.id', '2');
+		Current::writePermission('2', 'content_editable', $editPermission);
+		Current::writePermission('2', 'content_publishable', $publishPermission);
 		$result = $this->TestModel->canDeleteWorkflowContent($data);
 
 		//チェック
@@ -116,8 +117,9 @@ class WorkflowBehaviorCanDeleteWorkflowContentTest extends NetCommonsModelTestCa
 
 		//テスト実施
 		Current::$current['User']['id'] = '1';
-		Current::$current['Permission']['content_editable']['value'] = true;
-		Current::$current['Permission']['content_publishable']['value'] = false;
+		Current::writePermission('2', 'content_editable', true);
+		Current::write('Room.id', '2');
+		Current::writePermission('2', 'content_publishable', false);
 		$data = array('TestWorkflowBehaviorModel' => array('key' => 'publish_key', 'created_user' => '2'));
 		$result = $this->TestModel->canDeleteWorkflowContent($data);
 

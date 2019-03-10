@@ -90,7 +90,8 @@ class WorkflowBehaviorCanEditWorkflowContentTest extends NetCommonsModelTestCase
 	public function testCanEditWorkflowContent($permission, $assert, $userId, $data) {
 		//テスト実施
 		Current::$current['User']['id'] = $userId;
-		Current::$current['Permission']['content_editable']['value'] = $permission;
+		Current::write('Room.id', '2');
+		Current::writePermission('2', 'content_editable', $permission);
 		$result = $this->TestModel->canEditWorkflowContent($data);
 
 		//チェック

@@ -94,9 +94,8 @@ class WorkflowHelperButtonsTest extends NetCommonsHelperTestCase {
  */
 	public function testButtons($status, $contentPublishable, $cancelUrl, $panel, $backUrl) {
 		//テストデータ生成
-		Current::$current = Hash::insert(
-			Current::$current, 'Permission.content_publishable.value', $contentPublishable
-		);
+		Current::write('Room.id', '2');
+		Current::writePermission('2', 'content_publishable', $contentPublishable);
 
 		$viewVars = array();
 		$requestData = array(

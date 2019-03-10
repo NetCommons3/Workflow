@@ -121,7 +121,8 @@ class WorkflowBehaviorValidatesTest extends NetCommonsModelTestCase {
 		$message = __d('net_commons', 'Invalid request.');
 
 		if ($publishable) {
-			Current::$current['Permission']['content_publishable']['value'] = true;
+			Current::write('Room.id', '2');
+			Current::writePermission('2', 'content_publishable', true);
 		}
 		$data = array($model => (new TestWorkflowBehaviorValidatesModelFixture())->records[0]);
 		$data[$model][$field] = $value;

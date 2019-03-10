@@ -72,7 +72,8 @@ class WorkflowBehaviorCanReadWorkflowContentTest extends NetCommonsModelTestCase
  */
 	public function testCanReadWorkflowContent($permission, $assert) {
 		//テスト実施
-		Current::$current['Permission']['content_readable']['value'] = $permission;
+		Current::write('Room.id', '2');
+		Current::writePermission('2', 'content_readable', $permission);
 		$result = $this->TestModel->canReadWorkflowContent();
 
 		//チェック

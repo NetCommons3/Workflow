@@ -160,8 +160,9 @@ class WorkflowBehaviorGetWorkflowConditionsTest extends NetCommonsModelTestCase 
 	public function testWithContentCreatable() {
 		//テストデータ
 		$conditions = array();
-		Current::$current = Hash::insert(Current::$current, 'Permission.content_creatable.value', true);
-		Current::$current = Hash::insert(Current::$current, 'User.id', '2');
+		Current::write('Room.id', '2');
+		Current::writePermission('2', 'content_creatable', true);
+		Current::write('User.id', '2');
 
 		//テスト実施
 		$conditions = $this->TestModel->getWorkflowConditions($conditions);
@@ -186,8 +187,9 @@ class WorkflowBehaviorGetWorkflowConditionsTest extends NetCommonsModelTestCase 
 	public function testPeriodWithContentCreatable() {
 		//テストデータ
 		$conditions = array();
-		Current::$current = Hash::insert(Current::$current, 'Permission.content_creatable.value', true);
-		Current::$current = Hash::insert(Current::$current, 'User.id', '2');
+		Current::write('Room.id', '2');
+		Current::writePermission('2', 'content_creatable', true);
+		Current::write('User.id', '2');
 
 		//テスト実施
 		$conditions = $this->TestWPeriodModel->getWorkflowConditions($conditions);
@@ -216,8 +218,9 @@ class WorkflowBehaviorGetWorkflowConditionsTest extends NetCommonsModelTestCase 
 	public function testWithContentEditable() {
 		//テストデータ
 		$conditions = array();
-		Current::$current = Hash::insert(Current::$current, 'Permission.content_editable.value', true);
-		Current::$current = Hash::insert(Current::$current, 'User.id', '2');
+		Current::write('Room.id', '2');
+		Current::writePermission('2', 'content_editable', true);
+		Current::write('User.id', '2');
 
 		//テスト実施
 		$conditions = $this->TestModel->getWorkflowConditions($conditions);
@@ -243,8 +246,9 @@ class WorkflowBehaviorGetWorkflowConditionsTest extends NetCommonsModelTestCase 
 	public function testPeriodWithContentEditable() {
 		//テストデータ
 		$conditions = array();
-		Current::$current = Hash::insert(Current::$current, 'Permission.content_editable.value', true);
-		Current::$current = Hash::insert(Current::$current, 'User.id', '2');
+		Current::write('Room.id', '2');
+		Current::writePermission('2', 'content_editable', true);
+		Current::write('User.id', '2');
 
 		//テスト実施
 		$conditions = $this->TestWPeriodModel->getWorkflowConditions($conditions);

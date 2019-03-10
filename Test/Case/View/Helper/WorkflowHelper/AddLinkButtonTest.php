@@ -41,8 +41,8 @@ class WorkflowHelperAddLinkButtonTest extends NetCommonsHelperTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		Current::$current = Hash::insert(Current::$current, 'Block.id', '1');
-		Current::$current = Hash::insert(Current::$current, 'Frame.id', '2');
+		Current::write('Block.id', '1');
+		Current::write('Frame.id', '2');
 	}
 
 /**
@@ -55,7 +55,8 @@ class WorkflowHelperAddLinkButtonTest extends NetCommonsHelperTestCase {
 		$title = 'Title';
 		$url = array('action' => 'workflow_add');
 		$options = array();
-		Current::$current = Hash::insert(Current::$current, 'Permission.content_creatable.value', true);
+		Current::write('Room.id', '2');
+		Current::writePermission('2', 'content_creatable', true);
 
 		//Helperロード
 		$params = array('plugin' => 'workflow_plugin', 'controller' => 'workflow_controller');
@@ -81,7 +82,8 @@ class WorkflowHelperAddLinkButtonTest extends NetCommonsHelperTestCase {
 		$title = 'Title';
 		$url = null;
 		$options = array();
-		Current::$current = Hash::insert(Current::$current, 'Permission.content_creatable.value', true);
+		Current::write('Room.id', '2');
+		Current::writePermission('2', 'content_creatable', true);
 
 		//Helperロード
 		$params = array('plugin' => 'workflow_plugin', 'controller' => 'workflow_controller');
@@ -107,7 +109,8 @@ class WorkflowHelperAddLinkButtonTest extends NetCommonsHelperTestCase {
 		$title = 'Title';
 		$url = null;
 		$options = array();
-		Current::$current = Hash::insert(Current::$current, 'Permission.content_creatable.value', false);
+		Current::write('Room.id', '2');
+		Current::writePermission('2', 'content_creatable', false);
 
 		//Helperロード
 		$params = array('plugin' => 'workflow_plugin', 'controller' => 'workflow_controller');
@@ -131,7 +134,8 @@ class WorkflowHelperAddLinkButtonTest extends NetCommonsHelperTestCase {
 		$title = 'Title';
 		$url = null;
 		$options = array();
-		Current::$current = Hash::insert(Current::$current, 'Permission.content_creatable.value', true);
+		Current::write('Room.id', '2');
+		Current::writePermission('2', 'content_creatable', true);
 
 		//Helperロード
 		$viewVars = array('addActionController' => 'add_workflow_controller');
