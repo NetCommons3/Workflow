@@ -175,7 +175,7 @@ class WorkflowBehavior extends ModelBehavior {
 			$statuses = self::$statusesForEditor;
 		}
 
-		$model->validate = Hash::merge($model->validate, array(
+		$model->validate = ValidateMerge::merge($model->validate, array(
 			'status' => array(
 				'numeric' => array(
 					'rule' => array('numeric'),
