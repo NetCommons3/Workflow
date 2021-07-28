@@ -17,7 +17,7 @@
 				<div class="comment form-group" ng-show="<?php echo $i >= WorkflowComment::START_LIMIT ? 'more' : 'true' ?>">
 					<div>
 						<?php echo $this->DisplayUser->handleLink($comment, array('avatar' => true)); ?>
-						<small class="text-muted"><?php echo $comment['WorkflowComment']['created']; ?></small>
+						<small class="text-muted"><?php echo $this->Date->dateFormat($comment['WorkflowComment']['created']); ?></small>
 					</div>
 					<div>
 						<?php echo nl2br(h($comment['WorkflowComment']['comment'])) ?>
