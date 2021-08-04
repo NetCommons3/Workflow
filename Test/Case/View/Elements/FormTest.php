@@ -24,7 +24,9 @@ class WorkflowViewElementsFormTest extends NetCommonsControllerTestCase {
  *
  * @var array
  */
-	public $fixtures = array();
+	public $fixtures = array(
+		'plugin.workflow.workflow_comment',
+	);
 
 /**
  * Plugin name
