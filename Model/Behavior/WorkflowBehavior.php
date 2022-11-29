@@ -292,7 +292,16 @@ class WorkflowBehavior extends ModelBehavior {
 			$langConditions = array();
 		}
 
+		$currentBlockId = Current::read('Block.id');
+		$blockConditions = [];
+		if ($currentBlockId && $model->hasField('block_id')) {
+			$blockConditions = [
+				$model->alias . '.block_id' => $currentBlockId,
+			];
+		}
+
 		$conditions = Hash::merge(
+			$blockConditions,
 			array(
 				$langConditions,
 				array('OR' => array($activeConditions, $latestConditons))
@@ -361,7 +370,8 @@ class WorkflowBehavior extends ModelBehavior {
 		if (! isset($data[$model->alias]['created_user'])) {
 			return false;
 		}
-		return ((int)$data[$model->alias]['created_user'] === (int)Current::read('User.id'));
+		return (Current::permission('content_creatable') &&
+			((int)$data[$model->alias]['created_user'] === (int)Current::read('User.id')));
 	}
 
 /**
