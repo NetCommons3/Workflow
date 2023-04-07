@@ -227,16 +227,23 @@ class WorkflowBehavior extends ModelBehavior {
  *
  * @param Model $model Model using this behavior
  * @param array $conditions Model::find conditions default value
+ * @param bool $useCommentCreatable コメントの作成権限でもチェックするかどうか
  * @return array Conditions data
  * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+ * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
-	public function getWorkflowConditions(Model $model, $conditions = array()) {
+	public function getWorkflowConditions(
+		Model $model,
+		$conditions = array(),
+		$useCommentCreatable = false
+    ) {
 		if (Current::permission('content_editable')) {
 			$activeConditions = array();
 			$latestConditons = array(
 				$model->alias . '.is_latest' => true,
 			);
-		} elseif (Current::permission('content_creatable')) {
+		} elseif (Current::permission('content_creatable') ||
+				$useCommentCreatable && Current::permission('content_comment_creatable')) {
 			$activeConditions = array(
 				$model->alias . '.is_active' => true,
 				$model->alias . '.created_user !=' => Current::read('User.id'),
@@ -318,12 +325,19 @@ class WorkflowBehavior extends ModelBehavior {
  * @param Model $model Model using this behavior
  * @param string $type Type of find operation (all / first / count / neighbors / list / threaded)
  * @param array $query Option fields (conditions / fields / joins / limit / offset / order / page / group / callbacks)
+ * @param bool $useCommentCreatable コメントの作成権限でもチェックするかどうか
  * @return array Conditions data
+ * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
  */
-	public function getWorkflowContents(Model $model, $type, $query = array()) {
+	public function getWorkflowContents(
+		Model $model,
+		$type,
+		$query = array(),
+		$useCommentCreatable = false
+	) {
 		$query = Hash::merge(array(
 			'recursive' => -1,
-			'conditions' => $this->getWorkflowConditions($model)
+			'conditions' => $this->getWorkflowConditions($model, [], $useCommentCreatable)
 		), $query);
 
 		return $model->find($type, $query);
@@ -384,7 +398,8 @@ class WorkflowBehavior extends ModelBehavior {
  * @return bool true:削除可、false:削除不可
  */
 	public function canDeleteWorkflowContent(Model $model, $data) {
-		if (! $this->canEditWorkflowContent($model, $data)) {
+		//Model側で継承している場合、そのcanEditWorkflowContentが実行されるように、$thisではなく、$modelで呼び出す。
+		if (! $model->canEditWorkflowContent($data)) {
 			return false;
 		}
 		if (Current::permission('content_publishable')) {
