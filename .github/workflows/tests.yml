@@ -139,6 +139,7 @@ jobs:
           vendors/bin/php-coveralls --coverage_clover=build/logs/clover.xml -v
 
       - name: docker-compose remove
+        if: always()
         run: |
           cd ${NC3_DOCKER_DIR}
           docker-compose rm -f
