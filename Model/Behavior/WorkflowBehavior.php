@@ -18,6 +18,7 @@ App::uses('NetCommonsTime', 'NetCommons.Utility');
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package  NetCommons\Workflow\Model\Befavior
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class WorkflowBehavior extends ModelBehavior {
 
