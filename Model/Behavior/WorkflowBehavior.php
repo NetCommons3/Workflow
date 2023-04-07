@@ -236,7 +236,7 @@ class WorkflowBehavior extends ModelBehavior {
 		Model $model,
 		$conditions = array(),
 		$useCommentCreatable = false
-    ) {
+	) {
 		if (Current::permission('content_editable')) {
 			$activeConditions = array();
 			$latestConditons = array(
