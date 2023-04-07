@@ -92,37 +92,44 @@ jobs:
           docker-compose exec -T nc3app bash /opt/scripts/app-build.sh
 
       - name: phpcs (PHP CodeSniffer)
+        if: always()
         run: |
           cd ${NC3_DOCKER_DIR}
           docker-compose exec -T nc3app bash /opt/scripts/phpcs.sh
 
       - name: phpmd (PHP Mess Detector)
+        if: always()
         run: |
           cd ${NC3_DOCKER_DIR}
           docker-compose exec -T nc3app bash /opt/scripts/phpmd.sh
 
       - name: phpcpd (PHP Copy/Paste Detector)
+        if: always()
         run: |
           cd ${NC3_DOCKER_DIR}
           docker-compose exec -T nc3app bash /opt/scripts/phpcpd.sh
 
       - name: gjslint (JavaScript Style Check)
+        if: always()
         run: |
           cd ${NC3_DOCKER_DIR}
           docker-compose exec -T nc3app bash /opt/scripts/gjslint.sh
 
       - name: phpdoc (PHP Documentor)
+        if: always()
         run: |
           cd ${NC3_DOCKER_DIR}
           docker-compose exec -T nc3app bash /opt/scripts/phpdoc.sh
 
       - name: phpunit (PHP UnitTest)
+        if: always()
         run: |
           cd ${NC3_DOCKER_DIR}
           docker-compose exec -T nc3app bash /opt/scripts/phpunit.sh
           sudo -s chmod a+w -R ${NC3_BUILD_DIR}/build
 
       - name: push coveralls
+        if: success()
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COVERALLS_FLAG_NAME: ${{ matrix.php }}
