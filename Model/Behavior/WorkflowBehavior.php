@@ -18,6 +18,7 @@ App::uses('NetCommonsTime', 'NetCommons.Utility');
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package  NetCommons\Workflow\Model\Befavior
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class WorkflowBehavior extends ModelBehavior {
 
@@ -236,7 +237,7 @@ class WorkflowBehavior extends ModelBehavior {
 		Model $model,
 		$conditions = array(),
 		$useCommentCreatable = false
-    ) {
+	) {
 		if (Current::permission('content_editable')) {
 			$activeConditions = array();
 			$latestConditons = array(
